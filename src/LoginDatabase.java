@@ -25,9 +25,19 @@ public class LoginDatabase {
       System.exit(1);
     }
     
-    //drop tables and views.
-    System.out.println("Dropping pre-existing tables and views...");
-    dropTable(connection,"delayedFlights");
+    //Drop table.
+    dropTable(connection,"loginDetails");
+    
+    //Create table.
+    createTable(connection,"loginDetails(Username varchar(255), "
+                                      + "Password varchar(255), "
+                                      + "Permissions varchar(255));");
+    //Insert into table
+    insertIntoTable(connection,"loginDetails","logins.txt");
+    String query = "SELECT * FROM loginDetails;";
+    ResultSet executeQuery1 = executeQuery(connection, query);
+    printQuery(connection, executeQuery1);
+    executeQuery1.close();
   }
     
     private static void printQuery(Connection connection,ResultSet query) {
@@ -37,9 +47,9 @@ public class LoginDatabase {
         try {
           while (query.next()) {
             int columnCount = queryMeta.getColumnCount();
-            String displayQuery = "";
+            String displayQuery = "|";
             for(int i = 1;i<=columnCount;i++) {
-              displayQuery += query.getString(i) + " ";
+              displayQuery += query.getString(i) + "|";
             }
             System.out.println(displayQuery);
           }
