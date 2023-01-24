@@ -35,12 +35,22 @@ public class LoginDatabase {
     //Insert into table
     insertIntoTable(connection,"loginDetails","logins.txt");
     String query = "SELECT * FROM loginDetails;";
-    ResultSet executeQuery1 = executeQuery(connection, query);
-    printQuery(connection, executeQuery1);
-    executeQuery1.close();
+    newUser(connection,"newUser1","password3","Waiter");
+    ResultSet executeQuery = executeQuery(connection, query);
+    printQuery(connection, executeQuery);
+    executeQuery.close();
   }
     
-    private static void printQuery(Connection connection,ResultSet query) {
+  private static void newUser(Connection connection, String username, String password, String permissions) { 
+    try {
+      Statement st = connection.createStatement();
+      st.execute("INSERT INTO loginDetails(Username,Password,Permissions) VALUES ('" + username + "','" + password + "','" + permissions+"')");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private static void printQuery(Connection connection,ResultSet query) {
       ResultSetMetaData queryMeta;
       try {
         queryMeta = query.getMetaData();
