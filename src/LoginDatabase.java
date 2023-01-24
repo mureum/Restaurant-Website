@@ -39,12 +39,28 @@ public class LoginDatabase {
     ResultSet executeQuery = executeQuery(connection, query);
     printQuery(connection, executeQuery);
     executeQuery.close();
+    
+    System.out.println("------------------------------");
+    String query2 = "SELECT * FROM loginDetails;";
+    deleteUser(connection,"Username2");
+    ResultSet executeQuery2 = executeQuery(connection, query);
+    printQuery(connection, executeQuery2);
+    executeQuery2.close();
   }
     
   private static void newUser(Connection connection, String username, String password, String permissions) { 
     try {
       Statement st = connection.createStatement();
       st.execute("INSERT INTO loginDetails(Username,Password,Permissions) VALUES ('" + username + "','" + password + "','" + permissions+"')");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  private static void deleteUser(Connection connection, String username) { 
+    try {
+      Statement st = connection.createStatement();
+      st.execute("DELETE FROM loginDetails WHERE Username = '" + username + "';");
     } catch (SQLException e) {
       e.printStackTrace();
     }
