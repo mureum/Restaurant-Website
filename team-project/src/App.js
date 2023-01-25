@@ -1,11 +1,16 @@
-import logo from "./logo.svg";
+import logo from "./assets/Oxaca_Restaurants_Logo.png";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <header>
-        <h1></h1>
+      <header className="flex">
+        <img
+          src={logo}
+          width="300"
+          height="300"
+          style={{ marginLeft: "-10px", marginTop: "10px" }}
+        />
       </header>
       <ul>
         <li>
