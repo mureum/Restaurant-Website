@@ -4,13 +4,34 @@ import "./App.css";
 function App() {
   return (
     <div className="App">
-      <header className="flex">
+      <header className="flex items-center">
         <img
           src={logo}
           width="300"
           height="300"
-          style={{ marginLeft: "-10px", marginTop: "10px" }}
+          style={{ marginLeft: "10px", marginTop: "10px" }}
         />
+
+        <ul className="flex p-3">
+          <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+            Book Now
+          </li>
+          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+            About Us
+          </li>
+          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+            Order Online
+          </li>
+          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+            Menus
+          </li>
+          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+            Locations
+          </li>
+          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+            Contact Us
+          </li>
+        </ul>
       </header>
       <ul>
         <li>
