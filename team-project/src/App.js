@@ -47,6 +47,13 @@ function App() {
         interval={2000}
         showThumbs={false}
         showStatus={false}
+        renderArrowPrev={() => (
+          <div className="w-full h-full absolute z-10">
+            <div className="container mx-auto h-full flex items-center">
+              <i className="fa-solid fa-circle-chevron-left fa-3x text-white -ml-56 opacity-50"></i>
+            </div>
+          </div>
+        )}
       >
         <div className="bg-indigo-300 my-10">
           <img className="object-cover h-[600px] w-full" src={p1} />
