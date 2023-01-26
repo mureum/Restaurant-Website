@@ -1,0 +1,5 @@
+123,Vegan,
+234,Vegetarian,
+345,Diary Free,
+456,Gluten Free,
+567,Nut Free
