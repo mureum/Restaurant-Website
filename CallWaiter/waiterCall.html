@@ -12,20 +12,20 @@
   <form >
     <div class="div1">
       <div class="mb-3">
-    <label for="formGroupExampleInput" class="form-label">Table Number *</label>
+    <label class="form-label">Table Number *</label>
     <input type="number" class="form-control" id="table" placeholder="Enter your table number" required >
   </div>
   <div class="mb-3">
-    <label for="formGroupExampleInput2" class="form-label">Problem Description</label>
+    <label class="form-label">Problem Description</label>
     <input type="text" class="form-control" id="problem" placeholder="Describe your issue if possible">
   </div >
   <div class="btn1">
 
-    <button  type="submit" id = "call" class="btn btn-secondary">Call for Waiter</button>
+    <button onclick="callWaiter()" type="submit" id = "call" class="btn btn-secondary">Call for Waiter</button>
   </div>
   
       </div>
   </form>  
-
+<script src="waiterCall.js"></script>
 </body>
 </html>
