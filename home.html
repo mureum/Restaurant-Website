@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<link rel="stylesheet" href="mystyle.css">
+<body style="background-color: white; background-size: 100% 100%; background-repeat: no-repeat; background-attachment: fixed;" background="https://img.restaurantsbrighton.co.uk/wp-content/uploads/2021/01/Carlito-Burrito.jpg">
+
+<div class="header">
+  <a href="homepage.html" class="logo"><img src="images/Oxaca_Restaurants_Logo_White.png" alt="Oaxaca Logo" title="Oaxaca Logo" height="70px" width="150px" /></a>
+  <div class="header-right">
+    <a href="home.html" class="active">Home</a>
+    <a href="orderings.html">Menu</a>
+    <a href="contact.html">Contact us</a>
+    <a href="bookings.html">Bookings</a>
+    <a href="findus.html">Find us</a>
+    <a href="basket.html">Basket</a>
+  </div>
+</div>
+<div class="images">
+  <img src="" class="images" id="image">
+</div>
+<section id="about">
+      <h2>About</h2>
+      <p>Welcome to our restaurant, where we serve authentic Oaxacan cuisine made with fresh, locally sourced ingredients. Our menu features a variety of traditional dishes, including tacos al pastor, carne asada, and beef burritos. We also have a selection of vegetarian options. Come dine with us and experience the flavors of Oaxaca.</p>
+    </section>
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <form>
+        <input type="text" placeholder="Name">
+        <input type="email" placeholder="Email">
+        <textarea placeholder="Message"></textarea>
+<input type="submit" value="Send">
+</form>
+</section>
+<script type="text/javascript">
+  let image = document.getElementById('image');
+  let images = ['images/image1.jpg', 'images/image2.jpg','images/image3.jpg', 'images/image4.jpg'];
+  setInterval(function(){
+    let random = Math.floor(Math.random() * 4);
+    image.src = images[random];
+  }, 1500);
+</script>
+</body>
+</html>

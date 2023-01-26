@@ -5,6 +5,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.images {
+  display: block;
+  width: 100%;
+  height: 500px;
+  margin: 0 auto;
+  transition: 0.3s;
+}
+
 .header {
   overflow: hidden;
   background: rgba(0,0,0,0.5);
@@ -26,6 +34,56 @@ body {
   display: flex;
   height: 100px;
   align-items: center;
+}
+
+
+section#contact {
+  padding: 50px;
+  text-align: center;
+  background-color: rgba(255,255,255,0.5);
+}
+
+section#contact h2 {
+  font-size: 36px;
+  margin-bottom: 50px;
+}
+
+section#contact form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+section#contact form input,
+section#contact form textarea {
+  margin: 10px;
+  padding: 12px 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+section#contact form input[type="submit"] {
+  background-color: black;
+  color: white;
+  padding: 12px 20px;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+transition: all 0.3s ease;
+}
+  /* About Section Styles */
+section#about {
+  padding: 50px;
+  text-align: center;
+  background-color: rgba(0,0,0,0.8);
+  color: #fff;
+}
+
+section#about h2 {
+  font-size: 36px;
+  margin-bottom: 50px;
 }
 
 .table { 
