@@ -2,53 +2,235 @@
 <html>
   <head>
     <title>Oaxaca Restaurants</title>
-    <script type = "text/javascript">
-    
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      /*Variable Declarations*/
+      :root {
+        --primary-color: #F5A623;
+        --secondary-color: #333;
+        --nav-background: #333;
+        --nav-color: #fff;
+        --nav-hover: #111;
+        --body-bg: #f1f1f1;
+        --font-family: 'Montserrat', sans-serif;
+      }
 
-  </head>
+      /*body styles*/
+      body {
+        background-color: var(--body-bg);
+        font-family: var(--font-family);
+      }
+
+      /*header styles*/
+      header {
+        background-color: var(--primary-color);
+        text-align: center;
+        padding: 20px;
+      }
+
+      /*navigation styles*/
+      nav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: var(--nav-background);
+      }
+
+      nav a {
+        color: var(--nav-color);
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 18px;
+        transition: all 0.3s ease;
+      }
+
+      nav a:hover {
+        background-color: var(--nav-hover);
+      }
+
+      /* Menu Section Styles */
+      section#menu {
+        padding: 50px;
+        text-align: center;
+        background-image: url(bg-image.jpg);
+        background-size: cover;
+        background-position: center;
+      }
+
+      section#menu h2 {
+        font-size: 36px;
+        margin-bottom: 50px;
+        color: #fff;
+      }
+
+      section#menu ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      section#menu li {
+        width: 30%;
+        margin: 10px;
+        text-align: left;
+        color: #fff;
+      }
+
+      section#menu li img {
+        width: 100%;
+        height: auto;
+      }
+
+      section#menu li h3 {
+        font-size: 24px;
+        margin-top: 20px;
+      }
+
+      section#menu li p {
+        font-size: 18px;
+        color: var(--secondary-color);
+        line-height: 1.5;
+        margin-bottom: 20px;
+}
+section#menu li form button {
+    background-color: var(--primary-color);
+    color: black;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  section#menu li form button:hover {
+    background-color: var(--secondary-color);
+  }
+
+  /* Contact Section Styles */
+  section#contact {
+    padding: 50px;
+    text-align: center;
+  }
+
+  section#contact h2 {
+    font-size: 36px;
+    margin-bottom: 50px;
+  }
+
+  section#contact form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  section#contact form input,
+  section#contact form textarea {
+    margin: 10px;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  section#contact form input[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 20px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	}
+	  /* About Section Styles */
+  section#about {
+    padding: 50px;
+    text-align: center;
+    background-color: var(--secondary-color);
+    color: #fff;
+  }
+  
+  section#about h2 {
+    font-size: 36px;
+    margin-bottom: 50px;
+  }
+  
+  /* Responsive Styles */
+  @media only screen and (max-width: 768px) {
+    section#menu li {
+      width: 100%;
+    }
+    
+    nav a {
+      font-size: 16px;
+      padding: 10px 12px;
+    }
+  }
+</style>
+</head>
   <body>
     <header>
-      <h1></h1>
+      <h1>Oaxaca Restaurants</h1>
     </header>
-    <ul>
-      <li><input type="button" value="Menu" onclick="window.open('menu.html')"></li>
-      <li><input type="button" value="About" onclick="window.open('about.html')"></li>
-      <li><input type="button" value="Contact" onclick="window.open('contact.html')"></li>
-      <li><input type="button" value="Waiter" onclick="window.open('waiter.html')"></li>
-      <li><input type="button" value="Kitchen Staff" onclick="window.open('staff.html')"></li>
-    </ul>
-    <h2>Menu</h2>
-    <ul>
-      <li>
-        <h3>Taco al Pastor</h3>
-        <p>Marinated pork with pineapple</p>
-        <form>
-          <button type="submit">Order</button>
-        </form>
-      </li>
-      <li>
-        <h3>Carne Asada Taco</h3>
-        <p>Grilled steak with cilantro and onions</p>
-        <form>
-          <button type="submit">Order</button>
-        </form>
-      </li>
-      <li>
-        <h3>Chimichanga</h3>
-        <p>Fried burrito filled with meat and cheese</p>
-        <form>
-          <button type="submit">Order</button>
-        </form>
-      </li>
-      <li>
-        <h3>Beef Burrito</h3>
-        <p>Flour tortilla filled with beef, rice, beans, and salsa</p>
-        <form>
-          <button type="submit">Order</button>
-        </form>
-      </li>
-    </ul>
+    <nav>
+      <a href="menu.html">Menu</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="waiter.html">Waiter</a>
+      <a href="staff.html">Kitchen Staff</a>
+    </nav>
+    <section id="menu">
+      <h2>Menu</h2>
+      <ul>
+        <li>
+          <h3>Taco al Pastor</h3>
+          <p>Marinated pork with pineapple</p>
+          <form>
+            <button type="submit">Order</button>
+          </form>
+        </li>
+        <li>
+          <h3>Carne Asada Taco</h3>
+          <p>Grilled steak with cilantro and onions</p>
+          <form>
+            <button type="submit">Order</button>
+          </form>
+        </li>
+        <li>
+          <h3>Chimichanga</h3>
+          <p>Fried burrito filled with meat and cheese</p>
+          <form>
+            <button type="submit">Order</button>
+          </form>
+        </li>
+        <li>
+          <h3>Beef Burrito</h3>
+          <p>Flour tortilla filled with beef, rice, beans, and salsa</p>
+          <form>
+            <button type="submit">Order</button>
+          </form>
+        </li>
+      </ul>
+    </section>
+    <section id="about">
+      <h2>About</h2>
+      <p>Welcome to our restaurant, where we serve authentic Oaxacan cuisine made with fresh, locally sourced ingredients. Our menu features a variety of traditional dishes, including tacos al pastor, carne asada, and beef burritos. We also have a selection of vegetarian options. Come dine with us and experience the flavors of Oaxaca.</p>
+    </section>
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <form>
+        <input type="text" placeholder="Name">
+        <input type="email" placeholder="Email">
+        <textarea placeholder="Message"></textarea>
+<input type="submit" value="Send">
+</form>
+</section>
+
   </body>
 </html>
+	
 
+        
