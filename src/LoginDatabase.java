@@ -35,17 +35,39 @@ public class LoginDatabase {
     //Insert into table
     insertIntoTable(connection,"loginDetails","logins.txt");
     String query = "SELECT * FROM loginDetails;";
+    //Add new user
     newUser(connection,"newUser1","password3","Waiter");
     ResultSet executeQuery = executeQuery(connection, query);
     printQuery(connection, executeQuery);
     executeQuery.close();
     
     System.out.println("------------------------------");
+    
+    //Delete user
     String query2 = "SELECT * FROM loginDetails;";
     deleteUser(connection,"Username2");
-    ResultSet executeQuery2 = executeQuery(connection, query);
+    ResultSet executeQuery2 = executeQuery(connection, query2);
     printQuery(connection, executeQuery2);
     executeQuery2.close();
+    
+    System.out.println("------------------------------");
+    
+    //Check if user is database or not
+    System.out.println(isUser(connection,"James"));
+    System.out.println(isUser(connection,"newUser1"));
+    
+  }
+  
+  private static boolean isUser(Connection connection, String username) {
+    try {  
+      String tempQuery = "SELECT Username FROM loginDetails WHERE Username ='" + username + "';";
+      ResultSet tempExecuteQuery = executeQuery(connection, tempQuery);
+      if (tempExecuteQuery.next()) {return true;}
+      return false;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return false;
   }
     
   private static void newUser(Connection connection, String username, String password, String permissions) { 
