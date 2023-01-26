@@ -1,5 +1,8 @@
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import logo from "./assets/Oxaca_Restaurants_Logo.png";
 import p1 from "./assets/p1.png";
+import p2 from "./assets/p2.png";
 import "./App.css";
 
 function App() {
@@ -37,10 +40,30 @@ function App() {
           </li>
         </ul>
       </header>
+      <Carousel
+        useKeyboardArrows={true}
+        autoPlay={true}
+        infiniteLoop={true}
+        interval={2000}
+        showThumbs={false}
+        showStatus={false}
+      >
+        <div className="bg-indigo-300 my-10">
+          <img className="object-cover h-[600px] w-full" src={p1} />
+        </div>
 
-      <div className="bg-indigo-300 my-10">
-        <img className="object-cover h-[600px] w-full" src={p1} />
-      </div>
+        <div className="bg-indigo-300 my-10">
+          <img className="object-cover h-[600px] w-full" src={p2} />
+        </div>
+
+        <div className="bg-indigo-300 my-10">
+          <img className="object-cover h-[600px] w-full" src={p1} />
+        </div>
+
+        <div className="bg-indigo-300 my-10">
+          <img className="object-cover h-[600px] w-full" src={p1} />
+        </div>
+      </Carousel>
     </div>
   );
 }
