@@ -13,8 +13,9 @@ function App() {
         />
 
         <ul className="flex p-3">
-          <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-            Book Now
+          <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+            <span>Book Now</span>
+            <i className="fa-solid fa-circle-chevron-right"></i>
           </li>
           <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
             About Us
@@ -35,39 +36,19 @@ function App() {
       </header>
       <ul>
         <li>
-          <input
-            type="button"
-            value="Menu"
-            onclick="window.open('menu.html')"
-          />
+          <input type="button" value="Menu" />
         </li>
         <li>
-          <input
-            type="button"
-            value="About"
-            onclick="window.open('about.html')"
-          />
+          <input type="button" value="About" />
         </li>
         <li>
-          <input
-            type="button"
-            value="Contact"
-            onclick="window.open('contact.html')"
-          />
+          <input type="button" value="Contact" />
         </li>
         <li>
-          <input
-            type="button"
-            value="Waiter"
-            onclick="window.open('waiter.html')"
-          />
+          <input type="button" value="Waiter" />
         </li>
         <li>
-          <input
-            type="button"
-            value="Kitchen Staff"
-            onclick="window.open('staff.html')"
-          />
+          <input type="button" value="Kitchen Staff" />
         </li>
       </ul>
       <h2>Menu</h2>
