@@ -1,0 +1,12 @@
+.div1{
+margin: 100px;
+border: 2px solid rgb(11, 79, 110);  
+border-radius: 10px;
+padding: 35px;
+background-color: rgb(223, 223, 223);
+}
+
+.btn1{
+display: flex;
+justify-content: center;
+}
