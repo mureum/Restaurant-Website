@@ -1,9 +1,15 @@
 .App {
   text-align: center;
+}
+.App2 {
   background-image: url("https://img.restaurantsbrighton.co.uk/wp-content/uploads/2021/01/Carlito-Burrito.jpg");
 }
 
 header{
+  background-color: white;
+}
+
+.header2 {
   background-color: rgba(0,0,0,0.5);
 }
 

@@ -4,8 +4,8 @@ import "./App.css";
 
 function AboutUs() {
   return (
-    <div className="App">
-    <header className="flex items-center">
+    <div className="App App2">
+    <header className="flex items-center header2">
         <a href="/">
         <img
             src={logo}

@@ -6,8 +6,8 @@ import menu from "./assets/Menu.png";
 
 function Order() {
   return (
-    <div className="App">
-    <header className="flex items-center">
+    <div className="App App2">
+    <header className="flex items-center header2">
         <a href="/">
         <img
             src={logo}
