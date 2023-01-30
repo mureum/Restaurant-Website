@@ -1,22 +1,20 @@
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-
 import "./App.css";
-import { Navbar } from "./common/Navbar";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { HomePage } from "./pages/HomePage";
+import Home from "./Home";
+import AboutUs from "./AboutUs";
+import Order from "./Order";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <HomePage />,
-  },
-]);
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App container mx-auto">
-      <Navbar />
-      <RouterProvider router={router} />
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/order" element={<Order />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
