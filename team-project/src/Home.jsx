@@ -5,43 +5,14 @@ import p1 from "./assets/p1.png";
 import p2 from "./assets/p2.png";
 import "./App.css";
 import { Link } from 'react-router-dom';
+import { Navbar } from './common/Navbar';
+
 
 function Home() {
   return (
     <div className="App">
-      <header className="flex items-center">
-      <a href="/">
-        <img
-            src={logo}
-            width="300"
-            height="300"
-            style={{ marginLeft: "10px", marginTop: "10px" }}
-        />
-        </a>
+<Navbar />
 
-        <ul className="flex p-3">
-          <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-            <span><a href="/">Book Now</a></span>
-            <i className="fa-solid fa-circle-chevron-right"></i>
-          </li>
-          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <span><a href="/AboutUs">About Us</a></span>
-          </li>
-          <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
-            <span><a href="/order">Order Online</a></span>
-          </li>
-          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
-            Menus
-          </li>
-          <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
-            <span>Locations</span>
-            <i className="fa-solid fa-chevron-down"></i>
-          </li>
-          <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
-            Contact Us
-          </li>
-        </ul>
-      </header>
       <Carousel
         useKeyboardArrows={true}
         autoPlay={true}
