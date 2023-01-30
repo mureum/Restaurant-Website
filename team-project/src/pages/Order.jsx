@@ -1,7 +1,7 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import logo from "./assets/Oxaca_Restaurants_Logo_White.png";
-import "./App.css";
-import menu from "./assets/Menu.png";
+import logo from "../assets/Oxaca_Restaurants_Logo_White.png";
+import "../App.css";
+import menu from "../assets/Menu.png";
 
 
 function Order() {

@@ -1,11 +1,11 @@
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import logo from "./assets/Oxaca_Restaurants_Logo.png";
-import p1 from "./assets/p1.png";
-import p2 from "./assets/p2.png";
-import "./App.css";
+import logo from "../assets/Oxaca_Restaurants_Logo.png";
+import p1 from "../assets/p1.png";
+import p2 from "../assets/p2.png";
+import "../App.css";
 import { Link } from 'react-router-dom';
-import { Navbar } from './common/Navbar';
+import { Navbar } from '../common/Navbar';
 
 
 function Home() {

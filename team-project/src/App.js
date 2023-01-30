@@ -1,7 +1,7 @@
 import "./App.css";
-import Home from "./Home";
-import AboutUs from "./AboutUs";
-import Order from "./Order";
+import Home from "./pages/Home";
+import AboutUs from "./pages/AboutUs";
+import Order from "./pages/Order";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
