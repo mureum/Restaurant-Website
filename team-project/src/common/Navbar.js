@@ -1,6 +1,9 @@
 import logo from "../assets/Oxaca_Restaurants_Logo.png";
+import { slide as Menu } from "react-burger-menu";
+import React, { useState } from "react";
 
 export const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <header className="flex items-center">
       <img
@@ -9,6 +12,33 @@ export const Navbar = () => {
         height="300"
         style={{ marginLeft: "10px", marginTop: "10px" }}
       />
+      <i
+        className="fa-solid fa-bars "
+        onClick={() => {
+          setIsOpen(true);
+        }}
+      ></i>
+
+      <Menu isOpen={isOpen}>
+        <a id="home" className="menu-item" href="/">
+          Home
+        </a>
+        <a id="about" className="menu-item" href="/about-us">
+          About
+        </a>
+        <a id="contact" className="menu-item" href="/contact">
+          Contact
+        </a>
+        <a
+          onClick={() => {
+            setIsOpen(true);
+          }}
+          className="menu-item--small"
+          href=""
+        >
+          Settings
+        </a>
+      </Menu>
 
       <ul className="flex p-3">
         <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
