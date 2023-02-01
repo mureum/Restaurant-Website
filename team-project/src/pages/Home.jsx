@@ -11,7 +11,7 @@ import { Navbar } from '../common/Navbar';
 function Home() {
   return (
     <div className="App">
-    <Navbar />
+    <Navbar  />
 
       <Carousel
         useKeyboardArrows={true}
