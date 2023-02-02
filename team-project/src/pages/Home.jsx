@@ -3,8 +3,11 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import p1 from "../assets/p1.png";
 import p2 from "../assets/p2.png";
+import p3 from "../assets/p3.png";
+import p4 from "../assets/p4.png";
+import p5 from "../assets/p5.png";
+import p6 from "../assets/p6.png";
 import "../App.css";
-import { Link } from 'react-router-dom';
 import { Navbar } from '../common/Navbar';
 
 
@@ -12,7 +15,12 @@ function Home() {
   return (
     <div className="App">
     <Navbar  />
-
+    <div>
+      <li className="p-3 px-6  space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+        <span>Book Now</span>
+        <i className="fa-solid fa-circle-chevron-right"></i>
+      </li>
+    </div>
       <Carousel
         useKeyboardArrows={true}
         autoPlay={true}
@@ -36,20 +44,28 @@ function Home() {
           </div>
         )}
       >
-        <div className="bg-indigo-300 my-10">
+        <div className="bg-indigo-300 my-0">
           <img className="object-cover h-[600px] w-full" src={p1} />
         </div>
 
-        <div className="bg-indigo-300 my-10">
+        <div className="bg-indigo-300 my-0">
           <img className="object-cover h-[600px] w-full" src={p2} />
         </div>
 
-        <div className="bg-indigo-300 my-10">
-          <img className="object-cover h-[600px] w-full" src={p1} />
+        <div className="bg-indigo-300 my-0">
+          <img className="object-cover h-[600px] w-full" src={p3} />
         </div>
 
-        <div className="bg-indigo-300 my-10">
-          <img className="object-cover h-[600px] w-full" src={p1} />
+        <div className="bg-indigo-300 my-0">
+          <img className="object-cover h-[600px] w-full" src={p4} />
+        </div>
+
+        <div className="bg-indigo-300 my-0">
+          <img className="object-cover h-[600px] w-full" src={p5} />
+        </div>
+
+        <div className="bg-indigo-300 my-0">
+          <img className="object-cover h-[600px] w-full" src={p6} />
         </div>
       </Carousel>
       <div

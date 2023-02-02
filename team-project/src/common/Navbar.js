@@ -78,7 +78,7 @@ export const Navbar = () => {
         <a
           id="about"
           className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
-          href="/about-us"
+          href="/aboutus"
         >
           <span>Order Online</span>
           <i className="fa-solid fa-angle-down"></i>
