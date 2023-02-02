@@ -74,54 +74,62 @@ export const Navbar = () => {
           href="/"
         >
           <span>Home</span>
-          <i className="fa-solid fa-angle-down"></i>
         </a>
         <a
           id="about"
-          className="text-3xl font-bold text-yellow-100 uppercase"
+          className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
           href="/about-us"
         >
-          About
+          <span>Order Online</span>
+          <i className="fa-solid fa-angle-down"></i>
         </a>
         <a
           id="contact"
           className="text-3xl font-bold text-yellow-100 uppercase"
           href="/contact"
         >
-          Contact
+          Menus
+        </a>
+        <a
+          className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
+          href=""
+        >
+          <span>Locations</span>
+          <i className="fa-solid fa-angle-down"></i>
         </a>
         <a className="text-3xl font-bold text-yellow-100 uppercase" href="">
-          Settings
+          Contact Us
         </a>
         <a
           id="contact"
-          className="text-4xl font-bold text-yellow-100 uppercase bg-blue-600"
+          className="text-4xl font-bold text-yellow-100 uppercase bg-blue-600 space-x-3"
           href="/contact"
         >
-          Book Now
+          <span>Book Now</span>
+          <i className="fa-solid fa-angles-right"></i>
         </a>
       </Menu>
 
       <ul className="p-3 2xl:flex hidden">
-        <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <span>Book Now</span>
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           Home
         </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           <span>Order Online</span>
           <i className="fa-solid fa-chevron-down"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           Menus
         </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           <span>Locations</span>
           <i className="fa-solid fa-chevron-down"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           Contact Us
         </li>
       </ul>
