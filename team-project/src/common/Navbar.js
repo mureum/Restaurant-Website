@@ -27,11 +27,13 @@ export const Navbar = () => {
     },
     bmMenuWrap: {
       position: "fixed",
-      height: "100%",
+      left: 0,
+      right: 0,
+      width: "100%",
+      height: "auto",
     },
     bmMenu: {
-      background: "#373a47",
-      padding: "2.5em 1.5em 0",
+      background: "#e60065",
       fontSize: "1.15em",
     },
     bmMorphShape: {
@@ -39,13 +41,19 @@ export const Navbar = () => {
     },
     bmItemList: {
       color: "#b8b7ad",
-      padding: "0.8em",
+      display: "flex",
+      flexDirection: "column",
     },
     bmItem: {
       display: "inline-block",
+      borderBottom: "solid",
+      borderWidth: "2px",
+      padding: "20px 0",
     },
     bmOverlay: {
       background: "rgba(0, 0, 0, 0.3)",
+      left: 0,
+      right: 0,
     },
   };
   return (
@@ -58,23 +66,37 @@ export const Navbar = () => {
       />
 
       <Menu isOpen={isOpen} styles={styles} right>
-        <a id="home" className="menu-item" href="/">
-          Home
-        </a>
-        <a id="about" className="menu-item" href="/about-us">
-          About
-        </a>
-        <a id="contact" className="menu-item" href="/contact">
-          Contact
+        <a
+          id="home"
+          className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
+          href="/"
+        >
+          <span>Home</span>
+          <i className="fa-solid fa-angle-down"></i>
         </a>
         <a
-          onClick={() => {
-            setIsOpen(true);
-          }}
-          className="menu-item--small"
-          href=""
+          id="about"
+          className="text-3xl font-bold text-yellow-100 uppercase"
+          href="/about-us"
         >
+          About
+        </a>
+        <a
+          id="contact"
+          className="text-3xl font-bold text-yellow-100 uppercase"
+          href="/contact"
+        >
+          Contact
+        </a>
+        <a className="text-3xl font-bold text-yellow-100 uppercase" href="">
           Settings
+        </a>
+        <a
+          id="contact"
+          className="text-4xl font-bold text-yellow-100 uppercase bg-blue-600"
+          href="/contact"
+        >
+          Book Now
         </a>
       </Menu>
 
