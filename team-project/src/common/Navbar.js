@@ -10,7 +10,7 @@ export const Navbar = () => {
       width: "36px",
       height: "30px",
       right: "36px",
-      top: "36px",
+      top: "100px",
     },
     bmBurgerBars: {
       background: "#373a47",
@@ -31,6 +31,7 @@ export const Navbar = () => {
       right: 0,
       width: "100%",
       height: "auto",
+      marginTop: "100px",
     },
     bmMenu: {
       background: "#e60065",
@@ -54,6 +55,7 @@ export const Navbar = () => {
       background: "rgba(0, 0, 0, 0.3)",
       left: 0,
       right: 0,
+      marginTop: "100px",
     },
   };
   return (
