@@ -2,50 +2,90 @@
 <html>
 <head>
 	<title>Basket</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="./basket.css">
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,900" rel="stylesheet">
-    <link rel="stylesheet" href="basket.css">
-	<script src="basket.js"></script>
+    <script src="basket.js"></script>
 </head>
 <body>
-	<div class="container">
-		<h1>Online Restaurant Cart</h1>
-		<hr>
-		<div class="row">
-		  <div class="col-md-8">
-			<h2>Menu</h2>
-			<ul class="list-group">
-			  <li class="list-group-item" >Pizza - $10</li>
-			  <button type="submit" onclick="addToCart('Pizza', 10)">Add to Cart</button>
-			  <button type="submit" onclick="removeFromCart('Pizza')">Remove From Cart</button>
-			  <li class="list-group-item" onclick="addToCart('Burger', 8)">Burger - $8</li>
-			  <button type="submit" onclick="addToCart('Burger', 8)">Add to Cart</button>
-			  <button type="submit" onclick="removeFromCart('Burger')">Remove From Cart</button> 
-			  <li class="list-group-item" >Salad - $5</li>
-			  <button type="submit" onclick="addToCart('Salad', 5)">Add to Cart</button>
-			  <button type="submit" onclick="removeFromCart('Salad')">Remove From Cart</button>
-			</ul>
-		  </div>
-		  <div class="col-md-4">
-			<h2>Cart</h2>
-			<ul id="cart-items" class="list-group">
-			</ul>
-			<hr>
-			<h3 id="cart-total"></h3>
-			<div class="row">
-						
-		<div class="col-md-8">
-			<button type="submit">Go Back</button>
-		</div>
+   <div class="backgroundofcart">
+   	   <div class="Header">
+   	   	<h3 class="Heading">Shopping Cart</h3>
+   	   	<h5 class="Action">Remove all</h5>
+   	   </div>
 
-		<div class="col-md-4">
-			<button type="submit">Proceed</button>
-		</div>
-			</div>
-		  </div>
-		</div>
+   	   <div class="items-in-cart">
+   	   	  <div class="image-box">
+   	   	  	<img src="https://hips.hearstapps.com/del.h-cdn.co/assets/18/11/2048x1152/hd-aspect-1520956952-chicken-tacos-horizontal.jpg?resize=1200:*" style=" height:120px">
+   	   	  </div>
+   	   	  <div class="about">
+   	   	  	<h1 class="title">Chicken Tacos</h1>
+   	   	  	<h3 class="subtitle">Chicken with Salad tacos</h3>
+   	   	  </div>
+   	   	  <div class="counter">
+   	   	  	<div class="btn">+</div>
+   	   	  	<div class="count">2</div>
+   	   	  	<div class="btn">-</div>
+   	   	  </div>
+   	   	  <div class="prices">
+   	   	  	<div class="amount">$15</div>
+   	   	  </div>
+   	   </div>
 
-
+   	   <div class="items-in-cart">
+   	   	  <div class="image-box">
+   	   	  	<img src="https://images-gmi-pmc.edge-generalmills.com/0798b070-1f82-4fa2-91ea-17e8175e44e3.jpg" style=" height:120px">
+   	   	  </div>
+   	   	  <div class="about">
+   	   	  	<h1 class="title">Enchallida</h1>
+   	   	  	<h3 class="subtitle">Don't know</h3>
+   	   	  </div>
+   	   	  <div class="counter">
+   	   	  	<div class="btn">+</div>
+   	   	  	<div class="count">1</div>
+   	   	  	<div class="btn">-</div>
+   	   	  </div>
+   	   	  <div class="prices">
+   	   	  	<div class="amount">$10</div>
+   	   	  </div>
+   	   </div>
+   	 <hr> 
+   	 <div class="checkout">
+   	 <div class="total">
+   	 	<div>
+   	 		<div class="Subtotal">Total</div>
+   	 		<div class="items">0</div>
+   	 	</div>
+   	 	<div class="total-amount">$0</div>
+   	 </div>
+	 
+   	 <button class="button">Go Back</button> 
+	 
+		<form action="/CallWaiter/waiterCall.html">
+			<button class="button">Proceed</button> 
+		</form>
 	  </div>
+   </div>
 </body>
+<script>
+	let total = 0;
+//When + button is clicked
+let plusButton = document.querySelectorAll('.btn');
+plusButton.forEach( btn => {
+btn.addEventListener('click', () => {
+    let counter = btn.parentElement.querySelector('.count');
+    let amount = btn.parentElement.parentElement.querySelector('.amount').textContent;
+    if(btn.textContent === '+'){
+        counter.textContent++;
+        total += Number(amount);
+		
+    } else if (btn.textContent === '-' && counter.textContent > 0){
+        counter.textContent--;
+        total -= Number(amount);
+	
+    }
+    document.querySelector('.total-amount').textContent = "$"+total;
+});
+});
+</script>
+
 </html>
