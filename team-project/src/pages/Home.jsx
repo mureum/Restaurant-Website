@@ -20,6 +20,7 @@ function Home() {
         interval={2000}
         showThumbs={false}
         showStatus={false}
+        showIndicators={false}
         renderArrowPrev={() => (
           <div className="w-full h-full absolute z-10">
             <div className="container mx-auto h-full flex items-center">
