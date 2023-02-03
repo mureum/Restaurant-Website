@@ -49,33 +49,21 @@ public class menuDB {
 	createTable(connection, "Item_Allergen (item_ID char(6) NOT NULL, allergen_ID char(2) NOT NULL, PRIMARY KEY (item_ID, allergen_ID),FOREIGN KEY (item_ID) REFERENCES Item(item_ID), FOREIGN KEY (allergen_ID) REFERENCES Allergen(allergen_ID));");
 	System.out.println("Creating table Item_Diet...");
 	createTable(connection, "Item_Diet (item_ID char(6) NOT NULL, diet_ID char(3) NOT NULL, PRIMARY KEY (item_ID,diet_ID), FOREIGN KEY (item_ID) REFERENCES Item(item_ID),FOREIGN KEY (diet_ID) REFERENCES Diet(diet_ID));");
-	
+
+	int rows3 = insertIntoTableFromFile(connection, "MenuType", "MenuType.txt");
+	System.out.println(rows3 + " rows inserted");
 	int rows = insertIntoTableFromFile(connection, "Item", "Items.txt");
 	System.out.println(rows + " rows inserted");
 	int rows2 = insertIntoTableFromFile(connection, "Diet", "Diet.txt");
 	System.out.println(rows2 + " rows inserted");
-	int rows3 = insertIntoTableFromFile(connection, "MenuType", "MenuType.txt");
-	System.out.println(rows3 + " rows inserted");
 	int rows4 = insertIntoTableFromFile(connection, "Allergen", "Allergens.txt");
 	System.out.println(rows4 + " rows inserted");
 	int rows5 = insertIntoTableFromFile(connection, "Item_Allergen", "Item_Allergen.txt");
 	System.out.println(rows5 + " rows inserted");
 	int rows6 = insertIntoTableFromFile(connection, "Item_Diet", "Item_Diet.txt");
 	System.out.println(rows6 + " rows inserted");
-	String query1 = "SELECT * FROM Item ";
-
-	ResultSet rs1= executeQuery(connection, query1);
-	System.out.println("############### 1st Query ###############");
-	try {
-		while (rs1.next()) {
-			System.out.println(rs1.getString(1) + " " + rs1.getString(2)+ " " + rs1.getString(3)+ " " + rs1.getString(4)+ " " + rs1.getString(5));
-		}
-	} catch (SQLException e) {
-		e.printStackTrace();
 	}
-//rs1.close();
-
-	}
+	
 	public static ResultSet executeQuery(Connection connection, String query) {
 		try {
 			Statement st = connection.createStatement();
