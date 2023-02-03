@@ -1,4 +1,4 @@
-VGN,Vegan,
-VEG,Vegetarian,
-GLT,Gluten-Free,
+VGN,Vegan
+VEG,Vegetarian
+GLT,Gluten-Free
 LAC,Lactose-Free

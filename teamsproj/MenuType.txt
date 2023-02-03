@@ -1,5 +1,5 @@
-ST,Starters,
-MA,Main,
-SI,Sides,
-DE,Desserts,
+ST,Starters
+MA,Main
+SI,Sides
+DE,Desserts
 DR,Drinks
