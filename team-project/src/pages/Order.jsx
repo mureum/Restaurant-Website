@@ -1,99 +1,60 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import logo from "../assets/Oxaca_Restaurants_Logo_White.png";
-import "../App.css";
 import menu from "../assets/Menu.png";
+import "../App.css";
 import { Navbar } from '../common/Navbar';
+import React from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
+import axios from 'axios'
+import { Link } from 'react-router-dom';
 
 
 
 function Order() {
-  return (
-    <div className="App App2">
-<Navbar />
+  const [items,setItems] = useState([])
 
-    <div style={{alignContent: "center", textAlign: "center"}}>
-        <img
-            src={menu}
-            width="300"
-            height="300"
-            style={{ marginLeft: "38%", marginRight: "40%", marginTop: "30px", marginBottom: "30px" }}
-        />
-      <div className="menu">
-        <table style={{backgroundColor: "rgba(255, 255, 255, 0.8)"}}>
-          <tr id="product">
-            <td width="100px">
-              <img
-                src="https://images-gmi-pmc.edge-generalmills.com/e59f255c-7498-4b84-9c9d-e578bf5d88fc.jpg"
-                title="taco"
-                alt="taco"
-                width="200px"
-                heigth="300px"
-                style={{float: "left"}}
-              />
-            </td>
-            <td width="100px">Classic Taco</td>
-            <td width="500px">
-              <input
-                type="Checkbox"
-                id="myCheck"
-                className="checkbox"
-                name="pizza"
-                value="pizza_marghe"
-                style={{float: "right"}}
-                align="right"
-              />
-            </td>
-          </tr>
-          <tr id="product2">
-            <td width="100px">
-              <img
-                src="https://img.taste.com.au/uq5uo4mA/taste/2016/11/chicken-fajitas-98151-1.jpeg"
-                title="fajita"
-                alt="fajita"
-                width="200px"
-                heigth="300px"
-                style={{float: "left"}}
-              />
-            </td>
-            <td>Fajitas served with chips or rice</td>
-            <td width="500px">
-              <input
-                type="Checkbox"
-                id="myCheck2"
-                className="checkbox"
-                name="fajitas"
-                value="fajitas"
-                style={{float: "right"}}
-                align="right"
-              />
-            </td>
-          </tr>
-          <tr id="product3">
-            <td width="100px">
-              <img
-                src="https://i2.wp.com/www.downshiftology.com/wp-content/uploads/2020/03/Mexican-Rice-8.jpg"
-                title="rice"
-                alt="rice"
-                width="200px"
-                heigth="300px"
-                style={{float: "left"}}
-              />
-            </td>
-            <td>Mexican Rice</td>
-            <td width="500px">
-              <input
-                type="Checkbox"
-                id="myCheck3"
-                className="checkbox"
-                name="rice"
-                value="rice"
-                style={{float: "right"}}
-                align="right"
-              />
-            </td>
-          </tr>
-        </table>
-      </div>
+    useEffect(()=>{
+        const fecthAllItems = async ()=>{
+            try{
+                const res = await axios.get("http://localhost:8800/orders")
+                setItems(res.data)
+            }catch(err){
+                console.log(err)
+            }
+        }
+        fecthAllItems()
+    },[])
+    const divStyle = {
+      width: "100vh",
+      height: "100%",
+      display: "flex",
+      flexFlow: "row wrap",
+      justifyContent: "space-between",
+      maxWidth: "100%",
+      maxHeight: "100%"
+    };
+  return (
+    <div className="App">
+<Navbar />
+    <div style={{ width: '100%', overflowX: 'auto'}}>
+    <img
+        src={menu}
+        width="300"
+        height="300"
+        style={{ marginLeft: "40%", marginTop: "10px", backgroundColor:"black" }}
+      />
+        <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
+            {items.map(item => (
+                <div className='item' style={{ width: '300px',flexBasis:"30%", height: '33.33%', backgroundColor: "red" }} key={item.item_ID}>
+                    {item.cover && <img src={item.cover} alt="" />}
+                    <h2>{item.name}</h2>
+                    <p>£{item.price}</p>
+                    <span>{item.calories}</span>
+                </div>
+            ))}
+        </div>
+        <br></br>
     </div>
   </div>
   );

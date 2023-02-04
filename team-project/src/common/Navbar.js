@@ -76,9 +76,9 @@ export const Navbar = () => {
           <span>Home</span>
         </a>
         <a
-          id="about"
+          id="order"
           className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
-          href="/aboutus"
+          href="/order"
         >
           <span>Order Online</span>
           <i className="fa-solid fa-angle-down"></i>
@@ -86,7 +86,7 @@ export const Navbar = () => {
         <a
           id="contact"
           className="text-3xl font-bold text-yellow-100 uppercase"
-          href="/contact"
+          href="/aboutus"
         >
           Menus
         </a>
