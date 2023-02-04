@@ -47,10 +47,13 @@ function Order() {
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
             {items.map(item => (
                 <div className='item' style={{ width: '300px',flexBasis:"30%", height: '33.33%', backgroundColor: "red" }} key={item.item_ID}>
-                    {item.cover && <img src={item.cover} alt="" />}
+                    {menu && <img src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/birria-tacos-1648842127.jpg" style={{width: "100%", height: "100%", objectFit: "cover", backgroundColor: "aquamarine"}} alt="" />}
                     <h2>{item.name}</h2>
                     <p>£{item.price}</p>
-                    <span>{item.calories}</span>
+                    <span>{item.calories}cal</span>
+                    <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3">
+                      <Link to="/">Add to cart</Link>
+                    </button>
                 </div>
             ))}
         </div>
