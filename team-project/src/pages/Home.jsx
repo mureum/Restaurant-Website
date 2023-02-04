@@ -39,7 +39,7 @@ function Home() {
         renderArrowNext={() => (
           <div className="w-full h-full absolute top-0 z-10">
             <div className="container mx-auto h-full flex items-center justify-end">
-              <i class="fa-solid fa-circle-chevron-right fa-3x text-white -mr-56 opacity-50"></i>
+              <i className="fa-solid fa-circle-chevron-right fa-3x text-white -mr-56 opacity-50"></i>
             </div>
           </div>
         )}
