@@ -46,8 +46,8 @@ function Order() {
       />
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
             {items.map(item => (
-                <div className='item' style={{ width: '300px',flexBasis:"30%", height: '33.33%', backgroundColor: "red" }} key={item.item_ID}>
-                    {menu && <img src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/birria-tacos-1648842127.jpg" style={{width: "100%", height: "100%", objectFit: "cover", backgroundColor: "aquamarine"}} alt="" />}
+                <div className='item' style={{ width: '30%',flexBasis:"30%", height: 'auto', backgroundColor: "red" }} key={item.item_ID}>
+                    <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "100%", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
                     <h2>{item.name}</h2>
                     <p>£{item.price}</p>
                     <span>{item.calories}cal</span>
