@@ -96,35 +96,36 @@ const handleChange = (e) => {
           className={activeBtn === "MA" ? "btn active" : "btn"} 
           onClick={() => filterSelection("MA")}
         >
-          MA
+          Main
         </button>
         <button 
           className={activeBtn === "ST" ? "btn active" : "btn"} 
           onClick={() => filterSelection("ST")}
         >
-          ST
+          Starters
         </button>
         <button
           className={activeBtn === "SI" ? "btn active" : "btn"}
           onClick={() => filterSelection("SI")}
         >
-          SI
+          Sides
         </button>
         <button
           className={activeBtn === "DE" ? "btn active" : "btn"}
           onClick={() => filterSelection("DE")}
         >
-          DE
+          Desserts
         </button>
         <button
           className={activeBtn === "DR" ? "btn active" : "btn"}
           onClick={() => filterSelection("DR")}
         >
-          DR
+          Drinks
         </button>
       </div>
-      <input type="text" value={searchTerm} onChange={handleChange} placeholder="Search for products.."/>
-
+      <br></br>
+      <input type="text" value={searchTerm} onChange={handleChange} placeholder="Search for products.." style={{border: "1px solid black"}}/>
+      <br></br><br></br>
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
         {searchTerm
     ? searchResults.map(item => (
@@ -134,14 +135,14 @@ const handleChange = (e) => {
               width: 'auto',
               flexBasis:"30%", 
               height: '100%', 
-              backgroundColor: "red" 
+              backgroundColor: "white" 
             }} key={item.item_ID}>
             <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
             <h2>{item.name}</h2>
             <p>£{item.price}</p>
             <span>{item.calories}cal</span>
             <br></br>
-            <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3">
+            <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart">
               <Link to="/">Add to cart</Link>
             </button>
         </div>
@@ -153,14 +154,14 @@ const handleChange = (e) => {
               width: 'auto',
               flexBasis:"30%", 
               height: '100%', 
-              backgroundColor: "red" 
+              backgroundColor: "white" 
             }} key={item.item_ID}>
             <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
             <h2>{item.name}</h2>
             <p>£{item.price}</p>
             <span>{item.calories}cal</span>
             <br></br>
-            <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3">
+            <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart">
               <Link to="/">Add to cart</Link>
             </button>
         </div>
