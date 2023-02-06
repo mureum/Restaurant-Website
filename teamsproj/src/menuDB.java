@@ -8,6 +8,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.Scanner;
 
 public class menuDB {
 
@@ -62,6 +63,20 @@ public class menuDB {
 	System.out.println(rows5 + " rows inserted");
 	int rows6 = insertIntoTableFromFile(connection, "Item_Diet", "Item_Diet.txt");
 	System.out.println(rows6 + " rows inserted");
+	
+	
+	Scanner scanInput = new Scanner(System.in);
+	System.out.println("Type in the name of your Item: ");
+	String itemName = scanInput.nextLine();
+	System.out.println("\nWhat would you like to know about your item?: \nPrice \nCalories \nDietary Information \nAllergen Information");
+	String queryOption = scanInput.nextLine();
+	
+	if (queryOption.equals("calories")) {
+		int result = getCalories(connection, itemName);
+		System.out.println("There are "+ result + "kcal in " + itemName + ".");
+	}
+	scanInput.close();
+	
 	}
 	
 	public static ResultSet executeQuery(Connection connection, String query) {
@@ -75,6 +90,22 @@ public class menuDB {
 		}
 	}
 	
+	public static int getCalories(Connection connection, String itemName) {
+		int calories = 0;
+		String getCalories = "SELECT calories FROM Item " + 
+							 "WHERE name = '" + itemName + "'";
+		ResultSet rs1= executeQuery(connection, getCalories);
+		try {
+			while (rs1.next()) {
+				calories = rs1.getInt(1);
+
+			}
+		} catch (SQLException e) {
+				e.printStackTrace();
+		};
+		return calories;
+	}
+
 	public static void createTable(Connection connection, String tableDescription) {
 		try {
 			Statement st = connection.createStatement();
@@ -126,20 +157,6 @@ public class menuDB {
 			}
 		}
 		return numRows;
-	}
-
-	public static int getNumberOfColumns(Connection connection, String table) {
-	    int columnCount = 0;
-	    try {
-	        DatabaseMetaData metaData = connection.getMetaData();
-	        ResultSet resultSet = metaData.getColumns(null, null, table, null);
-	        while (resultSet.next()) {
-	            columnCount++;
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return columnCount;
 	}
 
 	public static Connection connectToDatabase(String user, String password, String database) {
