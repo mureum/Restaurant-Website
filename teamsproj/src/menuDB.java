@@ -8,6 +8,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class menuDB {
@@ -64,21 +66,61 @@ public class menuDB {
 	int rows6 = insertIntoTableFromFile(connection, "Item_Diet", "Item_Diet.txt");
 	System.out.println(rows6 + " rows inserted");
 	
-	
+
 	Scanner scanInput = new Scanner(System.in);
-	System.out.println("Type in the name of your Item: ");
-	String itemName = scanInput.nextLine();
-	System.out.println("\nWhat would you like to know about your item?: \nPrice \nCalories \nDietary Information \nAllergen Information");
-	String queryOption = scanInput.nextLine();
+	System.out.println("A) MENU FILTER \nB) SEARCH ITEM INFORMATION");
+	String filterOption = scanInput.nextLine();
+	if (filterOption.equals("A")) {
+		
+		System.out.println("1) Filter Menu: | Starters | Mains | Sides | Desserts | Drinks |\n" +
+						   "2) Filter Price\n" +
+						   "3) Filter Allergens\n" +
+						   "4) Filter Dietary Requierments" +
+						   "5) Filter Calories");
+
+		/*if (filterOption.equals("Menu")){
+			List<String> menuType = getMenuType(connection,menuOption);
+			System.out.println("The " + menuOption + " are: \n");
+		}*/
+		if (filterOption.equals("Price")) {
+			System.out.println("What is your minimum price? \n");
+			String minPriceRange = scanInput.nextLine();
+			System.out.println("What is your maximum price? \n");
+			String maxPriceRange = scanInput.nextLine();
+			List<String> itemsWithPrice = getPrices(connection, minPriceRange, maxPriceRange);
+			System.out.println("These are the items between £"+ minPriceRange + " and £" + maxPriceRange+ " :\n" + itemsWithPrice);
+		}
+	if (filterOption.equals("B")) {
+		System.out.println("Type in the name of your Item: ");
+		String itemName = scanInput.nextLine();
+		System.out.println("\nWhat would you like to know about your item?: \n1)Price \n2)Calories \n3)Dietary Information \n4)Allergen Information");
+		String queryOption = scanInput.nextLine();
 	
-	if (queryOption.equals("calories")) {
-		int result = getCalories(connection, itemName);
-		System.out.println("There are "+ result + "kcal in " + itemName + ".");
+		if (queryOption.equals("1")) {
+			double price = getPrice(connection, itemName);
+			System.out.println("The price of " + itemName + " is " + price);
+			}
+		if (queryOption.equals("2")) {
+			int calories = getCalories(connection, itemName);
+			System.out.println("There are "+ calories + "kcal in " + itemName + ".");
+		}
+		if (queryOption.equals("3")) {
+			List<String> diets = getDiets(connection, itemName);
+			System.out.println(itemName + " is " + diets +".");
+		}
+		if (queryOption.equals("4")) {
+			List<String> allergens = getAllergens(connection, itemName);
+			System.out.println(itemName + " may contain the following: \n" + allergens);
+		}
+	else {
+		System.out.println("This is not an option");
+	}}
+	
 	}
 	scanInput.close();
+}
 	
-	}
-	
+
 	public static ResultSet executeQuery(Connection connection, String query) {
 		try {
 			Statement st = connection.createStatement();
@@ -89,7 +131,90 @@ public class menuDB {
 			return null;
 		}
 	}
+	private static double getPrice(Connection connection, String itemName) {
+		double price = 00.00;
+		String getPrice = "SELECT price FROM Item " + 
+						  "WHERE name = '" + itemName + "'";
+		ResultSet rs1= executeQuery(connection, getPrice);
+		try {
+			while (rs1.next()) {
+				price = rs1.getDouble(1);
+
+			}
+		} catch (SQLException e) {
+				e.printStackTrace();
+		};
+		return price;
+	}
+
+/*	private static List<String> getMenuType(Connection connection, String menuOption) {
+		List<String> itemsInMenuType = new ArrayList<>();
+		String getMenuQuery = "SELECT name " +
+							   "FROM Item, " +
+							   "WHERE price > " + minPriceRange +
+							   " AND price < " + maxPriceRange + "";
+		 ResultSet rs = executeQuery(connection, getPriceQuery);
+		    try {
+		        while (rs.next()) {
+		            itemsWithPrice.add(rs.getString(1));
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return itemsWithPrice;
+		} */
+	private static List<String> getPrices(Connection connection, String minPriceRange, String maxPriceRange) {
+		List<String> itemsWithPrice = new ArrayList<>();
+		String getPriceQuery = "SELECT name " +
+							   "FROM Item " +
+							   "WHERE price > " + minPriceRange +
+							   " AND price < " + maxPriceRange + "";
+		 ResultSet rs = executeQuery(connection, getPriceQuery);
+		    try {
+		        while (rs.next()) {
+		            itemsWithPrice.add(rs.getString(1));
+		        }
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		    }
+		    return itemsWithPrice;
+		}
 	
+	private static List<String> getDiets(Connection connection, String itemName) {
+		List<String> diets = new ArrayList<>();
+	    String getDietQuery = "SELECT Diet.name " + 
+	    					  "FROM Diet, Item_Diet " +
+	    					  "WHERE Item_Diet.diet_ID = Diet.diet_ID " + 
+	    					  "AND Item_Diet.item_ID = (SELECT item_ID " + 
+	    	                  "FROM Item WHERE name = '" + itemName + "')";
+	    ResultSet rs = executeQuery(connection, getDietQuery);
+	    try {
+	        while (rs.next()) {
+	            diets.add(rs.getString(1));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return diets;
+	}
+	    
+	private static List<String> getAllergens(Connection connection, String itemName) {
+		List<String> allergens = new ArrayList<>();
+	    String getAllergenQuery = "SELECT Allergen.name " + 
+	    					  "FROM Allergen, Item_Allergen " +
+	    					  "WHERE Item_Allergen.allergen_ID = Allergen.allergen_ID " + 
+	    					  "AND Item_Allergen.item_ID = (SELECT item_ID " + 
+	    	                  "FROM Item WHERE name = '" + itemName + "')";
+	    ResultSet rs = executeQuery(connection, getAllergenQuery);
+	    try {
+	        while (rs.next()) {
+	            allergens.add(rs.getString(1));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return allergens;
+	}
 	public static int getCalories(Connection connection, String itemName) {
 		int calories = 0;
 		String getCalories = "SELECT calories FROM Item " + 
