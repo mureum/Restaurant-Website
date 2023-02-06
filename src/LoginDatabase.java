@@ -25,13 +25,7 @@ public class LoginDatabase {
       System.exit(1);
     }
     
-    //Drop table.
-    dropTable(connection,"loginDetails");
-    
-    //Create table.
-    createTable(connection,"loginDetails(Username varchar(255), "
-                                      + "Password varchar(255), "
-                                      + "Permissions varchar(255));");
+
     //Insert into table
     insertIntoTable(connection,"loginDetails","logins.txt");
     String query = "SELECT * FROM loginDetails;";
