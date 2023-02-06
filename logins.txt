@@ -8,11 +8,9 @@ Janice31,Janice1991,Waiter
 Sam23,12345678,Kitchen
 Hannah19,Hannah!,Waiter
 Oliver27,BOSSman12,Waiter
-null,null,Kitchen
-null,null,Waiter
-2412124,124214,Kitchen
-3211231,412441,Waiter
-***,***,Kitchen
+Paul12,Apples3,Kitchen
+Gromit234,CheekyPop1234,Waiter
+Haydar97,Wycombin,Kitchen
 Gordon54,CheffMan32,Kitchen
 Wallace,Gorgonzola22,Waiter
 Ethan,Password123,Waiter
