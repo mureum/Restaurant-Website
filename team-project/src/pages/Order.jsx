@@ -126,16 +126,17 @@ const handleChange = (e) => {
       <br></br>
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
         {items.map(item => (
-        <div className="item" 
+        <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
           style={{
               display: activeBtn === "all" || activeBtn === item.type_id ? "block" : "none", 
               width: 'auto',
               flexBasis:"40%", 
               height: '100%', 
-              backgroundColor: "white" 
-            }} key={item.item_ID}>
+              //backgroundColor: "white" 
+            }} key={item.item_id}>
             <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
             <h2>{item.name}</h2>
+            <p>{item.item_id%2}</p>
             <p>£{item.price}</p>
             <span>{item.calories}cal</span>
             <br></br>
