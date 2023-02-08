@@ -8,6 +8,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
+import Cart from "../pages/Cart";
 
 function Order() {
   const [items,setItems] = useState([])
@@ -66,13 +67,16 @@ function Order() {
   const [searchTerm, setSearchTerm] = React.useState("");
   const [searchResults, setSearchResults] = React.useState([]);
 
-const handleChange = (e) => {
-  setSearchTerm(e.target.value);
-  let searchResults = items.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  setSearchResults(searchResults);
-};
+const [cart, setCart] = React.useState([]);
+  //Function to add item to cart
+  const addToCart = (name, id, price) => {
+    let cartItems = {
+      name: name,
+      item_id: id,
+      price: price
+    }
+    setCart([...cart, cartItems])
+  }
 
   return (
     <div className="App">
@@ -124,6 +128,9 @@ const handleChange = (e) => {
         </button>
       </div>
       <br></br>
+      <button>
+      <Link to="/cart" state={{items: cart}}>Go to the cart</Link>
+      </button>
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
         {items.map(item => (
         <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
@@ -136,17 +143,25 @@ const handleChange = (e) => {
             }} key={item.item_id}>
             <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
             <h2>{item.name}</h2>
-            <p>{item.item_id%2}</p>
             <p>£{item.price}</p>
             <span>{item.calories}cal</span>
             <br></br>
-            <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart">
-              <Link to="/">Add to cart</Link>
+            <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart" onClick={() => addToCart(item.name, item.item_id, item.price)}>
+              Add to cart
             </button>
         </div>
       ))}
         </div>
         <br></br>
+    </div>
+    <div>
+      {cart.map((item, index) => (
+        <div key={index}>
+          <p>Name: {item.name}</p>
+          <p>Item id: {item.item_id}</p>
+          <p>Price: {item.price}</p>
+        </div>
+      ))}
     </div>
   </div>
   );
