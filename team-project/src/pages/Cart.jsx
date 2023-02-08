@@ -25,6 +25,8 @@ const Cart = () => {
         }
       }, [items]); // here we add the dependency items to useEffect, so when the items are changed, the effect is triggered and sets the localStorage with the updated items.
 
+    var total = 0;
+
     return (
         <div className="App">
         <Navbar />
@@ -32,6 +34,7 @@ const Cart = () => {
             <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
             {cartItems && cartItems.length > 0 ? (
                 cartItems.map((item) => (
+                    <>
                     <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
                     style={{
                         width: 'auto',
@@ -42,9 +45,11 @@ const Cart = () => {
                         <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
                         <h2>{item.name}</h2>
                         <p>£{item.price}</p>
+                        {total = total + parseFloat(item.price)}
                         <br></br>
                         <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete" onClick={() => deleteFromCart(item.item_id)}>Delete</button>
                     </div>
+                    </>
                 ))
             ) : (
                 <div>
@@ -52,6 +57,9 @@ const Cart = () => {
                 </div>
             )}
           </div>  
+          <br></br>
+          <p> total = {total}</p>
+          <br></br><br></br>
         </div>
     );
 }
