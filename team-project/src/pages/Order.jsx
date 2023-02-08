@@ -80,7 +80,7 @@ const [cart, setCart] = React.useState([]);
 
   return (
     <div className="App">
-<Navbar />
+    <Navbar />
     <div style={{ width: '100%', overflowX: 'auto'}}>
     <img
         src={menu}
@@ -126,11 +126,16 @@ const [cart, setCart] = React.useState([]);
         >
           Drinks
         </button>
+        <button>
+        <Link to="/cart" state={{items: cart}}>
+          <img src="https://cdn-icons-png.flaticon.com/512/3081/3081986.png" alt="cart"
+          height="50px"
+          width="70px"
+          />
+          </Link>
+        </button>
       </div>
       <br></br>
-      <button>
-      <Link to="/cart" state={{items: cart}}>Go to the cart</Link>
-      </button>
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
         {items.map(item => (
         <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}

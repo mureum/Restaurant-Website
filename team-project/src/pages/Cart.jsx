@@ -28,8 +28,8 @@ const Cart = () => {
     return (
         <div className="App">
         <Navbar />
+        <p>Don't refresh the page!</p>
             <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
-            <p>Don't refresh the page!</p>
             {cartItems && cartItems.length > 0 ? (
                 cartItems.map((item) => (
                     <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
@@ -43,7 +43,7 @@ const Cart = () => {
                         <h2>{item.name}</h2>
                         <p>£{item.price}</p>
                         <br></br>
-                        <button onClick={() => deleteFromCart(item.item_id)}>Delete</button>
+                        <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete" onClick={() => deleteFromCart(item.item_id)}>Delete</button>
                     </div>
                 ))
             ) : (
