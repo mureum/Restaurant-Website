@@ -1,14 +1,30 @@
 import React from 'react';
+import axios from 'axios';
+
+
+
 function Login() {
-  const[show,setShow] = React.useState(false);
+  const[username,setUsername] = React.useState('');
+  const[password,setPassword] = React.useState('');
+  const[text,setText] = React.useState('');
+
+  const Login = () => {
+    
+    axios.post("http://localhost:3000/", {
+      username : username,
+      password : password,
+    }).then((response) => {
+      setText(response);
+    });
+  }
 
     return (
       <div>
         <h1>Login</h1>
-        <input type ="text" placeholder='Username' />
-        <input type ="text" placeholder='Password' />
-        <button style={{float: 'left'}} onClick = {() => setShow(true)}>Login</button>
-        {show && <p1 style = {{color : 'red'}}>Invalid username or password.</p1>}
+        <input type ="text" placeholder='Username' onChange = {(e) => {setUsername(e.target.value)}}/>
+        <input type ="text" placeholder='Password' onChange = {(e) => {setPassword(e.target.value)}}/>
+        <button style={{float: 'left'}} onClick = {() => Login()}>Login</button>
+        <h1>{text}</h1>
       </div>
     );
   };
