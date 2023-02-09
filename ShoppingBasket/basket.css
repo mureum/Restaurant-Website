@@ -16,8 +16,8 @@
 }
 
 .backgroundofcart{
-    margin: 0; 
-    width: 100%; 
+    margin: 20px 10px 10px; 
+    width: 97.5vw; 
 	height: auto;
     text-align: center; 
 	background-image: var(--gradient);

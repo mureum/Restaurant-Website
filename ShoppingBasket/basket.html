@@ -23,11 +23,11 @@
    	   	  </div>
    	   	  <div class="counter">
    	   	  	<div class="btn">+</div>
-   	   	  	<div class="count">2</div>
+   	   	  	<div class="count">1</div>
    	   	  	<div class="btn">-</div>
    	   	  </div>
    	   	  <div class="prices">
-   	   	  	<div class="amount">$15</div>
+   	   	  	<div class="amount">$7.50</div>
    	   	  </div>
    	   </div>
 
@@ -45,7 +45,7 @@
    	   	  	<div class="btn">-</div>
    	   	  </div>
    	   	  <div class="prices">
-   	   	  	<div class="amount">$10</div>
+   	   	  	<div class="amount">$8.50</div>
    	   	  </div>
    	   </div>
    	 <hr> 
@@ -54,7 +54,7 @@
    	 	<div>
    	 		<div class="Subtotal">Total</div>
    	 	</div>
-   	 	<div class="total-amount">$0</div>
+   	 	<div class="total-amount">"number"</div>
    	 </div>
 
 		<form action="/Menu/Menu.html">
@@ -67,6 +67,7 @@
 	  </div>
    </div>
 </body>
+
 <script>
 	let total = 0;
 //When + button is clicked
@@ -87,6 +88,17 @@ btn.addEventListener('click', () => {
     document.querySelector('.total-amount').textContent = total;
 });
 });
-</script>
 
+//Loop through each item in the cart
+let itemsInCart = document.querySelectorAll('.items-in-cart');
+itemsInCart.forEach( item => {
+    //Get the amount for the item
+    let amount = item.querySelector('.amount').textContent;
+    //Add the amount to the total
+    total += Number(amount);
+});
+//Set the total-amount element's textContent to the total
+document.querySelector('.total-amount').textContent = total;
+
+</script>
 </html>
