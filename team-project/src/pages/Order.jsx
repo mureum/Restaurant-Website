@@ -17,6 +17,7 @@ function Order() {
     useEffect(()=>{
         const fecthAllItems = async ()=>{
             try{
+
                 const res = await axios.get("http://localhost:8800/orders")
                 setItems(res.data)
             }catch(err){
@@ -24,6 +25,41 @@ function Order() {
             }
         }
         fecthAllItems()
+        setItems([{
+      item_id:0,      
+      price: "5",
+      calories: "200",
+      name: "test"
+
+    },
+  {
+      item_id:0,      
+      price: "5",
+      calories: "200",
+      name: "test"
+
+    },
+  {
+      item_id:0,      
+      price: "£5",
+      calories: "200",
+      name: "test"
+
+    },
+  {
+      item_id:0,      
+      price: "£5",
+      calories: "200",
+      name: "test"
+
+    },
+  {
+      item_id:0,      
+      price: "£5",
+      calories: "200",
+      name: "test"
+
+    },])
     },[])
 
     const fetchVGNItems = async (id)=>{
@@ -178,7 +214,7 @@ function Order() {
         </div>
       </div>
       <br></br>
-        <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
+        <div className="grid-cols-2 gap-4 grid container mx-auto">
         {items.map(item => (
         <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
           style={{
@@ -188,7 +224,10 @@ function Order() {
               height: '100%', 
               //backgroundColor: "white" 
             }} key={item.item_id}>
-            <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
+            <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", 
+            height: "auto", objectFit: "cover", 
+            backgroundColor: "white"}} alt={`${item.name} image`} 
+            onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
             <h2>{item.name}</h2>
             <p>£{item.price}</p>
             <span>{item.calories}cal</span>
