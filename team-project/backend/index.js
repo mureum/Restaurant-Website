@@ -26,14 +26,6 @@ app.get("/orders", async (req,res)=>{
     })
 })
 
-app.get("/orders:id", async(req,res) => {
-    const q = "SELECT * FROM Item WHERE item_ID IN (SELECT item_ID  FROM Item_Diet WHERE diet_ID = 'VGN');"
-    client.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        return res.json(data.rows)
-    })
-})
-
 app.listen(8800, ()=>{
     console.log("Connected to backend!")
 })
