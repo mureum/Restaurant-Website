@@ -87,7 +87,7 @@ function Home() {
             </p>
             <br></br>
             <button className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-            <span><a href="/order">Menu</a></span>
+            <span><a href="/menu">Menu</a></span>
             <i className="fa-solid fa-circle-chevron-right"></i>
             </button>
             </div>
