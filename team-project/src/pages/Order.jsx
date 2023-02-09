@@ -82,12 +82,7 @@ const [cart, setCart] = React.useState([]);
     <div className="App">
     <Navbar />
     <div style={{ width: '100%', overflowX: 'auto'}}>
-    <img
-        src={menu}
-        width="300"
-        height="300"
-        style={{ marginLeft: "40%", marginTop: "10px", backgroundColor:"black" }}
-      />
+
       <br></br>
       <div id="myBtnContainer">
         <button 
@@ -126,11 +121,11 @@ const [cart, setCart] = React.useState([]);
         >
           Drinks
         </button>
-        <button>
+        <button className="absolute top-[85px] right-[90px]">
         <Link to="/cart" state={{items: cart}}>
           <img src="https://cdn-icons-png.flaticon.com/512/3081/3081986.png" alt="cart"
-          height="50px"
-          width="70px"
+          height="30px"
+          width="50px"
           />
           </Link>
         </button>
