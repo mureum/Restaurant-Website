@@ -15,6 +15,12 @@ const Cart = () => {
         localStorage.setItem("cartItems", JSON.stringify(updatedCart));
       };
 
+      const deleteAllFromCart = () => {
+        let updatedCart = cartItems.filter((item) => item.item_id !== item.item_id);
+        setItems(updatedCart);
+        localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      };
+
       useEffect(() => {
         if (items) {
           setItems(items);
@@ -31,11 +37,34 @@ const Cart = () => {
         <div className="App">
         <Navbar />
         <p>Don't refresh the page!</p>
-            <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
+            <div className="backgroundofcart">
+                    <div className="Header">
+                        <h3 className="Heading">Shopping Cart</h3>
+                        <button onClick={() => deleteAllFromCart()}>
+                        <h5 className="Action">Remove all</h5>
+                        </button>
+                    </div>
             {cartItems && cartItems.length > 0 ? (
                 cartItems.map((item) => (
                     <>
-                    <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
+                    <div className="items-in-cart">
+                        <div className="image-box">
+                        <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
+                        </div>
+                        <div className="about">
+                        <h1 className="title">{item.name}</h1>
+                        <h3 className="subtitle" style={{display: "none"}}>{item.name}</h3>
+                        </div>
+                        <div className="prices">
+                        <div className="amount">£{item.price}</div>
+                        <div style={{ display: 'none' }}>{total = total+parseFloat(item.price)}</div>
+                        </div>
+                        <br></br>
+                        <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete" onClick={() => deleteFromCart(item.item_id)}>Delete</button>
+                        
+                    </div>
+                    <br></br>
+                    {/* <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
                     style={{
                         width: 'auto',
                         flexBasis:"40%", 
@@ -45,20 +74,20 @@ const Cart = () => {
                         <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
                         <h2>{item.name}</h2>
                         <p>£{item.price}</p>
-                        {total = total + parseFloat(item.price)}
+                        {total2 = total2 + parseFloat(item.price)}
                         <br></br>
                         <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete" onClick={() => deleteFromCart(item.item_id)}>Delete</button>
-                    </div>
+                    </div> */}
                     </>
                 ))
             ) : (
                 <div>
                     <h1>The Cart is Empty</h1>
                 </div>
-            )}
-          </div>  
+            )}          
           <br></br>
-          <p> total = {total}</p>
+          </div>
+          <p className='total-amount'> total = £{total}</p>
           <br></br><br></br>
         </div>
     );
