@@ -8,7 +8,7 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
-import Cart from "../pages/Cart";
+import Cart from "./Cart";
 
 
 function Order() {
