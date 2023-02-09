@@ -136,6 +136,9 @@ export const Navbar = () => {
           Contact Us
         </li>
       </ul>
+      <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5">
+        Staff LogIn
+      </button>
     </header>
   );
 };
