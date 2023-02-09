@@ -3,12 +3,13 @@ import logo from "../assets/Oxaca_Restaurants_Logo_White.png";
 import menu from "../assets/Menu.png";
 import "../App.css";
 import { Navbar } from '../common/Navbar';
-import React from 'react'
+import React, { useRef } from 'react';
 import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
 import Cart from "../pages/Cart";
+
 
 function Order() {
   const [items,setItems] = useState([])
@@ -97,7 +98,7 @@ function Order() {
 
   const [isChecked, setIsChecked] = useState(false);
 
-const [cart, setCart] = React.useState([]);
+  const [cart, setCart] = React.useState([]);
   //Function to add item to cart
   const addToCart = (name, id, price) => {
     let cartItems = {
@@ -107,6 +108,16 @@ const [cart, setCart] = React.useState([]);
     }
     setCart([...cart, cartItems])
   }
+
+    const checkListRef = useRef(null);
+
+    const handleClick = (event) => {
+      if (checkListRef.current.classList.contains('visible')) {
+        checkListRef.current.classList.remove('visible');
+      } else {
+        checkListRef.current.classList.add('visible');
+      }
+    };
 
   return (
     <div className="App">
@@ -159,11 +170,12 @@ const [cart, setCart] = React.useState([]);
           />
           </Link>
         </button>
-        <input
-          type="checkbox"
-          checked={isChecked}
-          onChange={handleCheckVgn}
-        /> VGN Items
+        <div id="list1" className="dropdown-check-list" ref={checkListRef} tabIndex="100">
+          <span className="anchor" onClick={handleClick}>Filter</span>
+          <ul className="items">
+            <li><input type="checkbox" checked={isChecked} onChange={handleCheckVgn}/> VGN Items</li>
+          </ul>
+        </div>
       </div>
       <br></br>
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
