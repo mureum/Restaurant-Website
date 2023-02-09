@@ -2,8 +2,9 @@ import './App.css';
 
 function App() {
   return (
-    <div style ={FoodStyle}>
+    <div>
       <h1 style  = {MenuStyle}>Menu</h1 >
+      <button style={{float: 'right'}}>Log in</button>
       <Food item_id = {123} name = "Meat" price = {2.00} calories = {200} type_id = {222}/>
       <button>Order </button>
     </div>
@@ -23,7 +24,7 @@ const FoodStyle = {
 
 const Food = (props) => {
   return ( 
-    <div>
+    <div style  = {FoodStyle}>
       <h2 >{props.name}</h2>
       <p >{props.price}</p>
       <p >{props.calories}</p>
