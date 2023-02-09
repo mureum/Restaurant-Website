@@ -1,5 +1,3 @@
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import logo from "../assets/Oxaca_Restaurants_Logo_White.png";
 import menu from "../assets/Menu.png";
 import "../App.css";
 import { Navbar } from '../common/Navbar';
@@ -7,8 +5,8 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom';
-import Cart from "../pages/Cart";
+import { Link, useFetcher } from 'react-router-dom';
+
 
 function Order() {
   const [items,setItems] = useState([])
@@ -24,6 +22,36 @@ function Order() {
         }
         fecthAllItems()
     },[])
+
+    const fetchVGNItems = async (id)=>{
+      try {
+        const res = await axios.get("http://localhost:8800/orders"+id)
+          setItems(res.data)
+          //window.location.reload()
+      }catch(err) {
+          console.log(err)
+      }
+    }
+
+    const handleCheckVgn = async () => {
+      setIsChecked(prevState => !prevState);
+      if (!isChecked) {
+        fetchVGNItems();
+      } else {
+        fetchAlltems();
+      }
+    };
+
+    const fetchAlltems = async (id)=>{
+      try {
+        const res = await axios.get("http://localhost:8800/orders")
+          setItems(res.data)
+          //window.location.reload()
+      }catch(err) {
+          console.log(err)
+      }
+    }
+
     const divStyle = {
       width: "100vh",
       height: "100%",
@@ -48,6 +76,7 @@ function Order() {
       className:"filterDiv ST",
       text:"ST"
     },
+
   ]);
 
   const filterSelection = (c) => {
@@ -64,8 +93,7 @@ function Order() {
     }
   }
 
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [searchResults, setSearchResults] = React.useState([]);
+  const [isChecked, setIsChecked] = useState(false);
 
 const [cart, setCart] = React.useState([]);
   //Function to add item to cart
@@ -134,6 +162,11 @@ const [cart, setCart] = React.useState([]);
           />
           </Link>
         </button>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckVgn}
+        /> VGN Items
       </div>
       <br></br>
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
