@@ -10,7 +10,7 @@ function Login() {
 
   const Login = () => {
     
-    axios.post("http://localhost:3000/", {
+    axios.post("http://localhost:8800/logins", {
       username : username,
       password : password,
     }).then((response) => {
