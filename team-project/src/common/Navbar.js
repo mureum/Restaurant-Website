@@ -70,34 +70,34 @@ export const Navbar = () => {
       <Menu isOpen={isOpen} styles={styles} right>
         <a
           id="home"
-          className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
+          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
           href="/"
         >
           <span>Home</span>
         </a>
         <a
-          id="order"
-          className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
-          href="/order"
+          id="about"
+          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+          href="/about-us"
         >
           <span>Order Online</span>
-          <i className="fa-solid fa-angle-down"></i>
+          <i class="fa-solid fa-caret-down"></i>
         </a>
         <a
-          id="contact"
-          className="text-3xl font-bold text-yellow-100 uppercase"
-          href="/aboutus"
+          id="menu"
+          className="text-2xl font-bold text-yellow-100 uppercase"
+          href="/menu"
         >
           Menus
         </a>
         <a
-          className="text-3xl font-bold text-yellow-100 uppercase space-x-3"
+          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
           href=""
         >
           <span>Locations</span>
-          <i className="fa-solid fa-angle-down"></i>
+          <i class="fa-solid fa-caret-down"></i>
         </a>
-        <a className="text-3xl font-bold text-yellow-100 uppercase" href="">
+        <a className="text-2xl font-bold text-yellow-100 uppercase" href="">
           Contact Us
         </a>
         <a
@@ -122,7 +122,10 @@ export const Navbar = () => {
           <span>Order Online</span>
           <i className="fa-solid fa-chevron-down"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li
+          className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase"
+          href="/menu"
+        >
           Menus
         </li>
         <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
