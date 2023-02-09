@@ -25,41 +25,7 @@ function Order() {
             }
         }
         fecthAllItems()
-        setItems([{
-      item_id:0,      
-      price: "5",
-      calories: "200",
-      name: "test"
 
-    },
-  {
-      item_id:0,      
-      price: "5",
-      calories: "200",
-      name: "test"
-
-    },
-  {
-      item_id:0,      
-      price: "£5",
-      calories: "200",
-      name: "test"
-
-    },
-  {
-      item_id:0,      
-      price: "£5",
-      calories: "200",
-      name: "test"
-
-    },
-  {
-      item_id:0,      
-      price: "£5",
-      calories: "200",
-      name: "test"
-
-    },])
     },[])
 
     const fetchVGNItems = async (id)=>{
@@ -206,7 +172,7 @@ function Order() {
           />
           </Link>
         </button>
-        <div id="list1" className="dropdown-check-list" ref={checkListRef} tabIndex="100">
+        <div id="list1" className="dropdown-check-list absolute right-10" ref={checkListRef} tabIndex="100">
           <span className="anchor" onClick={handleClick}>Filter</span>
           <ul className="items">
             <li><input type="checkbox" checked={isChecked} onChange={handleCheckVgn}/> VGN Items</li>
@@ -214,7 +180,7 @@ function Order() {
         </div>
       </div>
       <br></br>
-        <div className="grid-cols-2 gap-4 grid container mx-auto">
+        <div className="grid-cols-2 gap-4 grid px-10">
         {items.map(item => (
         <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
           style={{
