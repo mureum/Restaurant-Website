@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="OrderConfirm.css">
+    
     <title>Waiter</title>
 </head>
 <body>
@@ -14,17 +15,18 @@
         <br>
         <div class="div1">
 
-            <h3>Table Number: </h3>
-            <h4 class="table">2</h4>
+            <h3 onclick="order()">Table Number: </h3>
+            <h4 class="tableNum">2</h4>
         </div>
         <br>
         <div class="div2">
         <h3>More Info:</h3>
-        <h4 class="info">I want to confirm my order</h4>
+        <h4 onclick="order()" class="info">I want to confirm my order</h4>
     </div>
     <div class="btn1">
 
         <button  class="btn" type="submit">Accept Order</button>
     </div>
+    <script src="./OrderConfirm.js"></script>
 </body>
 </html>
