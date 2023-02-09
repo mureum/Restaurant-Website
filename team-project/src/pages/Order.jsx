@@ -24,6 +24,36 @@ function Order() {
         }
         fecthAllItems()
     },[])
+
+    const fetchVGNItems = async (id)=>{
+      try {
+        const res = await axios.get("http://localhost:8800/orders"+id)
+          setItems(res.data)
+          //window.location.reload()
+      }catch(err) {
+          console.log(err)
+      }
+    }
+
+    const handleCheckVgn = async () => {
+      setIsChecked(prevState => !prevState);
+      if (!isChecked) {
+        fetchVGNItems();
+      } else {
+        fetchAlltems();
+      }
+    };
+
+    const fetchAlltems = async (id)=>{
+      try {
+        const res = await axios.get("http://localhost:8800/orders")
+          setItems(res.data)
+          //window.location.reload()
+      }catch(err) {
+          console.log(err)
+      }
+    }
+
     const divStyle = {
       width: "100vh",
       height: "100%",
@@ -48,6 +78,7 @@ function Order() {
       className:"filterDiv ST",
       text:"ST"
     },
+
   ]);
 
   const filterSelection = (c) => {
@@ -64,8 +95,7 @@ function Order() {
     }
   }
 
-  const [searchTerm, setSearchTerm] = React.useState("");
-  const [searchResults, setSearchResults] = React.useState([]);
+  const [isChecked, setIsChecked] = useState(false);
 
 const [cart, setCart] = React.useState([]);
   //Function to add item to cart
@@ -129,6 +159,11 @@ const [cart, setCart] = React.useState([]);
           />
           </Link>
         </button>
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={handleCheckVgn}
+        /> VGN Items
       </div>
       <br></br>
         <div className="items"  style={{  width: "100%", display: "flex", flexDirection: "row", flexWrap: "wrap", margin: "0 auto", maxWidth: "900px"}}>
