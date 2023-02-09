@@ -180,27 +180,21 @@ function Order() {
         </div>
       </div>
       <br></br>
-        <div className="grid-cols-2 gap-4 grid px-10">
+        <div className="grid-cols-1 gap-4 grid px-1 lg:grid-cols-2">
         {items.map(item => (
-        <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
-          style={{
-              display: activeBtn === "all" || activeBtn === item.type_id ? "block" : "none", 
-              width: 'auto',
-              flexBasis:"40%", 
-              height: '100%', 
-              //backgroundColor: "white" 
-            }} key={item.item_id}>
-            <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", 
-            height: "auto", objectFit: "cover", 
-            backgroundColor: "white"}} alt={`${item.name} image`} 
+        <div className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6"
+            key={item.item_id}>
+            <img className="lg:w-[200px] m-4" src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}  alt={`${item.name} image`} 
             onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
-            <h2>{item.name}</h2>
-            <p>£{item.price}</p>
-            <span>{item.calories}cal</span>
-            <br></br>
-            <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart" onClick={() => addToCart(item.name, item.item_id, item.price)}>
-              Add to cart
-            </button>
+            <div className="flex-1 flex flex-col">
+              <h2>{item.name}</h2>
+              <p>£{item.price}</p>
+              <span>{item.calories}cal</span>
+              <br></br>
+              <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart" onClick={() => addToCart(item.name, item.item_id, item.price)}>
+                Add to cart
+              </button>
+            </div>
         </div>
       ))}
         </div>
