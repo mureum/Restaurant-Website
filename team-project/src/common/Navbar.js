@@ -59,7 +59,7 @@ export const Navbar = () => {
     },
   };
   return (
-    <header className="flex items-center">
+    <header className="flex items-center text-center">
       <img
         src={logo}
         width="300"

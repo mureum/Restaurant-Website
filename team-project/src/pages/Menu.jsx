@@ -186,14 +186,24 @@ function Order() {
             key={item.item_id}>
             <img className="lg:w-[200px] m-4" src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}  alt={`${item.name} image`} 
             onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
-            <div className="flex-1 flex flex-col">
-              <h2>{item.name}</h2>
-              <p>£{item.price}</p>
-              <span>{item.calories}cal</span>
-              <br></br>
-              <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart" onClick={() => addToCart(item.name, item.item_id, item.price)}>
-                Add to cart
-              </button>
+            <div className="flex-1 flex flex-col p-4">
+              <div className="flex justify-between">
+                <div>
+                  <h2 className="font-bold text-lg">{item.name}</h2>
+                  <p className="self-start">Description</p>
+
+                </div>
+                <div className="flex flex-col">
+                  <p>£{item.price}</p>
+                  <span className="self-end">{item.calories}cal</span>
+                  <i className="fa-solid fa-cart-plus py-3"></i>
+                </div>
+              </div>
+                <br></br>
+                <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 add-to-cart" onClick={() => addToCart(item.name, item.item_id, item.price)}>
+                  Add to cart
+                </button>
+    
             </div>
         </div>
       ))}
