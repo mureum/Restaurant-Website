@@ -26,13 +26,21 @@ app.get("/orders", async (req,res)=>{
     })
 })
 
-app.get("/orders:id", async(req,res) => {
-    const q = "SELECT * FROM Item WHERE item_ID IN (SELECT item_ID  FROM Item_Diet WHERE diet_ID = 'VGN');"
+app.get("/orders/:id", async(req,res) => {
+    const id = req.params.id;
+    const array = id.split(",").map(item => item.trim());
+    const id_length = array.length;
+    const q = `SELECT i.*
+    FROM item i
+    WHERE 
+      (SELECT COUNT(*) FROM Item_Diet 
+      WHERE item_ID = i.item_ID AND diet_ID IN 
+      (${id})) = ${id_length};`
     client.query(q, (err,data)=>{
-        if(err) return res.json(err)
-        return res.json(data.rows)
+    if(err) return res.json(err)
+    return res.json(data.rows)
     })
-})
+    })
 
 app.listen(8800, ()=>{
     console.log("Connected to backend!")

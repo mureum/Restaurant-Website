@@ -385,6 +385,7 @@ input.checkbox {
   .dropdown-check-list ul.items {
     padding: 2px;
     display: none;
+    background-color: white;
     margin: 0;
     border: 1px solid #ccc;
     border-top: none;
