@@ -22,9 +22,20 @@ function Order() {
     fecthAllItems();
   }, []);
 
-  const fetchFilterItems = async (id) => {
+  const fetchFilterDiets = async (id) => {
     try {
-      const res = await axios.get("http://localhost:8800/orders/" + id);
+      const res = await axios.get("http://localhost:8800/orders/diets/" + id);
+      setItems(res.data);
+      //window.location.reload()
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchFilterAllergens = async (id) => {
+    try {
+      const res = await axios.get(
+        "http://localhost:8800/orders/allergens/" + id
+      );
       setItems(res.data);
       //window.location.reload()
     } catch (err) {
@@ -50,7 +61,29 @@ function Order() {
     } else {
       const combinedId = Array.from(newChecked).join(",");
       console.log(combinedId);
-      fetchFilterItems(combinedId);
+      fetchFilterDiets(combinedId);
+    }
+  };
+
+  const [checked2, setChecked2] = useState([]);
+
+  const handleCheck2 = async (id) => {
+    setChecked2((prevState) => !prevState);
+    const newChecked = new Set(checked2);
+    id = "'" + id + "'";
+    if (newChecked.has(id)) {
+      newChecked.delete(id);
+    } else {
+      newChecked.add(id);
+    }
+    setChecked2(Array.from(newChecked));
+
+    if (newChecked.size === 0) {
+      fetchAlltems();
+    } else {
+      const combinedId = Array.from(newChecked).join(",");
+      console.log(combinedId);
+      fetchFilterAllergens(combinedId);
     }
   };
 
@@ -101,13 +134,22 @@ function Order() {
     setCart([...cart, cartItems]);
   };
 
-  const checkListRef = useRef(null);
+  const checkListRef1 = useRef(null);
+  const checkListRef2 = useRef(null);
 
-  const handleClick = (event) => {
-    if (checkListRef.current.classList.contains("visible")) {
-      checkListRef.current.classList.remove("visible");
+  const handleClick1 = (event) => {
+    if (checkListRef1.current.classList.contains("visible")) {
+      checkListRef1.current.classList.remove("visible");
     } else {
-      checkListRef.current.classList.add("visible");
+      checkListRef1.current.classList.add("visible");
+    }
+  };
+
+  const handleClick2 = (event) => {
+    if (checkListRef2.current.classList.contains("visible")) {
+      checkListRef2.current.classList.remove("visible");
+    } else {
+      checkListRef2.current.classList.add("visible");
     }
   };
 
@@ -165,12 +207,12 @@ function Order() {
           </button>
           <div
             id="list1"
-            className="dropdown-check-list absolute right-10"
-            ref={checkListRef}
+            className="dropdown-check-list absolute right-60"
+            ref={checkListRef1}
             tabIndex="100"
           >
-            <span className="anchor" onClick={handleClick}>
-              Filter
+            <span className="anchor" onClick={handleClick1}>
+              Filter Diet
             </span>
             <ul className="items">
               <li>
@@ -208,6 +250,144 @@ function Order() {
                   id="LAC"
                 />
                 Lactose-Free Items
+              </li>
+            </ul>
+          </div>
+          <div
+            id="list2"
+            className="dropdown-check-list absolute right-10"
+            ref={checkListRef2}
+            tabIndex="100"
+          >
+            <span className="anchor" onClick={handleClick2}>
+              Allergens
+            </span>
+            <ul className="items">
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'GL'")}
+                  onChange={() => handleCheck2("GL")}
+                  id="GL"
+                />
+                Gluten
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'CR'")}
+                  onChange={() => handleCheck2("CR")}
+                  id="CR"
+                />
+                Crustaceans
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'EG'")}
+                  onChange={() => handleCheck2("EG")}
+                  id="EG"
+                />
+                Eggs
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'FI'")}
+                  onChange={() => handleCheck2("FI")}
+                  id="FI"
+                />
+                Fish
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'PE'")}
+                  onChange={() => handleCheck2("PE")}
+                  id="PE"
+                />
+                Peanuts
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'SO'")}
+                  onChange={() => handleCheck2("SO")}
+                  id="SO"
+                />
+                Soya
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'MI'")}
+                  onChange={() => handleCheck2("MI")}
+                  id="MI"
+                />
+                Milk
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'TR'")}
+                  onChange={() => handleCheck2("TR")}
+                  id="TR"
+                />
+                Tree Nuts
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'CE'")}
+                  onChange={() => handleCheck2("CE")}
+                  id="CE"
+                />
+                Celery
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'MU'")}
+                  onChange={() => handleCheck2("MU")}
+                  id="MU"
+                />
+                Mustard
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'SE'")}
+                  onChange={() => handleCheck2("SE")}
+                  id="SE"
+                />
+                Sesame
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'LU'")}
+                  onChange={() => handleCheck2("LU")}
+                  id="LU"
+                />
+                Lupin
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'MO'")}
+                  onChange={() => handleCheck2("MO")}
+                  id="MO"
+                />
+                Molluscs
+              </li>
+              <li>
+                <input
+                  type="checkbox"
+                  checked={checked2.includes("'SH'")}
+                  onChange={() => handleCheck2("SH")}
+                  id="SH"
+                />
+                Shellfish
               </li>
             </ul>
           </div>

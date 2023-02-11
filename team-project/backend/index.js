@@ -26,7 +26,7 @@ app.get("/orders", async (req,res)=>{
     })
 })
 
-app.get("/orders/:id", async(req,res) => {
+app.get("/orders/diets/:id", async(req,res) => {
     const id = req.params.id;
     const array = id.split(",").map(item => item.trim());
     const id_length = array.length;
@@ -42,6 +42,23 @@ app.get("/orders/:id", async(req,res) => {
     })
     })
 
+    app.get("/orders/allergens/:id", async(req,res) => {
+        const id = req.params.id;
+        const array = id.split(",").map(item => item.trim());
+        const id_length = array.length;
+        const q = `SELECT i.*
+        FROM item i
+        WHERE 
+          (SELECT COUNT(*) FROM item_allergen 
+          WHERE item_ID = i.item_ID AND allergen_id IN 
+          (${id})) = ${id_length};`
+        client.query(q, (err,data)=>{
+        if(err) return res.json(err)
+        return res.json(data.rows)
+        })
+        })
+
 app.listen(8800, ()=>{
     console.log("Connected to backend!")
 })
+
