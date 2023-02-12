@@ -182,6 +182,8 @@ function Order() {
     }
   };
 
+  const [filter, setFilter] = useState(100000);
+
   return (
     <div className="App">
       <Navbar />
@@ -422,48 +424,63 @@ function Order() {
           </div>
         </div>
         <br></br>
+        <input
+          className="calories"
+          type="text"
+          placeholder="Search for calories less than.."
+          title="Type in a calorie value"
+          onChange={(e) => {
+            if (e.target.value !== "") {
+              setFilter(e.target.value);
+            } else {
+              setFilter("100000");
+            }
+          }}
+        />
         <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-          {items.map((item) => (
-            <div
-              className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
-              key={item.item_id}
-              style={{
-                display:
-                  activeBtn === "all" || activeBtn === item.type_id
-                    ? "block"
-                    : "none",
-              }}
-            >
-              <img
-                className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                alt={`${item.name} image`}
-                onError={(e) =>
-                  (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                }
-              />
-              <div className="flex-1 flex flex-col p-4">
-                <div className="flex justify-between">
-                  <div>
-                    <h2 className="font-bold text-2xl">{item.name}</h2>
-                    <p className="self-start text-xl">Description</p>
+          {items
+            .filter((item) => item.calories < Number(filter))
+            .map((item) => (
+              <div
+                className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
+                key={item.item_id}
+                style={{
+                  display:
+                    activeBtn === "all" || activeBtn === item.type_id
+                      ? "block"
+                      : "none",
+                }}
+              >
+                <img
+                  className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                  src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                  alt={`${item.name} image`}
+                  onError={(e) =>
+                    (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
+                  }
+                />
+                <div className="flex-1 flex flex-col p-4">
+                  <div className="flex justify-between">
+                    <div>
+                      <h2 className="font-bold text-2xl">{item.name}</h2>
+                      <p className="self-start text-xl">Description</p>
+                    </div>
+                    <div className="flex flex-col text-xl">
+                      <p>£{item.price}</p>
+                      <span className="self-end">{item.calories}cal</span>
+                      <button
+                        onClick={() =>
+                          addToCart(item.name, item.item_id, item.price)
+                        }
+                      >
+                        <i className="fa-solid fa-cart-plus py-3 fa-2x"></i>
+                      </button>
+                    </div>
                   </div>
-                  <div className="flex flex-col text-xl">
-                    <p>£{item.price}</p>
-                    <span className="self-end">{item.calories}cal</span>
-                    <button
-                      onClick={() =>
-                        addToCart(item.name, item.item_id, item.price)
-                      }
-                    >
-                      <i className="fa-solid fa-cart-plus py-3 fa-2x"></i>
-                    </button>
-                  </div>
+                  <br></br>
                 </div>
-                <br></br>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
         <br></br>
       </div>

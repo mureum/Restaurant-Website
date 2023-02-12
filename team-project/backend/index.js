@@ -15,7 +15,11 @@ client.connect()
 app.use(cors())
 
 app.get("/", (req, res) => {
-    res.json("Hello this is backend")
+    try {
+        res.json("Hello this is backend")
+    }catch (err) {
+        return res.json(err)
+    }
 })
 
 app.get("/orders", async (req,res)=>{

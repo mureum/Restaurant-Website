@@ -402,3 +402,7 @@ input.checkbox {
   .dropdown-check-list.visible .items {
     display: block;
   }
+
+  .calories {
+    width: fit-content;
+  }
