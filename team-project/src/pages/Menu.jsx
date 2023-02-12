@@ -43,7 +43,19 @@ function Order() {
     }
   };
 
-  const [checked, setChecked] = useState([]);
+  const fetchFilterItemAllergens = async (diet, allergen) => {
+    try {
+      const res = await axios.get(
+        "http://localhost:8800/orders/itemAndAllergens/" + diet + "/" + allergen
+      );
+      setItems(res.data);
+      //window.location.reload()
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const [checked, setChecked] = useState([]); //diet
 
   const handleCheck = async (id) => {
     setChecked((prevState) => !prevState);
@@ -55,17 +67,25 @@ function Order() {
       newChecked.add(id);
     }
     setChecked(Array.from(newChecked));
-
     if (newChecked.size === 0) {
-      fetchAlltems();
+      if (checked2[0] === undefined) {
+        fetchAlltems();
+      } else {
+        const combinedId = Array.from(checked2).join(",");
+        fetchFilterAllergens(combinedId);
+      }
     } else {
       const combinedId = Array.from(newChecked).join(",");
       console.log(combinedId);
-      fetchFilterDiets(combinedId);
+      if (checked2[0] === undefined) {
+        fetchFilterDiets(combinedId);
+      } else {
+        fetchFilterItemAllergens(combinedId, checked2);
+      }
     }
   };
 
-  const [checked2, setChecked2] = useState([]);
+  const [checked2, setChecked2] = useState([]); //allergens
 
   const handleCheck2 = async (id) => {
     setChecked2((prevState) => !prevState);
@@ -77,13 +97,22 @@ function Order() {
       newChecked.add(id);
     }
     setChecked2(Array.from(newChecked));
-
     if (newChecked.size === 0) {
-      fetchAlltems();
+      if (checked[0] === undefined) {
+        fetchAlltems();
+      } else {
+        const combinedId = Array.from(checked).join(",");
+        console.log("Combined Id: " + combinedId);
+        fetchFilterDiets(combinedId);
+      }
     } else {
       const combinedId = Array.from(newChecked).join(",");
       console.log(combinedId);
-      fetchFilterAllergens(combinedId);
+      if (checked[0] === undefined) {
+        fetchFilterAllergens(combinedId);
+      } else {
+        fetchFilterItemAllergens(checked, combinedId);
+      }
     }
   };
 
