@@ -11,7 +11,13 @@ const client = new pg.Client({
   ssl: true
 })
 
-client.connect()
+client.connect((err) => {
+    if (err) {
+      console.error("Error connecting to PostgreSQL", err.stack);
+      process.exit(1);
+    }
+  });
+  
 app.use(cors())
 
 app.get("/", (req, res) => {

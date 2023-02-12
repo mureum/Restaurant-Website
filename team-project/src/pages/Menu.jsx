@@ -154,11 +154,12 @@ function Order() {
 
   const [cart, setCart] = React.useState([]);
   //Function to add item to cart
-  const addToCart = (name, id, price) => {
+  const addToCart = (name, id, price, amount) => {
     let cartItems = {
       name: name,
       item_id: id,
       price: price,
+      amount: amount,
     };
     setCart([...cart, cartItems]);
   };
@@ -183,6 +184,19 @@ function Order() {
   };
 
   const [filter, setFilter] = useState(100000);
+  const [value, setValue] = useState({});
+
+  const handleChange = (id) => (e) => {
+    setValue({ ...value, [id]: e.target.value });
+  };
+
+  const handleDecrement = (id) => {
+    setValue({ ...value, [id]: (value[id] || 0) - 1 });
+  };
+
+  const handleIncrement = (id) => {
+    setValue({ ...value, [id]: (value[id] || 0) + 1 });
+  };
 
   return (
     <div className="App">
@@ -468,9 +482,35 @@ function Order() {
                     <div className="flex flex-col text-xl">
                       <p>£{item.price}</p>
                       <span className="self-end">{item.calories}cal</span>
+                      <div key={item.item_id}>
+                        <button onClick={() => handleDecrement(item.item_id)}>
+                          -
+                        </button>
+                        <input
+                          type="text"
+                          value={value[item.item_id] || 0}
+                          onChange={handleChange(item.item_id)}
+                          placeholder="Insert the amount.."
+                          title="Type in a calorie value"
+                          id={item.item_id}
+                          style={{
+                            backgroundColor: "transparent",
+                            width: "50px",
+                            textAlign: "center",
+                          }}
+                        />
+                        <button onClick={() => handleIncrement(item.item_id)}>
+                          +
+                        </button>
+                      </div>
                       <button
                         onClick={() =>
-                          addToCart(item.name, item.item_id, item.price)
+                          addToCart(
+                            item.name,
+                            item.item_id,
+                            item.price,
+                            value[item.item_id]
+                          )
                         }
                       >
                         <i className="fa-solid fa-cart-plus py-3 fa-2x"></i>
