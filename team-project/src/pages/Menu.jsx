@@ -161,7 +161,9 @@ function Order() {
       price: price,
       amount: amount,
     };
-    setCart([...cart, cartItems]);
+    if (amount > 0) {
+      setCart([...cart, cartItems]);
+    }
   };
 
   const checkListRef1 = useRef(null);

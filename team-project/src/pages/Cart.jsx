@@ -7,7 +7,22 @@ const Cart = () => {
   const [cartItems, setItems] = useState([]);
   const location = useLocation();
   const { items, values } = location.state;
-  const [value, setValue] = useState(values || {});
+
+  const decrementItemAmount = (index) => {
+    const updatedItems = [...items];
+    if (updatedItems[index].amount > 0) {
+      updatedItems[index].amount -= 1;
+      setItems(updatedItems);
+    }
+  };
+
+  const incrementItemAmount = (index) => {
+    const updatedItems = [...items];
+    if (updatedItems[index].amount >= 0) {
+      updatedItems[index].amount += 1;
+      setItems(updatedItems);
+    }
+  };
 
   //Function to delete item from cart
   const deleteFromCart = (id) => {
@@ -46,7 +61,7 @@ const Cart = () => {
           </button>
         </div>
         {cartItems && cartItems.length > 0 ? (
-          cartItems.map((item) => (
+          cartItems.map((item, index) => (
             <>
               <div className="items-in-cart">
                 <div className="image-box">
@@ -75,10 +90,22 @@ const Cart = () => {
                 <div className="prices">
                   <div className="amount">£{item.price * item.amount}</div>{" "}
                   <div style={{ display: "none" }}>
-                    {(total = total + parseFloat(item.price))}
+                    {(total = total + parseFloat(item.price * item.amount))}
                   </div>
                 </div>
                 <br></br>
+                <button
+                  className="text-3xl font-bold uppercase space-x-3 decrement-increment"
+                  onClick={() => decrementItemAmount(index)}
+                >
+                  -
+                </button>
+                <button
+                  className="text-3xl font-bold uppercase space-x-3 decrement-increment"
+                  onClick={() => incrementItemAmount(index)}
+                >
+                  +
+                </button>
                 <button
                   className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete"
                   onClick={() => deleteFromCart(item.item_id)}
@@ -87,20 +114,6 @@ const Cart = () => {
                 </button>
               </div>
               <br></br>
-              {/* <div className={`item ${item.item_id%2===0 ? "rowA" : "rowB"}`}
-                    style={{
-                        width: 'auto',
-                        flexBasis:"40%", 
-                        height: '100%', 
-                        //backgroundColor: "white" 
-                        }} key={item.item_id}>
-                        <img src={`https://www.themealdb.com/images/ingredients/${item.name}.png`} style={{width: "100%", height: "auto", objectFit: "cover", backgroundColor: "white"}} alt={`${item.name} image`} onError={e => e.target.src=`https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`}/>
-                        <h2>{item.name}</h2>
-                        <p>£{item.price}</p>
-                        {total2 = total2 + parseFloat(item.price)}
-                        <br></br>
-                        <button className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete" onClick={() => deleteFromCart(item.item_id)}>Delete</button>
-                    </div> */}
             </>
           ))
         ) : (

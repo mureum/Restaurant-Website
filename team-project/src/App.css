@@ -198,6 +198,21 @@ input.checkbox {
   transform: translateY(2px);
 }
 
+.decrement-increment {
+  font-size: 18px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  color: black;
+  background-color: white;
+  width: 5%;
+  height: 40px;
+  display: block;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin: 15px auto;
+}
+
 .rowA{
   background-color: 
   white;
