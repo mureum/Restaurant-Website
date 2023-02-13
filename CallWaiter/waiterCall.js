@@ -15,5 +15,6 @@ function callWaiter() {
 function waiterCallInfo(){
     var tableNumber = data.get("number");
     var info = data.get("text");
-    document.querySelector('.tableNum').textContent ="5";
+    
 }
+
