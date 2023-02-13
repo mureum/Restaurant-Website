@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": true
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "alelentini2001/oaxaca",
+            "username": "boladale",
+            "connectString": "postgresql://boladale:v2_3yzTR_RyhgPas2h926Sb2ijYVRYqH@db.bit.io:5432/alelentini2001/oaxaca"
+        }
+    ]
+}
