@@ -23,7 +23,6 @@ function Login({ setIsLoggedIn, handleLogin }) {
         passwordInput === users[i].password
       ) {
         setShow(false);
-        console.log("TRUE");
         setIsLoggedIn(true);
         navigate("/");
         handleLogin(users[i].permissions); // call handleLogin and pass the user's permissions
@@ -31,37 +30,44 @@ function Login({ setIsLoggedIn, handleLogin }) {
       }
     }
     setShow(true);
-    console.log("False");
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <div className="form">
-        <label>Username : </label>
-        <input
-          type="text"
-          placeholder="Username"
-          onChange={(e) => {
-            setUsernameInput(e.target.value);
-          }}
-        />
-        <label>Password : </label>
-        <input
-          type="password"
-          placeholder="Password"
-          onChange={(e) => {
-            setPasswordInput(e.target.value);
-          }}
-        />
+    <body>
+      <div className = "center">
+        <h1 style = {{fontWeight: "bold"}}>Login</h1>
+          <div className = "textField">
+            <input
+                type="text"
+                placeholder="Username"
+                onChange={(e) => {
+                  setUsernameInput(e.target.value);
+                }}
+            />
+            <span></span>
+            <label>Username : </label>
+          </div>
+          <div className = "textField">
+            <input
+                type="password"
+                placeholder="Password"
+                onChange={(e) => {
+                  setPasswordInput(e.target.value);
+                }}
+            />
+            <span></span>
+            <label>Password : </label>        
+          </div>
+          <button className = 'Button' onClick={login}>Login</button>
+          <div style={{ color: "red", fontWeight: "bold" }}>
+            {" "}
+            {show ? <h1>INVALID LOGIN</h1> : null}
+          </div>
       </div>
-      <button onClick={login}>Login</button>
-      <div style={{ color: "red", fontWeight: "bold" }}>
-        {" "}
-        {show ? <h1>INVALID LOGIN</h1> : null}
-      </div>
-    </div>
+    </body>
   );
 }
 
 export default Login;
+
+
