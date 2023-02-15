@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import Axios from 'axios';
 import "./App.css";
+import {useNavigate} from 'react-router-dom';
 
 function Login() {
   const[usernameInput,setUsernameInput] = React.useState('');
   const[passwordInput,setPasswordInput] = React.useState('');
   const[users,setUsers] = React.useState([]);
   const[show,setShow] = React.useState(false);
-  
+  const navigate = useNavigate();
   
   useEffect(() => {
     Axios.get("http://localhost:8800/logins").then((response) => {
@@ -17,9 +18,9 @@ function Login() {
 
   const Login = () => {
     for(var i = 0; i < users.length ; i++){
-      if(usernameInput === users[0].username && passwordInput === users[0].password){
-        console.log('TRUE');
+      if(usernameInput === users[i].username && passwordInput === users[i].password){
         setShow(false);
+        navigate("/Menu");
       } else {
         setShow(true);
       }
