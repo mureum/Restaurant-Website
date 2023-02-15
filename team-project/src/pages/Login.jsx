@@ -37,6 +37,7 @@ function Login({ setIsLoggedIn, handleLogin }) {
       <div className="center">
         <h1 style={{ fontWeight: "bold" }}>Login</h1>
         <div className="textField">
+        <label>Username : </label>
           <input
             type="text"
             placeholder="Username"
@@ -45,9 +46,10 @@ function Login({ setIsLoggedIn, handleLogin }) {
             }}
           />
           <span></span>
-          <label>Username : </label>
+
         </div>
         <div className="textField">
+        <label>Password : </label>
           <input
             type="password"
             placeholder="Password"
@@ -56,7 +58,7 @@ function Login({ setIsLoggedIn, handleLogin }) {
             }}
           />
           <span></span>
-          <label>Password : </label>
+
         </div>
         <button className="Button" onClick={login}>
           Login

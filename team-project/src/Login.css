@@ -8,7 +8,7 @@
 .center{
   top: 50%;
   left: 50%;
-  transform: translate(50%, 50%);
+  transform: translate(185%, 50%);
   width: 400px;
   background: white;
   border-radius: 10px;
@@ -51,13 +51,11 @@
   left: 0;
   width: 0%;
   height: 2px;
-  background: #2691d9;
   transition: .5s;
 }
 .textField input:focus ~ label,
 .textField input:valid ~ label{
   top: -5px;
-  color: #2691d9;
 }
 .textField input:focus ~ span::before,
 .textField input:valid ~ span::before{
@@ -74,7 +72,7 @@
   color: #e9f4fb;
   font-weight: 700;
   cursor: pointer;
-  outline: none;
+  outline: black;
 }
 .center button:hover{
   border-color: #2691d9;
