@@ -6,8 +6,6 @@ import { Navbar } from "../common/Navbar";
 function AboutUs({ isLoggedIn }) {
   return (
     <div className="App App2">
-      <Navbar isLoggedIn={isLoggedIn} />
-
       <section id="about">
         <h2>About</h2>
         <p>

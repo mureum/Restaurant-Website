@@ -51,7 +51,6 @@ const Cart = ({ isLoggedIn }) => {
 
   return (
     <div className="App">
-      <Navbar isLoggedIn={isLoggedIn} />
       <p>Don't refresh the page!</p>
       <div className="backgroundofcart">
         <div className="Header">

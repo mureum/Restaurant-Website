@@ -202,7 +202,6 @@ function Order({ isLoggedIn }) {
 
   return (
     <div className="App">
-      <Navbar isLoggedIn={isLoggedIn} />
       <div style={{ width: "100%", overflowX: "auto" }}>
         <br></br>
         <div id="myBtnContainer">

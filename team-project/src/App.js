@@ -5,7 +5,7 @@ import Order from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import React from "react";
-
+import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -19,8 +19,9 @@ function App() {
     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
   }, [isLoggedIn]);
   return (
-    <div className="App">
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="App">
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         <Routes>
           <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
           <Route path="/about-us" element={<AboutUs isLoggedIn={isLoggedIn}/>} />
@@ -28,8 +29,8 @@ function App() {
           <Route path="/cart" element={<Cart isLoggedIn={isLoggedIn}/>} />
           <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} />
         </Routes>
-      </BrowserRouter>
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

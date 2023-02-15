@@ -3,12 +3,16 @@ import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import { isElementOfType } from "react-dom/test-utils";
-export const Navbar = ({ isLoggedIn }) => {
+export const Navbar = ({ isLoggedIn,  setIsLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const Login = () => {
     navigate("/Login");
   }
+  const LogOut = () => {
+      setIsLoggedIn(false);
+      navigate("/");
+  };
 
   const styles = {
     bmBurgerButton: {
@@ -143,7 +147,9 @@ export const Navbar = ({ isLoggedIn }) => {
         </li>
       </ul>
       {isLoggedIn ? (
-        <></>
+        <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
+          Staff LogOut
+        </button>
       ) : (
         <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
           Staff LogIn

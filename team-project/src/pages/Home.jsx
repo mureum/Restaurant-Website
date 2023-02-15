@@ -13,7 +13,6 @@ import { Navbar } from "../common/Navbar";
 function Home({ isLoggedIn }) {
   return (
     <div className="App">
-      <Navbar isLoggedIn={isLoggedIn} />
       <div>
         <li className="p-3 px-6  space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <span>Book Now</span>
