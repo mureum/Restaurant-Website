@@ -1,9 +1,14 @@
 import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
-
+import {useNavigate} from 'react-router-dom';
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const Login = () => {
+    navigate("/Login");
+  }
+
   const styles = {
     bmBurgerButton: {
       position: "absolute",
@@ -136,7 +141,7 @@ export const Navbar = () => {
           Contact Us
         </li>
       </ul>
-      <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5">
+      <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
         Staff LogIn
       </button>
     </header>

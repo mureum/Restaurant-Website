@@ -1,9 +1,9 @@
 import express  from "express"
+import pg from 'pg'
+import cors from 'cors'
 const app = express()
 app.use(express.json());
 
-import pg from 'pg'
-import cors from 'cors'
 
 
 const client = new pg.Client({
@@ -33,6 +33,19 @@ app.get("/orders:id", async(req,res) => {
         return res.json(data.rows)
     })
 })
+
+app.get("/logins", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM logins;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
 
 app.listen(8800, ()=>{
     console.log("Connected to backend!")

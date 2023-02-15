@@ -1,0 +1,17 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": true
+            },
+            "previewLimit": 50,
+            "server": "db.bit.io",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "postgresql://zkac249:v2_3ywAe_cNzm3ZcKD6XG6hMRbMx872j@db.bit.io:5432/alelentini2001/oaxaca",
+            "username": "zkac249",
+            "database": "alelentini2001/oaxaca",
+            "password": "v2_3z933_6MyvJc5kbwxN5wjt9akwv6U"
+        }
+    ]
+}
