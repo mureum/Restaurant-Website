@@ -7,7 +7,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function Order() {
+function Order({ isLoggedIn }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -202,7 +202,7 @@ function Order() {
 
   return (
     <div className="App">
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} />
       <div style={{ width: "100%", overflowX: "auto" }}>
         <br></br>
         <div id="myBtnContainer">

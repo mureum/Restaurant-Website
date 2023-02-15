@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import "../App.css";
 import { Navbar } from "../common/Navbar";
 
-const Cart = () => {
+const Cart = ({ isLoggedIn }) => {
   const [cartItems, setItems] = useState([]);
   const location = useLocation();
   const { items, values } = location.state;
@@ -51,7 +51,7 @@ const Cart = () => {
 
   return (
     <div className="App">
-      <Navbar />
+      <Navbar isLoggedIn={isLoggedIn} />
       <p>Don't refresh the page!</p>
       <div className="backgroundofcart">
         <div className="Header">

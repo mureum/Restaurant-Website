@@ -2,7 +2,8 @@ import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
 import {useNavigate} from 'react-router-dom';
-export const Navbar = () => {
+import { isElementOfType } from "react-dom/test-utils";
+export const Navbar = ({ isLoggedIn }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const Login = () => {
@@ -121,29 +122,34 @@ export const Navbar = () => {
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
         <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          Home
+          <a href="/">Home</a>
         </li>
         <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <span>Order Online</span>
+          <a href="/menu"><span>Order Online</span></a>
           <i className="fa-solid fa-chevron-down"></i>
         </li>
         <li
           className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase"
           href="/menu"
         >
-          Menus
+          <a href="/menu">Menus</a>
         </li>
         <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           <span>Locations</span>
           <i className="fa-solid fa-chevron-down"></i>
         </li>
         <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          Contact Us
+          <a href="/about-us">Contact Us</a>
         </li>
       </ul>
-      <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
-        Staff LogIn
-      </button>
+      {isLoggedIn ? (
+        <></>
+      ) : (
+        <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
+          Staff LogIn
+        </button>
+      )
+      }
     </header>
   );
 };
