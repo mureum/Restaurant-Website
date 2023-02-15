@@ -1,6 +1,4 @@
-.App {
-  text-align: center;
-}
+
 .App2 {
   background-image: url("https://img.restaurantsbrighton.co.uk/wp-content/uploads/2021/01/Carlito-Burrito.jpg");
 }
@@ -200,6 +198,21 @@ input.checkbox {
   transform: translateY(2px);
 }
 
+.decrement-increment {
+  font-size: 18px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  color: black;
+  background-color: white;
+  width: 5%;
+  height: 40px;
+  display: block;
+  cursor: pointer;
+  text-transform: uppercase;
+  margin: 15px auto;
+}
+
 .rowA{
   background-color: 
   white;
@@ -350,4 +363,61 @@ input.checkbox {
     font-family: 'Open Sans';
     font-weight: 600;
     color: #202020;
+  }
+
+  .dropdown-check-list {
+    display: inline-block;
+  }
+  
+  .dropdown-check-list .anchor {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 50px 5px 0px;
+    border: 1px solid #ccc;
+  }
+  
+  .dropdown-check-list .anchor:after {
+    position: absolute;
+    content: "";
+    border-left: 2px solid black;
+    border-top: 2px solid black;
+    padding: 5px;
+    right: 10px;
+    top: 20%;
+    -moz-transform: rotate(-135deg);
+    -ms-transform: rotate(-135deg);
+    -o-transform: rotate(-135deg);
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+  
+  .dropdown-check-list .anchor:active:after {
+    right: 8px;
+    top: 21%;
+  }
+  
+  .dropdown-check-list ul.items {
+    padding: 2px;
+    display: none;
+    background-color: white;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: none;
+  }
+  
+  .dropdown-check-list ul.items li {
+    list-style: none;
+  }
+  
+  .dropdown-check-list.visible .anchor {
+    color: #0094ff;
+  }
+  
+  .dropdown-check-list.visible .items {
+    display: block;
+  }
+
+  .calories {
+    width: fit-content;
   }

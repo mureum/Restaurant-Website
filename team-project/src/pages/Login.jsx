@@ -19,9 +19,11 @@ function Login() {
     for(var i = 0; i < users.length ; i++){
       if(usernameInput === users[i].username && passwordInput === users[i].password){
         setShow(false);
+        console.log('TRUE');
         navigate("/");
       } else {
         setShow(true);
+        console.log('False');
       }
     }
 
