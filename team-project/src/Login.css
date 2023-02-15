@@ -3,10 +3,9 @@ body{
   padding: 0;
   background: linear-gradient(120deg,#2980b9, #fff37f);
   height: 100vh;
-  overflow: hidden;
+
 }
 .center{
-  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -37,7 +36,6 @@ body{
   outline: none;
 }
 .textField label{
-  position: absolute;
   top: 50%;
   left: 5px;
   color: #adadad;
