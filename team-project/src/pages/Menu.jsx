@@ -201,7 +201,6 @@ function Order({ isLoggedIn, permission }) {
 
   return (
     <div className="App">
-      <p>Waiter? {permission === "Waiter" ? "true" : "false"}</p>
       <div style={{ width: "100%", overflowX: "auto" }}>
         <br></br>
         <div id="myBtnContainer">

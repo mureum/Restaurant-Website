@@ -33,41 +33,41 @@ function Login({ setIsLoggedIn, handleLogin }) {
   };
 
   return (
-    <body>
-      <div className = "center">
-        <h1 style = {{fontWeight: "bold"}}>Login</h1>
-          <div className = "textField">
-            <input
-                type="text"
-                placeholder="Username"
-                onChange={(e) => {
-                  setUsernameInput(e.target.value);
-                }}
-            />
-            <span></span>
-            <label>Username : </label>
-          </div>
-          <div className = "textField">
-            <input
-                type="password"
-                placeholder="Password"
-                onChange={(e) => {
-                  setPasswordInput(e.target.value);
-                }}
-            />
-            <span></span>
-            <label>Password : </label>        
-          </div>
-          <button className = 'Button' onClick={login}>Login</button>
-          <div style={{ color: "red", fontWeight: "bold" }}>
-            {" "}
-            {show ? <h1>INVALID LOGIN</h1> : null}
-          </div>
+    <body className="body">
+      <div className="center">
+        <h1 style={{ fontWeight: "bold" }}>Login</h1>
+        <div className="textField">
+          <input
+            type="text"
+            placeholder="Username"
+            onChange={(e) => {
+              setUsernameInput(e.target.value);
+            }}
+          />
+          <span></span>
+          <label>Username : </label>
+        </div>
+        <div className="textField">
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => {
+              setPasswordInput(e.target.value);
+            }}
+          />
+          <span></span>
+          <label>Password : </label>
+        </div>
+        <button className="Button" onClick={login}>
+          Login
+        </button>
+        <div style={{ color: "red", fontWeight: "bold" }}>
+          {" "}
+          {show ? <h1>INVALID LOGIN</h1> : null}
+        </div>
       </div>
     </body>
   );
 }
 
 export default Login;
-
-
