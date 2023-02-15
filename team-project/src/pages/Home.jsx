@@ -1,6 +1,5 @@
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import p1 from "../assets/p1.png";
 import p2 from "../assets/p2.png";
 import p3 from "../assets/p3.png";
@@ -8,7 +7,6 @@ import p4 from "../assets/p4.png";
 import p5 from "../assets/p5.png";
 import p6 from "../assets/p6.png";
 import "../App.css";
-import { Navbar } from "../common/Navbar";
 
 function Home({ isLoggedIn }) {
   return (

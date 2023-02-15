@@ -3,20 +3,20 @@ import Axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../Login.css";
 
-function Login({ setIsLoggedIn }) {
+function Login({ setIsLoggedIn, handleLogin }) {
   const [usernameInput, setUsernameInput] = React.useState("");
   const [passwordInput, setPasswordInput] = React.useState("");
   const [users, setUsers] = React.useState([]);
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  React.useEffect(() => {
     Axios.get("http://localhost:8800/logins").then((response) => {
       setUsers(response.data);
     });
-  });
+  }, []);
 
-  const Login = () => {
+  const login = () => {
     for (var i = 0; i < users.length; i++) {
       if (
         usernameInput === users[i].username &&
@@ -26,11 +26,12 @@ function Login({ setIsLoggedIn }) {
         console.log("TRUE");
         setIsLoggedIn(true);
         navigate("/");
-      } else {
-        setShow(true);
-        console.log("False");
+        handleLogin(users[i].permissions); // call handleLogin and pass the user's permissions
+        return;
       }
     }
+    setShow(true);
+    console.log("False");
   };
 
   return (
@@ -47,14 +48,14 @@ function Login({ setIsLoggedIn }) {
         />
         <label>Password : </label>
         <input
-          type="text"
+          type="password"
           placeholder="Password"
           onChange={(e) => {
             setPasswordInput(e.target.value);
           }}
         />
       </div>
-      <button onClick={Login}>Login</button>
+      <button onClick={login}>Login</button>
       <div style={{ color: "red", fontWeight: "bold" }}>
         {" "}
         {show ? <h1>INVALID LOGIN</h1> : null}

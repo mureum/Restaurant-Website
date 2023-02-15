@@ -2,8 +2,8 @@ import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
 import {useNavigate} from 'react-router-dom';
-import { isElementOfType } from "react-dom/test-utils";
-export const Navbar = ({ isLoggedIn,  setIsLoggedIn }) => {
+
+export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const Login = () => {
@@ -11,7 +11,8 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn }) => {
   }
   const LogOut = () => {
       setIsLoggedIn(false);
-      navigate("/");
+      setPermission("");
+      
   };
 
   const styles = {
@@ -147,9 +148,20 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn }) => {
         </li>
       </ul>
       {isLoggedIn ? (
-        <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
-          Staff LogOut
-        </button>
+        <Menu isOpen={isOpen} styles={styles} right>
+          <li>
+          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
+          </li>
+          <li>
+            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/admin">Admin Dashboard</a>
+          </li>
+          <li>
+            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
+          </li>
+      </Menu>
+        // <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
+        //   Staff LogOut
+        // </button>
       ) : (
         <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
           Staff LogIn

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
-import { Navbar } from "../common/Navbar";
 
 const Cart = ({ isLoggedIn }) => {
   const [cartItems, setItems] = useState([]);
