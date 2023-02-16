@@ -49,7 +49,7 @@ function OrderDashboard({ isLoggedIn, permission }) {
           </div>
         </div>
         <h1 className="text-3xl font-bold">
-          Pending orders <i class="fa-solid fa-clipboard"></i>
+          Pending orders <i className="fa-solid fa-clipboard"></i>
         </h1>
         <OrderTable nextStepText="Send to Kitchen" isCancellable={true} />
         <h1 className="text-3xl font-bold flex gap-4 items-center">
@@ -61,30 +61,6 @@ function OrderDashboard({ isLoggedIn, permission }) {
         <OrderTable nextStepText="Mark as Delivered" />
         <h1 className="text-3xl font-bold">Delivered orders</h1>
         <OrderTable />
-      </div>
-      <div className="App">
-        <div style={{ width: "100%", overflowX: "auto" }}>
-          <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-            {items && permission === "Waiter" ? (
-              items.map((item) => (
-                <div className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]">
-                  <div className="flex flex-col text-xl">
-                    <p>Table Number: {item.tablenumber}</p>
-                    <span className="self-end">{item.problemdescription}</span>
-                    <button
-                      className="text-2xl font-bold uppercase space-x-2"
-                      style={{ backgroundColor: "pink" }}
-                    >
-                      SEND TO KITCHEN
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
       </div>
     </>
   );

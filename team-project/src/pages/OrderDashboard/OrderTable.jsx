@@ -1,7 +1,26 @@
 import { useState } from "react";
 
+const ORDER = [
+  {
+    tableNumber: 1,
+    orderNumber: 1234,
+    customerName: "John Doe",
+    time: "12:00",
+    details: {},
+  },
+  {
+    tableNumber: 1,
+    orderNumber: 1234,
+    customerName: "John Doe",
+    time: "12:00",
+    details: {},
+  },
+];
+
 export const OrderTable = ({ nextStepText, isCancellable }) => {
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedItems, setSelectedItems] = useState(
+    ORDER.map((_, i) => ({ [i]: false })).reduce((a, b) => ({ ...a, ...b }))
+  );
 
   return (
     <div className="flex flex-col gap-4">
@@ -10,7 +29,17 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
           <tr>
             <th>
               <label>
-                <input type="checkbox" className="checkbox" />
+                <input
+                  type="checkbox"
+                  className="checkbox"
+                  checked={Object.values(selectedItems).every((v) => v)}
+                  onChange={(e) => {
+                    for (const [key] of Object.entries(selectedItems)) {
+                      selectedItems[key] = e.target.checked;
+                    }
+                    setSelectedItems({ ...selectedItems });
+                  }}
+                />
               </label>
             </th>
             <th>Table no.</th>
@@ -20,58 +49,70 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th>
-            <td>
-            <div className="font-bold">#1</div>
-            </td>
-            <td>
-              <div className="flex items-center space-x-3">
-                <div className="avatar">
-                  <div className="mask mask-squircle w-12 h-12">
-                    <img
-                      src="https://api.lorem.space/image/burger?w=150&h=150"
-                      alt="Avatar Tailwind CSS Component"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <div className="font-bold">Order #1234</div>
-                  <label
-                    htmlFor="my-modal"
-                    className="badge badge-success cursor-pointer"
-                  >
-                    Details
-                  </label>
+          {ORDER.map((order, i) => (
+            <tr key={i}>
+              <th>
+                <label>
                   <input
                     type="checkbox"
-                    id="my-modal"
-                    className="modal-toggle"
+                    className="checkbox"
+                    checked={selectedItems[i]}
+                    onChange={(e) => {
+                      setSelectedItems({
+                        ...selectedItems,
+                        [i]: e.target.checked,
+                      });
+                    }}
                   />
-                  <div className="modal">
-                    <div className="modal-box relative">
-                      <label
-                        htmlFor="my-modal"
-                        className="btn btn-sm btn-circle absolute right-2 top-2"
-                      >
-                        ✕
-                      </label>
-                      <h3 className="text-lg font-bold">Details</h3>
-                      <p className="py-4">Order Details</p>
+                </label>
+              </th>
+              <td>
+                <div className="font-bold">#{order.tableNumber}</div>
+              </td>
+              <td>
+                <div className="flex items-center space-x-3">
+                  <div className="avatar">
+                    <div className="mask mask-squircle w-12 h-12">
+                      <img
+                        src="https://api.lorem.space/image/burger?w=150&h=150"
+                        alt="Avatar Tailwind CSS Component"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="font-bold">Order {order.tableNumber}</div>
+                    <label
+                      htmlFor="my-modal"
+                      className="badge badge-success cursor-pointer"
+                    >
+                      Details
+                    </label>
+                    <input
+                      type="checkbox"
+                      id="my-modal"
+                      className="modal-toggle"
+                    />
+                    <div className="modal">
+                      <div className="modal-box relative">
+                        <label
+                          htmlFor="my-modal"
+                          className="btn btn-sm btn-circle absolute right-2 top-2"
+                        >
+                          ✕
+                        </label>
+                        <h3 className="text-lg font-bold">Details</h3>
+                        <p className="py-4">Order Details</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </td>
-            <td>Test Name</td>
-            <th>
-              <button className="btn btn-ghost btn-xs">15:55pm</button>
-            </th>
-          </tr>
+              </td>
+              <td>{order.customerName}</td>
+              <th>
+                <button className="btn btn-ghost btn-xs">{order.time}</button>
+              </th>
+            </tr>
+          ))}
         </tbody>
         <tfoot>
           <tr>
