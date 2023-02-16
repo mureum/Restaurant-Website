@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { PendingOrderTable } from "./PendingOrderTable";
+import { OrderTable } from "./OrderTable";
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
@@ -47,11 +47,18 @@ function OrderDashboard({ isLoggedIn, permission }) {
             </button>
           </div>
         </div>
-        <h1 className="text-3xl font-bold">Pending orders</h1>
-        <PendingOrderTable />
-        <h1 className="text-3xl font-bold">In preparation</h1>
+        <h1 className="text-3xl font-bold">
+          Pending orders <i class="fa-solid fa-clipboard"></i>
+        </h1>
+        <OrderTable nextStepText="Send to Kitchen" isCancellable={true} />
+        <h1 className="text-3xl font-bold">
+          In preparation <i class="fa-solid fa-fire-burner"></i>
+        </h1>
+        <OrderTable nextStepText="Mark as Ready" />
         <h1 className="text-3xl font-bold">Ready</h1>
+        <OrderTable nextStepText="Mark as Delivered" />
         <h1 className="text-3xl font-bold">Delivered orders</h1>
+        <OrderTable />
       </div>
       <div className="App">
         <div style={{ width: "100%", overflowX: "auto" }}>

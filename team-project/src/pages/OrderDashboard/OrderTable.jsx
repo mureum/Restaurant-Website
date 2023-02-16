@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const PendingOrderTable = () => {
+export const OrderTable = ({ nextStepText, isCancellable }) => {
   const [selectedItems, setSelectedItems] = useState([]);
 
   return (
@@ -27,41 +27,43 @@ export const PendingOrderTable = () => {
               </label>
             </th>
             <td>
+            <div className="font-bold">#1</div>
+            </td>
+            <td>
               <div className="flex items-center space-x-3">
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src="/tailwind-css-component-profile-2@56w.png"
+                      src="https://api.lorem.space/image/burger?w=150&h=150"
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
                 </div>
                 <div>
-                  <div className="font-bold">Hart Hagerty</div>
-                  <div className="text-sm opacity-50">United States</div>
-                </div>
-              </div>
-            </td>
-            <td>
-              Order #1234
-              <br />
-              <label
-                htmlFor="my-modal"
-                className="badge badge-success cursor-pointer"
-              >
-                Details
-              </label>
-              <input type="checkbox" id="my-modal" className="modal-toggle" />
-              <div className="modal">
-                <div className="modal-box relative">
+                  <div className="font-bold">Order #1234</div>
                   <label
                     htmlFor="my-modal"
-                    className="btn btn-sm btn-circle absolute right-2 top-2"
+                    className="badge badge-success cursor-pointer"
                   >
-                    ✕
+                    Details
                   </label>
-                  <h3 className="text-lg font-bold">Details</h3>
-                  <p className="py-4">Order Details</p>
+                  <input
+                    type="checkbox"
+                    id="my-modal"
+                    className="modal-toggle"
+                  />
+                  <div className="modal">
+                    <div className="modal-box relative">
+                      <label
+                        htmlFor="my-modal"
+                        className="btn btn-sm btn-circle absolute right-2 top-2"
+                      >
+                        ✕
+                      </label>
+                      <h3 className="text-lg font-bold">Details</h3>
+                      <p className="py-4">Order Details</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </td>
@@ -82,8 +84,16 @@ export const PendingOrderTable = () => {
         </tfoot>
       </table>
       <div className="flex gap-2 self-end">
-        <button className="btn btn-primary">Send to Kitchen</button>
-        <button className="btn btn-warning">Cancel Order</button>
+        {nextStepText ? (
+          <button className="btn btn-primary">{nextStepText}</button>
+        ) : (
+          <></>
+        )}
+        {isCancellable ? (
+          <button className="btn btn-warning">Cancel Order</button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

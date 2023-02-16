@@ -12,6 +12,7 @@ function Login({ setIsLoggedIn, handleLogin }) {
 
   React.useEffect(() => {
     Axios.get("http://localhost:8800/logins").then((response) => {
+      console.log(response.data)
       setUsers(response.data);
     });
   }, []);
