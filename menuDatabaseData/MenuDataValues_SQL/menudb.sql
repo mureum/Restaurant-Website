@@ -9,6 +9,7 @@ CREATE TABLE Item (
 	price numeric(4,2),
 	calories int,
 	type_ID char(2),
+	availability boolean,
 	PRIMARY KEY (item_ID),
 	FOREIGN KEY (type_ID) REFERENCES MenuType(type_ID)
 );
