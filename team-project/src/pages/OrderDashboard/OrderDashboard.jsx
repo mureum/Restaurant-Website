@@ -57,9 +57,13 @@ function OrderDashboard({ isLoggedIn, permission }) {
           <img className="object-cover h-[40px] h-[40px]" src={cooking} />
         </h1>
         <OrderTable nextStepText="Mark as Ready" />
-        <h1 className="text-3xl font-bold">Ready</h1>
+        <h1 className="text-3xl font-bold">
+          Ready <i className="fa-solid fa-bell-concierge"></i>
+        </h1>
         <OrderTable nextStepText="Mark as Delivered" />
-        <h1 className="text-3xl font-bold">Delivered orders</h1>
+        <h1 className="text-3xl font-bold">
+          Delivered orders <i className="fa-solid fa-circle-check"></i>
+        </h1>
         <OrderTable />
       </div>
     </>
