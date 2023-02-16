@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
-<<<<<<< HEAD
-import { Navbar } from "../common/Navbar";
-
-const Cart = () => {
-=======
 
 const Cart = ({ isLoggedIn }) => {
->>>>>>> feature-MenuBackend
   const [cartItems, setItems] = useState([]);
   const location = useLocation();
   const { items, values } = location.state;
@@ -56,10 +50,6 @@ const Cart = ({ isLoggedIn }) => {
 
   return (
     <div className="App">
-<<<<<<< HEAD
-      <Navbar />
-=======
->>>>>>> feature-MenuBackend
       <p>Don't refresh the page!</p>
       <div className="backgroundofcart">
         <div className="Header">
