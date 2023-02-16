@@ -41,3 +41,24 @@ SELECT name, price, calories
 FROM Item
 WHERE price < 10.00
 ORDER BY price desc;
+
+/* FILTER 6 - FILTER DIETS AND ALLERGENS
+The query below filters menu to show vegan items that do not contain gluten.
+Same query can be used to filter both allergen and diet. */
+SELECT name, price, calories 
+FROM Item 
+WHERE item_ID IN   (SELECT item_ID 
+                    FROM Item_Allergen    
+                    WHERE allergen_id = 'GL') AND item_ID IN (SELECT item_ID 
+                                                              FROM item_diet
+                                                              WHERE diet_id = 'VGN');
+                                                              
+/* FILTER 7 - AVAILABILITY
+The query below cfilters the menu to only show ites that are available to purchase. */
+SELECT name, price, calories
+FROM Item
+WHERE availability = true;
+
+
+                                                              
+                                                              
