@@ -147,13 +147,13 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
           <a href="/about-us">Contact Us</a>
         </li>
       </ul>
-      {isLoggedIn ? (
+      {isLoggedIn ? permission === "Waiter" ? (
         <Menu isOpen={isOpen} styles={styles} right>
           <li>
           <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
           </li>
           <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/admin">Admin Dashboard</a>
+            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/orderDashboard">Order Dashboard</a>
           </li>
           <li>
             <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
@@ -162,12 +162,27 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
         // <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
         //   Staff LogOut
         // </button>
+      ) : permission === "Kitchen" ? (
+        <Menu isOpen={isOpen} styles={styles} right>
+          <li>
+          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
+          </li>
+          <li>
+            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/KitchenDashboard">Kitchen Dashboard</a>
+          </li>
+          <li>
+            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
+          </li>
+      </Menu>
+      ) 
+      : (
+        <></>
       ) : (
-        <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
-          Staff LogIn
-        </button>
-      )
-      }
+      <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
+      Staff LogIn
+    </button>
+    )
+    }
     </header>
   );
 };
