@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { OrderTable } from "./OrderTable";
+import cooking from "../../assets/cooking.png";
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
@@ -51,8 +52,9 @@ function OrderDashboard({ isLoggedIn, permission }) {
           Pending orders <i class="fa-solid fa-clipboard"></i>
         </h1>
         <OrderTable nextStepText="Send to Kitchen" isCancellable={true} />
-        <h1 className="text-3xl font-bold">
-          In preparation <i class="fa-solid fa-fire-burner"></i>
+        <h1 className="text-3xl font-bold flex gap-4 items-center">
+          <span>In preparation</span>
+          <img className="object-cover h-[40px] h-[40px]" src={cooking} />
         </h1>
         <OrderTable nextStepText="Mark as Ready" />
         <h1 className="text-3xl font-bold">Ready</h1>
