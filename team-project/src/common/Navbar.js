@@ -64,7 +64,7 @@ export const Navbar = () => {
     },
   };
   return (
-    <header className="flex items-center">
+    <header className="flex items-center text-center">
       <img
         src={logo}
         width="300"
@@ -86,7 +86,7 @@ export const Navbar = () => {
           href="/about-us"
         >
           <span>Order Online</span>
-          <i class="fa-solid fa-caret-down"></i>
+          <i className="fa-solid fa-caret-down"></i>
         </a>
         <a
           id="menu"
@@ -100,7 +100,7 @@ export const Navbar = () => {
           href=""
         >
           <span>Locations</span>
-          <i class="fa-solid fa-caret-down"></i>
+          <i className="fa-solid fa-caret-down"></i>
         </a>
         <a className="text-2xl font-bold text-yellow-100 uppercase" href="">
           Contact Us
