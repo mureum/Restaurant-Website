@@ -130,6 +130,37 @@ app.get("/logins", async (req,res)=>{
   }
 })
 
+app.put("/orders/unavailable/:id", async(req,res) => {
+    try {
+      const id = req.params.id;
+      const q = `UPDATE Item
+        SET is_available = false
+        WHERE item_ID = '${id}';`
+      client.query(q, (err,data)=>{
+        if (err) return res.json(err);
+        return res.json("Item has been updated successfully")
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+  })
+  
+
+  app.put("/orders/available/:id", async(req,res) => {
+    try {
+      const id = req.params.id;
+      const q = `UPDATE Item
+        SET is_available = true
+        WHERE item_ID = '${id}';`
+      client.query(q, (err,data)=>{
+        if (err) return res.json(err);
+        return res.json("Item has been updated successfully")
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+  })
+
 
 app.listen(8800, ()=>{
     console.log("Connected to backend!")

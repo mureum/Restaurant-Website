@@ -1,13 +1,12 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "../App.css";
-import { Navbar } from "../common/Navbar";
 import React, { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-function Order() {
+function Order({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -200,9 +199,31 @@ function Order() {
     setValue({ ...value, [id]: (value[id] || 0) + 1 });
   };
 
+  const setUnavailable = async (id) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/unavailable/" + id
+      );
+      console.log(res);
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const setAvailable = async (id) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/available/" + id
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="App">
-      <Navbar />
       <div style={{ width: "100%", overflowX: "auto" }}>
         <br></br>
         <div id="myBtnContainer">
@@ -454,75 +475,171 @@ function Order() {
           }}
         />
         <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-          {items
-            .filter((item) => item.calories < Number(filter))
-            .map((item) => (
-              <div
-                className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
-                key={item.item_id}
-                style={{
-                  display:
-                    activeBtn === "all" || activeBtn === item.type_id
-                      ? "block"
-                      : "none",
-                }}
-              >
-                <img
-                  className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                  src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                  alt={`${item.name} image`}
-                  onError={(e) =>
-                    (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                  }
-                />
-                <div className="flex-1 flex flex-col p-4">
-                  <div className="flex justify-between">
-                    <div>
-                      <h2 className="font-bold text-2xl">{item.name}</h2>
-                      <p className="self-start text-xl">Description</p>
-                    </div>
-                    <div className="flex flex-col text-xl">
-                      <p>£{item.price}</p>
-                      <span className="self-end">{item.calories}cal</span>
-                      <div key={item.item_id}>
-                        <button onClick={() => handleDecrement(item.item_id)}>
-                          -
-                        </button>
-                        <input
-                          type="text"
-                          value={value[item.item_id] || 0}
-                          onChange={handleChange(item.item_id)}
-                          placeholder="Insert the amount.."
-                          title="Type in a calorie value"
-                          id={item.item_id}
-                          style={{
-                            backgroundColor: "transparent",
-                            width: "50px",
-                            textAlign: "center",
-                          }}
-                        />
-                        <button onClick={() => handleIncrement(item.item_id)}>
-                          +
-                        </button>
-                      </div>
-                      <button
-                        onClick={() =>
-                          addToCart(
-                            item.name,
-                            item.item_id,
-                            item.price,
-                            value[item.item_id]
-                          )
+          {(items && permission === "Waiter") || permission === "Kitchen"
+            ? items
+                .filter((item) => item.calories < Number(filter))
+                .sort((a, b) => a.item_id.localeCompare(b.item_id))
+                .map((item) =>
+                  item.is_available === true ? (
+                    <div
+                      className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
+                      key={item.item_id}
+                      style={{
+                        display:
+                          activeBtn === "all" || activeBtn === item.type_id
+                            ? "block"
+                            : "none",
+                      }}
+                    >
+                      <img
+                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                        src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                        alt={`${item.name} image`}
+                        onError={(e) =>
+                          (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
                         }
-                      >
-                        <i className="fa-solid fa-cart-plus py-3 fa-2x"></i>
-                      </button>
+                      />
+                      <div className="flex-1 flex flex-col p-4">
+                        <div className="flex justify-between">
+                          <div>
+                            <h2 className="font-bold text-2xl">{item.name}</h2>
+                            <p className="self-start text-xl">Description</p>
+                          </div>
+                          <div className="flex flex-col text-xl">
+                            <p>£{item.price}</p>
+                            <span className="self-end">{item.calories}cal</span>
+                            <button
+                              className="text-2xl font-bold uppercase space-x-2"
+                              style={{ backgroundColor: "pink" }}
+                              onClick={() => setUnavailable(item.item_id)}
+                            >
+                              SET UNAVAILABLE
+                            </button>
+                          </div>
+                        </div>
+                        <br></br>
+                      </div>
                     </div>
-                  </div>
-                  <br></br>
-                </div>
-              </div>
-            ))}
+                  ) : (
+                    <div
+                      className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
+                      key={item.item_id}
+                      style={{
+                        display:
+                          activeBtn === "all" || activeBtn === item.type_id
+                            ? "block"
+                            : "none",
+                      }}
+                    >
+                      <img
+                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                        src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                        alt={`${item.name} image`}
+                        onError={(e) =>
+                          (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
+                        }
+                      />
+                      <div className="flex-1 flex flex-col p-4">
+                        <div className="flex justify-between">
+                          <div>
+                            <h2 className="font-bold text-2xl">{item.name}</h2>
+                            <p className="self-start text-xl">Description</p>
+                          </div>
+                          <div className="flex flex-col text-xl">
+                            <p>£{item.price}</p>
+                            <span className="self-end">{item.calories}cal</span>
+                            <button
+                              className="text-2xl font-bold uppercase space-x-2"
+                              style={{ backgroundColor: "pink" }}
+                              onClick={() => setAvailable(item.item_id)}
+                            >
+                              SET AVAILABLE
+                            </button>
+                          </div>
+                        </div>
+                        <br></br>
+                      </div>
+                    </div>
+                  )
+                )
+            : items
+                .filter((item) => item.calories < Number(filter))
+                .sort((a, b) => a.item_id.localeCompare(b.item_id))
+                .map((item) =>
+                  item.is_available === true ? (
+                    <div
+                      className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
+                      key={item.item_id}
+                      style={{
+                        display:
+                          activeBtn === "all" || activeBtn === item.type_id
+                            ? "block"
+                            : "none",
+                      }}
+                    >
+                      <img
+                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                        src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                        alt={`${item.name} image`}
+                        onError={(e) =>
+                          (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
+                        }
+                      />
+                      <div className="flex-1 flex flex-col p-4">
+                        <div className="flex justify-between">
+                          <div>
+                            <h2 className="font-bold text-2xl">{item.name}</h2>
+                            <p className="self-start text-xl">Description</p>
+                          </div>
+                          <div className="flex flex-col text-xl">
+                            <p>£{item.price}</p>
+                            <span className="self-end">{item.calories}cal</span>
+                            <div key={item.item_id}>
+                              <button
+                                onClick={() => handleDecrement(item.item_id)}
+                              >
+                                -
+                              </button>
+                              <input
+                                type="text"
+                                value={value[item.item_id] || 0}
+                                onChange={handleChange(item.item_id)}
+                                placeholder="Insert the amount.."
+                                title="Type in a calorie value"
+                                id={item.item_id}
+                                style={{
+                                  backgroundColor: "transparent",
+                                  width: "50px",
+                                  textAlign: "center",
+                                }}
+                              />
+                              <button
+                                onClick={() => handleIncrement(item.item_id)}
+                              >
+                                +
+                              </button>
+                            </div>
+                            <button
+                              onClick={() =>
+                                addToCart(
+                                  item.name,
+                                  item.item_id,
+                                  item.price,
+                                  value[item.item_id]
+                                )
+                              }
+                            >
+                              <i className="fa-solid fa-cart-plus py-3 fa-2x"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <br />
+                      </div>
+                    </div>
+                  ) : (
+                    <></>
+                  )
+                )}
         </div>
         <br></br>
       </div>
