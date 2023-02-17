@@ -125,16 +125,6 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
-  const divStyle = {
-    width: "100vh",
-    height: "100%",
-    display: "flex",
-    flexFlow: "row wrap",
-    justifyContent: "space-between",
-    maxWidth: "100%",
-    maxHeight: "100%",
-  };
-
   const [activeBtn, setActiveBtn] = useState("all");
 
   const filterSelection = (c) => {
@@ -223,10 +213,9 @@ function Order({ isLoggedIn, permission }) {
   };
 
   return (
-    <div className="App">
-      <div style={{ width: "100%", overflowX: "auto" }}>
-        <br></br>
-        <div id="myBtnContainer">
+    <div className="container mx-auto">
+      <div className="flex justify-between">
+        <div id="myBtnContainer" class="btn-group">
           <button
             className={activeBtn === "all" ? "btn active" : "btn"}
             onClick={() => filterSelection("all")}
@@ -263,16 +252,30 @@ function Order({ isLoggedIn, permission }) {
           >
             Drinks
           </button>
-          <button className="absolute top-[85px] right-[90px]">
-            <Link to="/cart" state={{ items: cart }}>
-              <img
-                src="https://cdn-icons-png.flaticon.com/512/3081/3081986.png"
-                alt="cart"
-                height="30px"
-                width="50px"
-              />
-            </Link>
-          </button>
+        </div>
+
+        <div className="flex justify-between">
+          <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn m-1">
+              Filter
+            </label>
+            <div
+              tabIndex={0}
+              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-96 flex flex-col"
+            >
+              <div className="gap-2">
+                <h3 className="font-bold">Diet</h3>
+              </div>
+
+              <div className="gap-2">
+                <h3 className="font-bold">Allergens</h3>
+              </div>
+
+              <div className="gap-2">
+                <h3 className="font-bold">Calories</h3>
+              </div>
+            </div>
+          </div>
           <div
             id="list1"
             className="dropdown-check-list absolute right-60"
@@ -460,188 +463,219 @@ function Order({ isLoggedIn, permission }) {
             </ul>
           </div>
         </div>
-        <br></br>
-        <input
-          className="calories"
-          type="text"
-          placeholder="Search for calories less than.."
-          title="Type in a calorie value"
-          onChange={(e) => {
-            if (e.target.value !== "") {
-              setFilter(e.target.value);
-            } else {
-              setFilter("100000");
-            }
-          }}
-        />
-        <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-          {(items && permission === "Waiter") || permission === "Kitchen"
-            ? items
-                .filter((item) => item.calories < Number(filter))
-                .sort((a, b) => a.item_id.localeCompare(b.item_id))
-                .map((item) =>
-                  item.is_available === true ? (
-                    <div
-                      className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
-                      key={item.item_id}
-                      style={{
-                        display:
-                          activeBtn === "all" || activeBtn === item.type_id
-                            ? "block"
-                            : "none",
-                      }}
-                    >
-                      <img
-                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                        src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                        alt={`${item.name} image`}
-                        onError={(e) =>
-                          (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                        }
-                      />
-                      <div className="flex-1 flex flex-col p-4">
-                        <div className="flex justify-between">
-                          <div>
-                            <h2 className="font-bold text-2xl">{item.name}</h2>
-                            <p className="self-start text-xl">Description</p>
-                          </div>
-                          <div className="flex flex-col text-xl">
-                            <p>£{item.price}</p>
-                            <span className="self-end">{item.calories}cal</span>
-                            <button
-                              className="text-2xl font-bold uppercase space-x-2"
-                              style={{ backgroundColor: "pink" }}
-                              onClick={() => setUnavailable(item.item_id)}
-                            >
-                              SET UNAVAILABLE
-                            </button>
-                          </div>
-                        </div>
-                        <br></br>
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
-                      key={item.item_id}
-                      style={{
-                        display:
-                          activeBtn === "all" || activeBtn === item.type_id
-                            ? "block"
-                            : "none",
-                      }}
-                    >
-                      <img
-                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                        src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                        alt={`${item.name} image`}
-                        onError={(e) =>
-                          (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                        }
-                      />
-                      <div className="flex-1 flex flex-col p-4">
-                        <div className="flex justify-between">
-                          <div>
-                            <h2 className="font-bold text-2xl">{item.name}</h2>
-                            <p className="self-start text-xl">Description</p>
-                          </div>
-                          <div className="flex flex-col text-xl">
-                            <p>£{item.price}</p>
-                            <span className="self-end">{item.calories}cal</span>
-                            <button
-                              className="text-2xl font-bold uppercase space-x-2"
-                              style={{ backgroundColor: "pink" }}
-                              onClick={() => setAvailable(item.item_id)}
-                            >
-                              SET AVAILABLE
-                            </button>
-                          </div>
-                        </div>
-                        <br></br>
-                      </div>
-                    </div>
-                  )
-                )
-            : items
-                .filter((item) => item.calories < Number(filter))
-                .sort((a, b) => a.item_id.localeCompare(b.item_id))
-                .map((item) =>
-                  item.is_available === true ? (
-                    <div
-                      className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
-                      key={item.item_id}
-                      style={{
-                        display:
-                          activeBtn === "all" || activeBtn === item.type_id
-                            ? "block"
-                            : "none",
-                      }}
-                    >
-                      <img
-                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                        src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                        alt={`${item.name} image`}
-                        onError={(e) =>
-                          (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                        }
-                      />
-                      <div className="flex-1 flex flex-col p-4">
-                        <div className="flex justify-between">
-                          <div>
-                            <h2 className="font-bold text-2xl">{item.name}</h2>
-                            <p className="self-start text-xl">Description</p>
-                          </div>
-                          <div className="flex flex-col text-xl">
-                            <p>£{item.price}</p>
-                            <span className="self-end">{item.calories}cal</span>
-                            <div key={item.item_id}>
-                              <button
-                                onClick={() => handleDecrement(item.item_id)}
-                              >
-                                -
-                              </button>
-                              <input
-                                type="text"
-                                value={value[item.item_id] || 0}
-                                onChange={handleChange(item.item_id)}
-                                placeholder="Insert the amount.."
-                                title="Type in a calorie value"
-                                id={item.item_id}
-                                style={{
-                                  backgroundColor: "transparent",
-                                  width: "50px",
-                                  textAlign: "center",
-                                }}
-                              />
-                              <button
-                                onClick={() => handleIncrement(item.item_id)}
-                              >
-                                +
-                              </button>
-                            </div>
-                            <button
-                              onClick={() =>
-                                addToCart(
-                                  item.name,
-                                  item.item_id,
-                                  item.price,
-                                  value[item.item_id]
-                                )
-                              }
-                            >
-                              <i className="fa-solid fa-cart-plus py-3 fa-2x"></i>
-                            </button>
-                          </div>
-                        </div>
-                        <br />
-                      </div>
-                    </div>
-                  ) : (
-                    <></>
-                  )
-                )}
+      </div>
+
+      <button className="absolute top-[85px] right-[90px]">
+        <Link to="/cart" state={{ items: cart }}>
+          <img
+            src="https://cdn-icons-png.flaticon.com/512/3081/3081986.png"
+            alt="cart"
+            height="30px"
+            width="50px"
+          />
+        </Link>
+      </button>
+      <br></br>
+      <div className="form-control">
+        <div className="input-group">
+          <input
+            type="text"
+            placeholder="Search for calories less than.."
+            title="Type in a calorie value"
+            className="input input-bordered w-96"
+            onChange={(e) => {
+              if (e.target.value !== "") {
+                setFilter(e.target.value);
+              } else {
+                setFilter("100000");
+              }
+            }}
+          />
+          <button className="btn btn-square">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </button>
         </div>
-        <br></br>
+      </div>
+
+      <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
+        {(items && permission === "Waiter") || permission === "Kitchen"
+          ? items
+              .filter((item) => item.calories < Number(filter))
+              .sort((a, b) => a.item_id.localeCompare(b.item_id))
+              .map((item) =>
+                item.is_available === true ? (
+                  <div
+                    className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
+                    key={item.item_id}
+                    style={{
+                      display:
+                        activeBtn === "all" || activeBtn === item.type_id
+                          ? "block"
+                          : "none",
+                    }}
+                  >
+                    <img
+                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                      alt={`${item.name} image`}
+                      onError={(e) =>
+                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
+                      }
+                    />
+                    <div className="flex-1 flex flex-col p-4">
+                      <div className="flex justify-between">
+                        <div>
+                          <h2 className="font-bold text-2xl">{item.name}</h2>
+                          <p className="self-start text-xl">Description</p>
+                        </div>
+                        <div className="flex flex-col text-xl">
+                          <p>£{item.price}</p>
+                          <span className="self-end">{item.calories}cal</span>
+                          <button
+                            className="text-2xl font-bold uppercase space-x-2"
+                            style={{ backgroundColor: "pink" }}
+                            onClick={() => setUnavailable(item.item_id)}
+                          >
+                            SET UNAVAILABLE
+                          </button>
+                        </div>
+                      </div>
+                      <br></br>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
+                    key={item.item_id}
+                    style={{
+                      display:
+                        activeBtn === "all" || activeBtn === item.type_id
+                          ? "block"
+                          : "none",
+                    }}
+                  >
+                    <img
+                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                      alt={`${item.name} image`}
+                      onError={(e) =>
+                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
+                      }
+                    />
+                    <div className="flex-1 flex flex-col p-4">
+                      <div className="flex justify-between">
+                        <div>
+                          <h2 className="font-bold text-2xl">{item.name}</h2>
+                          <p className="self-start text-xl">Description</p>
+                        </div>
+                        <div className="flex flex-col text-xl">
+                          <p>£{item.price}</p>
+                          <span className="self-end">{item.calories}cal</span>
+                          <button
+                            className="text-2xl font-bold uppercase space-x-2"
+                            style={{ backgroundColor: "pink" }}
+                            onClick={() => setAvailable(item.item_id)}
+                          >
+                            SET AVAILABLE
+                          </button>
+                        </div>
+                      </div>
+                      <br></br>
+                    </div>
+                  </div>
+                )
+              )
+          : items
+              .filter((item) => item.calories < Number(filter))
+              .sort((a, b) => a.item_id.localeCompare(b.item_id))
+              .map((item) =>
+                item.is_available === true ? (
+                  <div
+                    className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
+                    key={item.item_id}
+                    style={{
+                      display:
+                        activeBtn === "all" || activeBtn === item.type_id
+                          ? "block"
+                          : "none",
+                    }}
+                  >
+                    <img
+                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                      alt={`${item.name} image`}
+                      onError={(e) =>
+                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
+                      }
+                    />
+                    <div className="flex-1 flex flex-col p-4">
+                      <div className="flex justify-between">
+                        <div>
+                          <h2 className="font-bold text-2xl">{item.name}</h2>
+                          <p className="self-start text-xl">Description</p>
+                        </div>
+                        <div className="flex flex-col text-xl">
+                          <p>£{item.price}</p>
+                          <span className="self-end">{item.calories}cal</span>
+                          <div key={item.item_id}>
+                            <button
+                              onClick={() => handleDecrement(item.item_id)}
+                            >
+                              -
+                            </button>
+                            <input
+                              type="text"
+                              value={value[item.item_id] || 0}
+                              onChange={handleChange(item.item_id)}
+                              placeholder="Insert the amount.."
+                              title="Type in a calorie value"
+                              id={item.item_id}
+                              style={{
+                                backgroundColor: "transparent",
+                                width: "50px",
+                                textAlign: "center",
+                              }}
+                            />
+                            <button
+                              onClick={() => handleIncrement(item.item_id)}
+                            >
+                              +
+                            </button>
+                          </div>
+                          <button
+                            onClick={() =>
+                              addToCart(
+                                item.name,
+                                item.item_id,
+                                item.price,
+                                value[item.item_id]
+                              )
+                            }
+                          >
+                            <i className="fa-solid fa-cart-plus py-3 fa-2x"></i>
+                          </button>
+                        </div>
+                      </div>
+                      <br />
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )
+              )}
       </div>
     </div>
   );
