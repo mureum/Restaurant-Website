@@ -12,12 +12,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
     // Use the stored value of isLoggedIn, or false if it hasn't been set
-    return JSON.parse(localStorage.getItem('isLoggedIn')) || false;
+    return JSON.parse(localStorage.getItem("isLoggedIn")) || false;
   });
 
   // Store the isLoggedIn state in localStorage whenever it changes
   React.useEffect(() => {
-    localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+    localStorage.setItem("isLoggedIn", JSON.stringify(isLoggedIn));
   }, [isLoggedIn]);
 
   const [permission, setPermission] = React.useState(() => {
@@ -34,15 +34,36 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="App">
-      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} permission={permission} setPermission={setPermission}/>
+      <div>
+        <Navbar
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          permission={permission}
+          setPermission={setPermission}
+        />
         <Routes>
-          <Route path="/" element={<Home isLoggedIn={isLoggedIn}/>} />
-          <Route path="/about-us" element={<AboutUs isLoggedIn={isLoggedIn}/>} />
-          <Route path="/menu" element={<Order isLoggedIn={isLoggedIn} permission={permission}/>} />
+          <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
+          <Route
+            path="/about-us"
+            element={<AboutUs isLoggedIn={isLoggedIn} />}
+          />
+          <Route
+            path="/menu"
+            element={<Order isLoggedIn={isLoggedIn} permission={permission} />}
+          />
           <Route path="/cart" element={<Cart isLoggedIn={isLoggedIn} />} />
-          <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} handleLogin={handleLogin}/>} />
-          <Route path="/order-dashboard" element={<OrderDashboard isLoggedIn={isLoggedIn} permission={permission}/>} />
+          <Route
+            path="/login"
+            element={
+              <Login setIsLoggedIn={setIsLoggedIn} handleLogin={handleLogin} />
+            }
+          />
+          <Route
+            path="/order-dashboard"
+            element={
+              <OrderDashboard isLoggedIn={isLoggedIn} permission={permission} />
+            }
+          />
         </Routes>
       </div>
     </BrowserRouter>
