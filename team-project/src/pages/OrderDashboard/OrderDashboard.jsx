@@ -9,15 +9,24 @@ function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const fecthAllItems = async () => {
+    const fetchAlltems = async () => {
       try {
         const res = await axios.get("http://localhost:8800/pendingOrders");
-        setItems(res.data);
+        const transformedData = res.data.map((item) => ({
+          tableNumber: item.table_no,
+          orderNumber: item.order_no,
+          customerName: item.customer_name,
+          time: item.time,
+          details: {},
+        }));
+        setItems(transformedData);
       } catch (err) {
         console.log(err);
       }
     };
-    fecthAllItems();
+
+    fetchAlltems();
+    console.log(items);
   }, []);
 
   return (
