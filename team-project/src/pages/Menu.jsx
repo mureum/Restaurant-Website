@@ -333,8 +333,8 @@ function Order({ isLoggedIn, permission }) {
               <div className="gap-2">
                 <h3 className="font-bold text-xl">Diet</h3>
                 <div className="grid grid-cols-2">
-                  {DIETS.map((diet) => (
-                    <div className="form-control">
+                  {DIETS.map((diet, i) => (
+                    <div className="form-control" key={i}>
                       <label className="label cursor-pointer justify-start gap-2">
                         <input
                           type="checkbox"
@@ -356,8 +356,8 @@ function Order({ isLoggedIn, permission }) {
               <div className="gap-2">
                 <h3 className="font-bold text-xl">Allergens</h3>
                 <div className="grid grid-cols-2">
-                  {ALLERGENS.map((allergen) => (
-                    <div className="form-control">
+                  {ALLERGENS.map((allergen, i) => (
+                    <div className="form-control" key={i}>
                       <label className="label cursor-pointer justify-start gap-2">
                         <input
                           type="checkbox"
@@ -381,7 +381,7 @@ function Order({ isLoggedIn, permission }) {
                 <Range />
               </div>
 
-              <button class="btn btn-primary self-end">Apply Filters</button>
+              <button className="btn btn-primary self-end">Apply Filters</button>
             </div>
           </div>
         </div>
