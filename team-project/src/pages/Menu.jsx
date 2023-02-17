@@ -5,7 +5,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import  Range  from "rc-slider";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 const ALLERGENS = [
   {
@@ -282,7 +283,7 @@ function Order({ isLoggedIn, permission }) {
   return (
     <div className="container mx-auto">
       <div className="flex justify-between">
-        <div id="myBtnContainer" class="btn-group">
+        <div id="myBtnContainer" className="btn-group">
           <button
             className={activeBtn === "all" ? "btn active" : "btn"}
             onClick={() => filterSelection("all")}
@@ -378,10 +379,20 @@ function Order({ isLoggedIn, permission }) {
 
               <div className="gap-2">
                 <h3 className="font-bold text-xl">Calories</h3>
-                <Range />
+                <div className="my-4">
+                  <Slider
+                    min={0}
+                    max={100}
+                    range={true}
+                    step={10}
+                    dots={true}
+                  />
+                </div>
               </div>
 
-              <button className="btn btn-primary self-end">Apply Filters</button>
+              <button className="btn btn-primary self-end">
+                Apply Filters
+              </button>
             </div>
           </div>
         </div>
