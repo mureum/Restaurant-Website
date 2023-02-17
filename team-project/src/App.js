@@ -34,7 +34,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div>
+      <div className="min-h-screen">
         <Navbar
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
