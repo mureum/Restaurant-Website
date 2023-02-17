@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import  Range  from "rc-slider";
 
 const ALLERGENS = [
   {
@@ -327,212 +328,61 @@ function Order({ isLoggedIn, permission }) {
             </label>
             <div
               tabIndex={0}
-              className="dropdown-content menu p-4 shadow bg-base-100 rounded-box w-96 flex flex-col gap-8"
+              className="dropdown-content menu p-4 shadow bg-base-100 rounded-box w-[500px] flex flex-col"
             >
               <div className="gap-2">
-                <h3 className="font-bold text-lg">Diet</h3>
-                <ul className="items">
-                  <li>
-                    <input
-                      type="checkbox"
-                      checked={checked.includes("'VGN'")}
-                      onChange={() => handleCheck("VGN")}
-                      id="VGN"
-                    />
-                    Vegan Items
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      checked={checked.includes("'VEG'")}
-                      onChange={() => handleCheck("VEG")}
-                      id="VEG"
-                    />
-                    Vegetarian Items
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      checked={checked.includes("'GLT'")}
-                      onChange={() => handleCheck("GLT")}
-                      id="GLT"
-                    />
-                    Gluten-Free Items
-                  </li>
-                  <li>
-                    <input
-                      type="checkbox"
-                      checked={checked.includes("'LAC'")}
-                      onChange={() => handleCheck("LAC")}
-                      id="LAC"
-                    />
-                    Lactose-Free Items
-                  </li>
-                </ul>
+                <h3 className="font-bold text-xl">Diet</h3>
+                <div className="grid grid-cols-2">
+                  {DIETS.map((diet) => (
+                    <div className="form-control">
+                      <label className="label cursor-pointer justify-start gap-2">
+                        <input
+                          type="checkbox"
+                          className="toggle"
+                          checked={checked.includes("'" + diet.id + "'")}
+                          onChange={() => handleCheck(diet.id)}
+                          id={diet.id}
+                          className="checkbox checkbox-primary"
+                        />
+                        <span className="label-text">{diet.name}</span>
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="gap-2">
-                <h3 className="font-bold text-lg">Allergens</h3>
-              </div>
+              <div className="divider"></div>
 
               <div className="gap-2">
-                <h3 className="font-bold text-lg">Calories</h3>
+                <h3 className="font-bold text-xl">Allergens</h3>
+                <div className="grid grid-cols-2">
+                  {ALLERGENS.map((allergen) => (
+                    <div className="form-control">
+                      <label className="label cursor-pointer justify-start gap-2">
+                        <input
+                          type="checkbox"
+                          className="toggle"
+                          checked={checked2.includes("'" + allergen.id + "'")}
+                          onChange={() => handleCheck2(allergen.id)}
+                          id={allergen.id}
+                          className="checkbox checkbox-primary"
+                        />
+                        <span className="label-text">{allergen.name}</span>
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
+
+              <div className="divider"></div>
+
+              <div className="gap-2">
+                <h3 className="font-bold text-xl">Calories</h3>
+                <Range />
+              </div>
+
+              <button class="btn btn-primary self-end">Apply Filters</button>
             </div>
-          </div>
-          <div
-            id="list1"
-            className="dropdown-check-list absolute right-60"
-            ref={checkListRef1}
-            tabIndex="100"
-          >
-            <span className="anchor" onClick={handleClick1}>
-              Filter Diet
-            </span>
-          </div>
-          <div
-            id="list2"
-            className="dropdown-check-list absolute right-10"
-            ref={checkListRef2}
-            tabIndex="100"
-          >
-            <span className="anchor" onClick={handleClick2}>
-              Allergens
-            </span>
-            <ul className="items">
-              <div class="form-control">
-                <label class="label cursor-pointer">
-                  <span class="label-text">Remember me</span>
-                  <input type="checkbox" class="toggle" checked />
-                </label>
-              </div>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'GL'")}
-                  onChange={() => handleCheck2("GL")}
-                  id="GL"
-                />
-                Gluten
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'CR'")}
-                  onChange={() => handleCheck2("CR")}
-                  id="CR"
-                />
-                Crustaceans
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'EG'")}
-                  onChange={() => handleCheck2("EG")}
-                  id="EG"
-                />
-                Eggs
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'FI'")}
-                  onChange={() => handleCheck2("FI")}
-                  id="FI"
-                />
-                Fish
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'PE'")}
-                  onChange={() => handleCheck2("PE")}
-                  id="PE"
-                />
-                Peanuts
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'SO'")}
-                  onChange={() => handleCheck2("SO")}
-                  id="SO"
-                />
-                Soya
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'MI'")}
-                  onChange={() => handleCheck2("MI")}
-                  id="MI"
-                />
-                Milk
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'TR'")}
-                  onChange={() => handleCheck2("TR")}
-                  id="TR"
-                />
-                Tree Nuts
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'CE'")}
-                  onChange={() => handleCheck2("CE")}
-                  id="CE"
-                />
-                Celery
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'MU'")}
-                  onChange={() => handleCheck2("MU")}
-                  id="MU"
-                />
-                Mustard
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'SE'")}
-                  onChange={() => handleCheck2("SE")}
-                  id="SE"
-                />
-                Sesame
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'LU'")}
-                  onChange={() => handleCheck2("LU")}
-                  id="LU"
-                />
-                Lupin
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'MO'")}
-                  onChange={() => handleCheck2("MO")}
-                  id="MO"
-                />
-                Molluscs
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked2.includes("'SH'")}
-                  onChange={() => handleCheck2("SH")}
-                  id="SH"
-                />
-                Shellfish
-              </li>
-            </ul>
           </div>
         </div>
       </div>
