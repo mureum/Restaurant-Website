@@ -6,6 +6,72 @@ import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
+const ALLERGENS = [
+  {
+    id: "GL",
+    name: "Gluten",
+  },
+  {
+    id: "CR",
+    name: "Crustaceans",
+  },
+  {
+    id: "EG",
+    name: "Eggs",
+  },
+  {
+    id: "FI",
+    name: "Fish",
+  },
+  {
+    id: "PE",
+    name: "Peanuts",
+  },
+  {
+    id: "SO",
+    name: "Soya",
+  },
+  {
+    id: "MI",
+    name: "Milk",
+  },
+  {
+    id: "TR",
+    name: "Tree Nuts",
+  },
+  {
+    id: "CE",
+    name: "Celery",
+  },
+  {
+    id: "MU",
+    name: "Mustard",
+  },
+  {
+    id: "SE",
+    name: "Sesame",
+  },
+  {
+    id: "LU",
+    name: "Lupin",
+  },
+  {
+    id: "MO",
+    name: "Molluscs",
+  },
+  {
+    id: "SH",
+    name: "Shellfish",
+  },
+];
+
+const DIETS = [
+  { id: "VGN", name: "Vegan Items" },
+  { id: "VEG", name: "Vegetarian Items" },
+  { id: "GLT", name: "Gluten-Free Items" },
+  { id: "LAC", name: "Lactose-Free Items" },
+];
+
 function Order({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
 
@@ -261,18 +327,56 @@ function Order({ isLoggedIn, permission }) {
             </label>
             <div
               tabIndex={0}
-              className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-96 flex flex-col"
+              className="dropdown-content menu p-4 shadow bg-base-100 rounded-box w-96 flex flex-col gap-8"
             >
               <div className="gap-2">
-                <h3 className="font-bold">Diet</h3>
+                <h3 className="font-bold text-lg">Diet</h3>
+                <ul className="items">
+                  <li>
+                    <input
+                      type="checkbox"
+                      checked={checked.includes("'VGN'")}
+                      onChange={() => handleCheck("VGN")}
+                      id="VGN"
+                    />
+                    Vegan Items
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      checked={checked.includes("'VEG'")}
+                      onChange={() => handleCheck("VEG")}
+                      id="VEG"
+                    />
+                    Vegetarian Items
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      checked={checked.includes("'GLT'")}
+                      onChange={() => handleCheck("GLT")}
+                      id="GLT"
+                    />
+                    Gluten-Free Items
+                  </li>
+                  <li>
+                    <input
+                      type="checkbox"
+                      checked={checked.includes("'LAC'")}
+                      onChange={() => handleCheck("LAC")}
+                      id="LAC"
+                    />
+                    Lactose-Free Items
+                  </li>
+                </ul>
               </div>
 
               <div className="gap-2">
-                <h3 className="font-bold">Allergens</h3>
+                <h3 className="font-bold text-lg">Allergens</h3>
               </div>
 
               <div className="gap-2">
-                <h3 className="font-bold">Calories</h3>
+                <h3 className="font-bold text-lg">Calories</h3>
               </div>
             </div>
           </div>
@@ -285,44 +389,6 @@ function Order({ isLoggedIn, permission }) {
             <span className="anchor" onClick={handleClick1}>
               Filter Diet
             </span>
-            <ul className="items">
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked.includes("'VGN'")}
-                  onChange={() => handleCheck("VGN")}
-                  id="VGN"
-                />
-                Vegan Items
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked.includes("'VEG'")}
-                  onChange={() => handleCheck("VEG")}
-                  id="VEG"
-                />
-                Vegetarian Items
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked.includes("'GLT'")}
-                  onChange={() => handleCheck("GLT")}
-                  id="GLT"
-                />
-                Gluten-Free Items
-              </li>
-              <li>
-                <input
-                  type="checkbox"
-                  checked={checked.includes("'LAC'")}
-                  onChange={() => handleCheck("LAC")}
-                  id="LAC"
-                />
-                Lactose-Free Items
-              </li>
-            </ul>
           </div>
           <div
             id="list2"
@@ -334,6 +400,12 @@ function Order({ isLoggedIn, permission }) {
               Allergens
             </span>
             <ul className="items">
+              <div class="form-control">
+                <label class="label cursor-pointer">
+                  <span class="label-text">Remember me</span>
+                  <input type="checkbox" class="toggle" checked />
+                </label>
+              </div>
               <li>
                 <input
                   type="checkbox"
