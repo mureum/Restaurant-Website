@@ -1,3 +1,4 @@
-
-INSERT INTO waiter_calls
-VALUES (12,'guyftctv');
+CREATE TABLE test_Call (
+    tableNumber INT,
+    problemDescription VARCHAR(500)
+);
