@@ -8,7 +8,7 @@ const Cart = ({ isLoggedIn }) => {
   const { items, values } = location.state;
 
   const decrementItemAmount = (index) => {
-    const updatedItems = [...items];
+    const updatedItems = [...cartItems];
     if (updatedItems[index].amount > 0) {
       updatedItems[index].amount -= 1;
       setItems(updatedItems);
@@ -16,7 +16,7 @@ const Cart = ({ isLoggedIn }) => {
   };
 
   const incrementItemAmount = (index) => {
-    const updatedItems = [...items];
+    const updatedItems = [...cartItems];
     if (updatedItems[index].amount >= 0) {
       updatedItems[index].amount += 1;
       setItems(updatedItems);
@@ -38,13 +38,21 @@ const Cart = ({ isLoggedIn }) => {
 
   useEffect(() => {
     if (items) {
-      setItems(items);
-      localStorage.setItem("cartItems", JSON.stringify(items));
+      // Group items by item_id and keep the one with the highest amount
+      const groupedItems = items.reduce((acc, curr) => {
+        const existingItem = acc.find((item) => item.item_id === curr.item_id);
+        if (!existingItem || existingItem.amount < curr.amount) {
+          return [...acc.filter((item) => item.item_id !== curr.item_id), curr];
+        }
+        return acc;
+      }, []);
+      setItems(groupedItems);
+      localStorage.setItem("cartItems", JSON.stringify(groupedItems));
     } else {
       const cartData = JSON.parse(localStorage.getItem("cartItems")) || [];
       setItems(cartData);
     }
-  }, [items]); // here we add the dependency items to useEffect, so when the items are changed, the effect is triggered and sets the localStorage with the updated items.
+  }, [items]);
 
   var total = 0;
 
