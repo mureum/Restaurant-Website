@@ -90,3 +90,42 @@ VALUES ('11110', 'https://nutritiouslife.com/wp-content/uploads/2010/05/shutters
 
 INSERT INTO images (item_ID, link)
 VALUES ('11111', 'https://simple-veganista.com/wp-content/uploads/2019/07/vegan-cobb-salad_.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100000', 'https://media-cldnry.s-nbcnews.com/image/upload/t_social_share_1200x630_center,f_auto,q_auto:best/newscms/2021_28/1747160/coleslaw-main-khu-210712.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100001', 'https://www.cookingclassy.com/wp-content/uploads/2019/05/mexican-rice-1.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100010', 'https://static.toiimg.com/thumb/54659021.cms?imgsize=275086&width=800&height=800');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100011', 'https://www.recipetineats.com/wp-content/uploads/2019/07/Grilled-Corn_0.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100100', 'https://www.eatingonadime.com/wp-content/uploads/2021/05/fried-onion-rings-7-2.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100101', 'https://www.mancunianfoods.com/wp-content/uploads/2022/06/coke-can-2.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100110', 'https://www.cpd-direct.co.uk/images/ww/merlin/0402004.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('100111', 'https://u5j4h3u7.stackpathcdn.com/pub/media/catalog/product/cache/20a66ad9832fef4ad18737cb360000c7/3/0/308773_aa.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('101000', 'https://www.theudderfarmshop.co.uk/wp-content/uploads/images/2408-1.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('101001', 'https://cdn.huntoffice.co.uk/images/D.cache.large/DW06301-A.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('101010', 'https://bwhdrinks.co.uk/wp-content/uploads/2021/05/Belu-Sparkling-Water-330ml-1.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10', 'https://minimalistbaker.com/wp-content/uploads/2014/04/The-Best-Damn-Vegan-Nachos.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('1', 'https://cookandlogic.com/wp-content/uploads/2022/08/receta-de-salsa-de-queso-para-tacos-y-nachos-1200x675.webp');
