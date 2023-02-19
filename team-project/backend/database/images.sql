@@ -42,3 +42,51 @@ VALUES ('1110', 'https://assets.epicurious.com/photos/57978b27c9298e54495917d5/m
 
 INSERT INTO images (item_ID, link)
 VALUES ('1111', 'https://takestwoeggs.com/wp-content/uploads/2021/12/Sriracha-mayo-chicken-quesadilla-with-chicken-and-rice-soup-Takestwoeggs-Knorr-Mexican-Sopa-SQ-500x375.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10000', 'https://keviniscooking.com/wp-content/uploads/2019/05/Crispy-Ground-Beef-Quesadilla-square.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10001', 'https://storcpdkenticomedia.blob.core.windows.net/media/recipemanagementsystem/media/recipe-media-files/recipes/retail/x17/20627-veggie-quesadillas-760x580.jpg?ext=.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10010', 'https://lmld.org/wp-content/uploads/2012/05/Chicken-Fajitas-1.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10011', 'https://keviniscooking.com/wp-content/uploads/2018/07/Grilled-Steak-Fajitas-square.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10100', 'https://img.taste.com.au/y2pRo0Kn/taste/2016/11/prawn-fajitas-with-grilled-peach-salsa-89762-1.jpeg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10101', 'https://e4g6r5a9.rocketcdn.me/wp-content/uploads/2021/02/SambalFriedChickenBurger.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10110', 'https://www.oliveandmango.com/images/uploads/2021_06_21_classic_grilled_cheeseburger_1.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('10111', 'https://images.immediate.co.uk/production/volatile/sites/2/2016/06/23929.jpg?quality=90&resize=556,505');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11000', 'https://veenaazmanov.com/wp-content/uploads/2020/04/Classic-Pizza-Margherita1.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11001', 'https://www.jennycancook.com/wp-content/uploads/2013/02/PeppPizza_600.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11010', 'https://hips.hearstapps.com/hmg-prod/images/210302-vegan-spiral-cover-cauliflower-pizza-086-eb-1626711437.jpg?crop=0.998xw:0.668xh;0.00160xw,0.240xh&resize=1200:*');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11011', 'https://hips.hearstapps.com/hmg-prod/images/full-no-bake-cheesecake-horizontal-jpg-1525208292.jpg?crop=1.00xw:0.752xh;0,0.0697xh&resize=1200:*');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11100', 'https://www.biggerbolderbaking.com/wp-content/uploads/2018/05/Vanilla-2-Ingredient-Ice-cream-scaled.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11101', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Churros_Madrid.jpg/640px-Churros_Madrid.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11110', 'https://nutritiouslife.com/wp-content/uploads/2010/05/shutterstock_274855409-copy-1302x988.jpg');
+
+INSERT INTO images (item_ID, link)
+VALUES ('11111', 'https://simple-veganista.com/wp-content/uploads/2019/07/vegan-cobb-salad_.jpg');
