@@ -76,9 +76,10 @@ const DIETS = [
 
 function Order({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
+  const [images, setImgages] = useState([]);
 
   useEffect(() => {
-    const fecthAllItems = async () => {
+    const fetchAllItems = async () => {
       try {
         const res = await axios.get("http://localhost:8800/orders");
         setItems(res.data);
@@ -86,7 +87,16 @@ function Order({ isLoggedIn, permission }) {
         console.log(err);
       }
     };
-    fecthAllItems();
+    const fetchAllImages = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/images");
+        setImgages(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAllItems();
+    fetchAllImages();
   }, []);
 
   const fetchFilterDiets = async (id) => {
@@ -320,7 +330,6 @@ function Order({ isLoggedIn, permission }) {
                       <label className="label cursor-pointer justify-start gap-2">
                         <input
                           type="checkbox"
-                          className="toggle"
                           checked={checked.includes("'" + diet.id + "'")}
                           onChange={() => handleCheck(diet.id)}
                           id={diet.id}
@@ -343,7 +352,6 @@ function Order({ isLoggedIn, permission }) {
                       <label className="label cursor-pointer justify-start gap-2">
                         <input
                           type="checkbox"
-                          className="toggle"
                           checked={checked2.includes("'" + allergen.id + "'")}
                           onChange={() => handleCheck2(allergen.id)}
                           id={allergen.id}
@@ -429,7 +437,7 @@ function Order({ isLoggedIn, permission }) {
           ? items
               .filter((item) => item.calories < Number(filter))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
-              .map((item) =>
+              .map((item, i) =>
                 item.is_available === true ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
@@ -443,11 +451,8 @@ function Order({ isLoggedIn, permission }) {
                   >
                     <img
                       className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                      src={images[i]?.link}
                       alt={`${item.name} image`}
-                      onError={(e) =>
-                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                      }
                     />
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
@@ -483,11 +488,8 @@ function Order({ isLoggedIn, permission }) {
                   >
                     <img
                       className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                      src={images[i]?.link}
                       alt={`${item.name} image`}
-                      onError={(e) =>
-                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                      }
                     />
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
@@ -515,7 +517,7 @@ function Order({ isLoggedIn, permission }) {
           : items
               .filter((item) => item.calories < Number(filter))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
-              .map((item) =>
+              .map((item, i) =>
                 item.is_available === true ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
@@ -529,11 +531,8 @@ function Order({ isLoggedIn, permission }) {
                   >
                     <img
                       className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
+                      src={images[i]?.link}
                       alt={`${item.name} image`}
-                      onError={(e) =>
-                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                      }
                     />
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">

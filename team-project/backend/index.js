@@ -40,6 +40,18 @@ app.get("/orders", async (req,res)=>{
     }
   })
 
+  app.get("/images", async (req,res)=>{
+    try {
+      const q = "SELECT * FROM images ORDER BY CAST(item_id AS integer);"
+      client.query(q, (err,data)=>{
+        if(err) throw err
+        return res.json(data.rows)
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+  })
+
 app.get("/pendingOrders", async (req,res)=> {
     try {
         const q = "SELECT * FROM waiter_calls;"
