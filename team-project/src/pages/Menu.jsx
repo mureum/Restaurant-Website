@@ -223,25 +223,6 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
-  const checkListRef1 = useRef(null);
-  const checkListRef2 = useRef(null);
-
-  const handleClick1 = (event) => {
-    if (checkListRef1.current.classList.contains("visible")) {
-      checkListRef1.current.classList.remove("visible");
-    } else {
-      checkListRef1.current.classList.add("visible");
-    }
-  };
-
-  const handleClick2 = (event) => {
-    if (checkListRef2.current.classList.contains("visible")) {
-      checkListRef2.current.classList.remove("visible");
-    } else {
-      checkListRef2.current.classList.add("visible");
-    }
-  };
-
   const [filter, setFilter] = useState(100000);
   const [value, setValue] = useState({});
 
