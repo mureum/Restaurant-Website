@@ -42,7 +42,7 @@ app.get("/orders", async (req,res)=>{
 
   app.get("/images", async (req,res)=>{
     try {
-      const q = "SELECT * FROM images ORDER BY CAST(item_id AS integer);"
+      const q = "SELECT * FROM images;"
       client.query(q, (err,data)=>{
         if(err) throw err
         return res.json(data.rows)

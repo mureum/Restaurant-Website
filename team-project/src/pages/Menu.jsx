@@ -76,10 +76,10 @@ const DIETS = [
 
 function Order({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
-  const [images, setImgages] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
-    const fetchAllItems = async () => {
+    const fecthAllItems = async () => {
       try {
         const res = await axios.get("http://localhost:8800/orders");
         setItems(res.data);
@@ -87,16 +87,16 @@ function Order({ isLoggedIn, permission }) {
         console.log(err);
       }
     };
-    const fetchAllImages = async () => {
+    const fecthAllImages = async () => {
       try {
         const res = await axios.get("http://localhost:8800/images");
-        setImgages(res.data);
+        setImages(res.data);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchAllItems();
-    fetchAllImages();
+    fecthAllItems();
+    fecthAllImages();
   }, []);
 
   const fetchFilterDiets = async (id) => {
@@ -437,7 +437,7 @@ function Order({ isLoggedIn, permission }) {
           ? items
               .filter((item) => item.calories < Number(filter))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
-              .map((item, i) =>
+              .map((item) =>
                 item.is_available === true ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
@@ -449,11 +449,16 @@ function Order({ isLoggedIn, permission }) {
                           : "none",
                     }}
                   >
-                    <img
-                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={images[i]?.link}
-                      alt={`${item.name} image`}
-                    />
+                    {images
+                      .filter((image) => image.item_id === item.item_id)
+                      .map((image) => (
+                        <img
+                          key={image.item_id}
+                          className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                          src={image.link}
+                          alt={`${item.name} image`}
+                        />
+                      ))}
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
                         <div>
@@ -486,11 +491,16 @@ function Order({ isLoggedIn, permission }) {
                           : "none",
                     }}
                   >
-                    <img
-                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={images[i]?.link}
-                      alt={`${item.name} image`}
-                    />
+                    {images
+                      .filter((image) => image.item_id === item.item_id)
+                      .map((image) => (
+                        <img
+                          key={image.item_id}
+                          className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                          src={image.link}
+                          alt={`${item.name} image`}
+                        />
+                      ))}
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
                         <div>
@@ -517,7 +527,7 @@ function Order({ isLoggedIn, permission }) {
           : items
               .filter((item) => item.calories < Number(filter))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
-              .map((item, i) =>
+              .map((item) =>
                 item.is_available === true ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
@@ -529,11 +539,16 @@ function Order({ isLoggedIn, permission }) {
                           : "none",
                     }}
                   >
-                    <img
-                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={images[i]?.link}
-                      alt={`${item.name} image`}
-                    />
+                    {images
+                      .filter((image) => image.item_id === item.item_id)
+                      .map((image) => (
+                        <img
+                          key={image.item_id}
+                          className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                          src={image.link}
+                          alt={`${item.name} image`}
+                        />
+                      ))}
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
                         <div>
