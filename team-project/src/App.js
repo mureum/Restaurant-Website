@@ -5,6 +5,7 @@ import Order from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
+import WaiterCall from "./pages/callWaiter";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -51,7 +52,7 @@ function App() {
             path="/menu"
             element={<Order isLoggedIn={isLoggedIn} permission={permission} />}
           />
-          <Route path="/cart" element={<Cart isLoggedIn={isLoggedIn} />} />
+          <Route path="/cart" element={<Cart />} />
           <Route
             path="/login"
             element={
@@ -63,6 +64,10 @@ function App() {
             element={
               <OrderDashboard isLoggedIn={isLoggedIn} permission={permission} />
             }
+          />
+          <Route
+            path="/callWaiter"
+            element={<WaiterCall />}
           />
         </Routes>
       </div>
