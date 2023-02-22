@@ -1,17 +1,39 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
+import { Link } from "react-router-dom";
 
-const Cart = ({ isLoggedIn }) => {
-  const [cartItems, setItems] = useState([]);
+const Cart = () => {
   const location = useLocation();
   const { items, values } = location.state;
+
+  const [cartItems, setCartItems] = useState([]);
+  const [itemList, setItemList] = useState("");
+
+  useEffect(() => {
+    const cartData = JSON.parse(localStorage.getItem("cartItems")) || [];
+    setCartItems(cartData);
+  }, []);
+
+  useEffect(() => {
+    if (cartItems && cartItems.length > 0) {
+      const items = cartItems.reduce((acc, item) => {
+        if (item.amount > 0) {
+          return acc + `${item.amount} ${item.name}, `;
+        }
+        return acc;
+      }, "");
+      setItemList(items.slice(0, -2)); // remove the last comma and space
+    } else {
+      setItemList("");
+    }
+  }, [cartItems]);
 
   const decrementItemAmount = (index) => {
     const updatedItems = [...cartItems];
     if (updatedItems[index].amount > 0) {
       updatedItems[index].amount -= 1;
-      setItems(updatedItems);
+      setCartItems(updatedItems);
     }
   };
 
@@ -19,24 +41,25 @@ const Cart = ({ isLoggedIn }) => {
     const updatedItems = [...cartItems];
     if (updatedItems[index].amount >= 0) {
       updatedItems[index].amount += 1;
-      setItems(updatedItems);
+      setCartItems(updatedItems);
     }
   };
 
   //Function to delete item from cart
   const deleteFromCart = (id) => {
     let updatedCart = cartItems.filter((item) => item.item_id !== id);
-    setItems(updatedCart);
+    setCartItems(updatedCart);
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
 
   const deleteAllFromCart = () => {
     let updatedCart = cartItems.filter((item) => item.item_id !== item.item_id);
-    setItems(updatedCart);
+    setCartItems(updatedCart);
     localStorage.setItem("cartItems", JSON.stringify(updatedCart));
   };
 
   useEffect(() => {
+    const { items } = location.state;
     if (items) {
       // Group items by item_id and keep the one with the highest amount
       const groupedItems = items.reduce((acc, curr) => {
@@ -46,13 +69,10 @@ const Cart = ({ isLoggedIn }) => {
         }
         return acc;
       }, []);
-      setItems(groupedItems);
+      setCartItems(groupedItems);
       localStorage.setItem("cartItems", JSON.stringify(groupedItems));
-    } else {
-      const cartData = JSON.parse(localStorage.getItem("cartItems")) || [];
-      setItems(cartData);
     }
-  }, [items]);
+  }, [location.state]);
 
   var total = 0;
 
@@ -131,6 +151,11 @@ const Cart = ({ isLoggedIn }) => {
       </div>
       <p className="total-amount"> total = £{total}</p>
       <br></br>
+      <button>
+        <Link to="/callWaiter" state={{ itemList: itemList }}>
+          <i className="btn btn-primary">Call Waiter</i>
+        </Link>
+      </button>
       <br></br>
     </div>
   );
