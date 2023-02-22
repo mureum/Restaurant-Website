@@ -42,6 +42,71 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
     fetchAlltems();
   }, []);
 
+  const sendToKitchen = async (selectedItems) => {
+    try {
+      const itemsToSend = Object.entries(selectedItems)
+        .filter(([_, isSelected]) => isSelected)
+        .map(([index, _]) => items[index]);
+
+      if (itemsToSend.length === 0) {
+        window.alert("Please select at least one order to send to kitchen");
+        return;
+      }
+
+      const orders = itemsToSend.map(
+        ({ tableNumber, orderNumber, customerName, time, details }) => ({
+          table: tableNumber,
+          orderNumber,
+          customerName,
+          time,
+          details,
+        })
+      );
+
+      const response = await axios.post(`http://localhost:8800/sendToKitchen`, {
+        orders,
+      });
+
+      if (response.data.success) {
+        window.alert("Selected orders sent to kitchen");
+        window.location.reload();
+      } else {
+        window.alert("Error on sending the orders");
+      }
+    } catch (err) {
+      window.alert("Error on sending the orders");
+      console.log(err);
+    }
+  };
+
+  const deleteOrder = async (selectedItems) => {
+    try {
+      const itemsToDelete = Object.entries(selectedItems)
+        .filter(([_, isSelected]) => isSelected)
+        .map(([index, _]) => items[index]);
+
+      if (itemsToDelete.length === 0) {
+        window.alert("Please select at least one order to delete");
+        return;
+      }
+
+      const orderNumbers = itemsToDelete
+        .map((item) => item.orderNumber)
+        .join(",");
+      const deleteQuery = `DELETE FROM inPreparation WHERE order_no IN (${orderNumbers})`;
+
+      await axios.delete("http://localhost:8800/deleteOrder", {
+        data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },
+      });
+
+      window.alert("Selected orders deleted from the table");
+      window.location.reload();
+    } catch (err) {
+      window.alert("Error on deleting the orders");
+      console.log(err);
+    }
+  };
+
   const data =
     items.length > 0
       ? items.sort((a, b) => a.orderNumber - b.orderNumber)
@@ -51,6 +116,12 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
   const [selectedItems, setSelectedItems] = useState(
     data.map((_, i) => ({ [i]: false })).reduce((a, b) => ({ ...a, ...b }))
   );
+  const [selectAll, setSelectAll] = useState(false);
+
+  useEffect(() => {
+    const allSelected = Object.values(selectedItems).every((v) => v);
+    setSelectAll(allSelected);
+  }, [selectedItems]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -63,12 +134,15 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
                   <input
                     type="checkbox"
                     className="checkbox"
-                    checked={Object.values(selectedItems).every((v) => v)}
+                    checked={selectAll}
                     onChange={(e) => {
-                      for (const [key] of Object.entries(selectedItems)) {
-                        selectedItems[key] = e.target.checked;
-                      }
-                      setSelectedItems({ ...selectedItems });
+                      const checked = e.target.checked;
+                      setSelectAll(checked);
+                      setSelectedItems(
+                        data
+                          .map((_, i) => ({ [i]: checked }))
+                          .reduce((a, b) => ({ ...a, ...b }))
+                      );
                     }}
                   />
                 </label>
@@ -149,12 +223,22 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
       )}
       <div className="flex gap-2 self-end">
         {nextStepText ? (
-          <button className="btn btn-primary">{nextStepText}</button>
+          <button
+            className="btn btn-primary"
+            onClick={() => sendToKitchen(selectedItems)}
+          >
+            {nextStepText}
+          </button>
         ) : (
           <></>
         )}
         {isCancellable ? (
-          <button className="btn btn-warning">Cancel Order</button>
+          <button
+            className="btn btn-warning"
+            onClick={() => deleteOrder(selectedItems)}
+          >
+            Cancel Order
+          </button>
         ) : (
           <></>
         )}

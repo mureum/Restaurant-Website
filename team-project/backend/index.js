@@ -193,16 +193,18 @@ app.put("/orders/unavailable/:id", async(req,res) => {
         const itemList = req.params.itemList;
 
         // Retrieve the maximum order number from the waiter_calls table
-        const maxOrderNumberQuery = `SELECT MAX(order_no) as max_order_no FROM waiter_calls`;
+        const maxOrderNumberQuery = `SELECT MAX(order_no) as max_order_no FROM totalorders`;
         let maxOrderNumber = 0;
         client.query(maxOrderNumberQuery, (err, data) => {
             if (err) return res.json(err);
             maxOrderNumber = parseInt(data.rows[0].max_order_no) || 0;
             const orderNumber = maxOrderNumber + 1;
-
+            console.log(orderNumber)
             // Insert the new order into the waiter_calls table
             const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
-                                 VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}')`;
+                                 VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
+                                 INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description) 
+                                 VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');`;
 
             client.query(insertQuery, (err, data) => {
                 if (err) return res.json(err);
@@ -215,6 +217,66 @@ app.put("/orders/unavailable/:id", async(req,res) => {
         return res.json(err);
     }
 });
+
+app.post("/sendToKitchen", async (req, res) => {
+  try {
+    const orders = req.body.orders;
+
+    if (orders.length === 0) {
+      res.status(400).json({ error: "Please select at least one order to send to kitchen" });
+      return;
+    }
+
+    const values = orders.map(
+      ({ table, orderNumber, customerName, time, details }) =>
+        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}')`
+    );
+
+    const insertQuery = `INSERT INTO inpreparation (table_no, order_no, customer_name, time, order_description) VALUES ${values.join(
+      ","
+    )};`;
+
+    await client.query(insertQuery);
+
+    const orderNumbers = orders.map((order) => order.orderNumber).join(",");
+    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumbers})`;
+
+    await client.query(deleteQuery);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the orders" });
+  }
+});
+
+
+app.delete("/deleteOrder", async (req, res) => {
+  try {
+    const { orderNumbers } = req.body;
+
+    // Construct a comma-separated string of order numbers to delete
+    const orderNumberString = orderNumbers.join(",");
+
+    // Delete all orders with the given order numbers from the database
+    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString})`;
+
+    client.query(deleteQuery, (err, data) => {
+      if (err) {
+        console.log("Error");
+        return res.json(err);
+      }
+      console.log("Orders deleted from the database");
+      res.json({ message: "Orders deleted from the database" });
+    });
+  } catch (err) {
+    console.log("Error");
+    return res.json(err);
+  }
+});
+
+
+
 
 app.listen(8800, ()=>{
     console.log("Connected to backend!")
