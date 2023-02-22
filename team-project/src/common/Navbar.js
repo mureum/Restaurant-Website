@@ -168,7 +168,7 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
           <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
           </li>
           <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/KitchenDashboard">Kitchen Dashboard</a>
+            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/kitchen-dashboard">Kitchen Dashboard</a>
           </li>
           <li>
             <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
