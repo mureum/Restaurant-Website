@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
-import { renderToString } from "react-dom/server";
 
 const ORDER = [
   {
@@ -112,7 +111,7 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">Order {order.tableNumber}</div>
+                      <div className="font-bold">Order {order.orderNumber}</div>
                       <label
                         htmlFor={`my-modal-${order.orderNumber}`}
                         className="badge badge-success cursor-pointer"
@@ -146,15 +145,6 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
               </tr>
             ))}
           </tbody>
-          <tfoot>
-            <tr>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-            </tr>
-          </tfoot>
         </table>
       )}
       <div className="flex gap-2 self-end">
