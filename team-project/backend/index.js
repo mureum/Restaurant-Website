@@ -187,36 +187,41 @@ app.put("/orders/unavailable/:id", async(req,res) => {
 
   app.put("/orders/waiter/:table/:customerName/:time/:itemList", async (req, res) => {
     try {
-        const table = parseInt(req.params.table);
-        const name = req.params.customerName;
-        const time = req.params.time;
-        const itemList = req.params.itemList;
-
-        // Retrieve the maximum order number from the waiter_calls table
-        const maxOrderNumberQuery = `SELECT MAX(order_no) as max_order_no FROM totalorders`;
-        let maxOrderNumber = 0;
-        client.query(maxOrderNumberQuery, (err, data) => {
-            if (err) return res.json(err);
-            maxOrderNumber = parseInt(data.rows[0].max_order_no) || 0;
-            const orderNumber = maxOrderNumber + 1;
-            console.log(orderNumber)
-            // Insert the new order into the waiter_calls table
-            const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
-                                 VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
-                                 INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description) 
-                                 VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');`;
-
-            client.query(insertQuery, (err, data) => {
-                if (err) return res.json(err);
-                return res.json("Item has been updated successfully");
-            });
-            console.log("Success");
-        });
+      const table = parseInt(req.params.table);
+      const name = req.params.customerName;
+      const time = req.params.time;
+      const itemList = req.params.itemList;
+  
+      // Retrieve the maximum order number from the totalorders table
+      const maxOrderNumberQuery = `SELECT MAX(order_no) as max_order_no FROM totalorders`;
+      const { rows } = await client.query(maxOrderNumberQuery);
+      const maxOrderNumber = parseInt(rows[0].max_order_no) || 0;
+  
+      // If the maximum order number has reached 1000, clear the totalorders table
+      if (maxOrderNumber === 1000) {
+        const clearTable = `DELETE FROM totalorders;`;
+        await client.query(clearTable);
+      }
+  
+      // Increment the order number
+      const orderNumber = maxOrderNumber + 1;
+  
+      // Insert the new order into the waiter_calls and totalorders tables
+      const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
+                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
+                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description) 
+                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}')`;
+  
+      await client.query(insertQuery);
+  
+      console.log("Success");
+      return res.json("Item has been updated successfully");
     } catch (err) {
-        console.log("Error");
-        return res.json(err);
+      console.log("Error");
+      return res.json(err);
     }
-});
+  });
+  
 
 app.post("/sendToKitchen", async (req, res) => {
   try {
