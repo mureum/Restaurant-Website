@@ -338,6 +338,30 @@ app.delete("/deleteOrder", async (req, res) => {
   }
 });
 
+app.delete("/completeOrder", async (req, res) => {
+  try {
+    const { orderNumbers } = req.body;
+
+    // Construct a comma-separated string of order numbers to delete
+    const orderNumberString = orderNumbers.join(",");
+
+    // Delete all orders with the given order numbers from the database
+    const deleteQuery = `DELETE FROM ready_orders WHERE order_no IN (${orderNumberString})`;
+
+    client.query(deleteQuery, (err, data) => {
+      if (err) {
+        console.log("Error");
+        return res.json(err);
+      }
+      console.log("Orders deleted from the database");
+      res.json({ message: "Orders deleted from the database" });
+    });
+  } catch (err) {
+    console.log("Error");
+    return res.json(err);
+  }
+});
+
 
 
 

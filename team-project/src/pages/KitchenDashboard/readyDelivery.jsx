@@ -60,7 +60,7 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
         .join(",");
       const deleteQuery = `DELETE FROM inPreparation WHERE order_no IN (${orderNumbers})`;
 
-      await axios.delete("http://localhost:8800/deleteOrder", {
+      await axios.delete("http://localhost:8800/completeOrder", {
         data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },
       });
 
@@ -191,6 +191,7 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
     {nextStepText ? (
       <button
         className="btn btn-primary"
+        onClick={() => deleteOrder(selectedItems)}
       >
         {nextStepText}
       </button>
