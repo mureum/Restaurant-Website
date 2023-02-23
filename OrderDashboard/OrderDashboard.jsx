@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { OrderTable } from "./OrderTable";
+import { WaiterTable } from "./WaiterTable";
 import cooking from "../../assets/cooking.png";
 
 function OrderDashboard({ isLoggedIn, permission }) {
