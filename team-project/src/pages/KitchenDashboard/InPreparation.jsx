@@ -23,7 +23,6 @@ const ORDER = [
 export const InPreparation = ({ nextStepText, isCancellable }) => {
   const [items, setItems] = useState([]);
 
-
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
@@ -44,46 +43,47 @@ export const InPreparation = ({ nextStepText, isCancellable }) => {
     fetchAlltems();
   }, []);
 
-  const readyOrder  = async (selectedItems) => {
+  const readyOrder = async (selectedItems) => {
     try {
-        const itemsToSend = Object.entries(selectedItems)
-          .filter(([_, isSelected]) => isSelected)
-          .map(([index, _]) => items[index]);
-  
-        if (itemsToSend.length === 0) {
-          window.alert("Please select at least one order to ready");
-          return;
-        }
-  
-        const orders = itemsToSend.map(
-          ({ tableNumber, orderNumber, customerName, time, details }) => ({
-            table: tableNumber,
-            orderNumber,
-            customerName,
-            time,
-            details,
-          })
-        );
-  
-        const response = await axios.post(`http://localhost:8800/makeOrderReady`, {
-          orders,
-        });
-  
-        if (response.data.success) {
-          window.alert("Selected orders readied");
-          window.location.reload();
-        } else {
-          window.alert("Error on readying the orders");
-        }
-      } catch (err) {
-        window.alert("Error on readying the orders");
-        console.log(err);
+      const itemsToSend = Object.entries(selectedItems)
+        .filter(([_, isSelected]) => isSelected)
+        .map(([index, _]) => items[index]);
+
+      if (itemsToSend.length === 0) {
+        window.alert("Please select at least one order to ready");
+        return;
       }
+
+      const orders = itemsToSend.map(
+        ({ tableNumber, orderNumber, customerName, time, details }) => ({
+          table: tableNumber,
+          orderNumber,
+          customerName,
+          time,
+          details,
+        })
+      );
+
+      const response = await axios.post(
+        `http://localhost:8800/makeOrderReady`,
+        {
+          orders,
+        }
+      );
+
+      if (response.data.success) {
+        window.alert("Selected orders readied");
+        window.location.reload();
+      } else {
+        window.alert("Error on readying the orders");
+      }
+    } catch (err) {
+      window.alert("Error on readying the orders");
+      console.log(err);
     }
-    
-  const deleteOrder = async (selectedItems) => {
-    
   };
+
+  const deleteOrder = async (selectedItems) => {};
 
   const data =
     items.length > 0
@@ -164,7 +164,7 @@ export const InPreparation = ({ nextStepText, isCancellable }) => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">Order {order.tableNumber}</div>
+                      <div className="font-bold">Order {order.orderNumber}</div>
                       <label
                         htmlFor={`my-modal-${order.orderNumber}`}
                         className="badge badge-success cursor-pointer"

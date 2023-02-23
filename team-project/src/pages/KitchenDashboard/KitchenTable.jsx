@@ -187,7 +187,7 @@ export const KitchenTable = ({ nextStepText, isCancellable }) => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">Order {order.tableNumber}</div>
+                      <div className="font-bold">Order {order.orderNumber}</div>
                       <label
                         htmlFor={`my-modal-${order.orderNumber}`}
                         className="badge badge-success cursor-pointer"

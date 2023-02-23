@@ -43,7 +43,6 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
     fetchAlltems();
   }, []);
 
-  
   const completeOrder = async (selectedItems) => {
     try {
       const itemsToDelete = Object.entries(selectedItems)
@@ -151,7 +150,7 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">Order {order.tableNumber}</div>
+                      <div className="font-bold">Order {order.orderNumber}</div>
                       <label
                         htmlFor={`my-modal-${order.orderNumber}`}
                         className="badge badge-success cursor-pointer"
@@ -187,7 +186,7 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
           </tbody>
         </table>
       )}
-  </div>
+    </div>
   );
 };
 
