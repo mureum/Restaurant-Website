@@ -35,7 +35,7 @@ function WaiterCall() {
       console.log(res);
       window.location.href = "/";
     } catch (err) {
-      window.alert("Alert on sending the order");
+      window.alert("Error on sending the order");
       console.log(err);
     }
   };

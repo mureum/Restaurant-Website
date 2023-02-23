@@ -12,7 +12,7 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
   const LogOut = () => {
       setIsLoggedIn(false);
       setPermission("");
-      window.location.reload();
+      window.location.href = "/";
   };
 
   const styles = {

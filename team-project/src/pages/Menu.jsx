@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Slider from "rc-slider";
+import TooltipSlider from "../common/TooltipSlider.jsx";
 import "rc-slider/assets/index.css";
 
 const ALLERGENS = [
@@ -193,6 +193,9 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
+  const [calories_min, setCaloriesMin] = useState(0);
+  const [calories_max, setCaloriesMax] = useState(1150);
+
   const fetchAlltems = async (id) => {
     try {
       const res = await axios.get("http://localhost:8800/orders");
@@ -233,7 +236,6 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
-  const [filter, setFilter] = useState(100000);
   const [value, setValue] = useState({});
 
   const handleChange = (id) => (e) => {
@@ -369,19 +371,22 @@ function Order({ isLoggedIn, permission }) {
               <div className="gap-2">
                 <h3 className="font-bold text-xl">Calories</h3>
                 <div className="my-4">
-                  <Slider
+                  <TooltipSlider
                     min={0}
-                    max={100}
+                    max={1150}
                     range={true}
-                    step={10}
-                    dots={true}
+                    tipFormatter={(value) => `${value}`}
+                    onChange={(value) => {
+                      setCaloriesMax(value[1]);
+                      setCaloriesMin(value[0]);
+                    }}
+                    defaultValue={[calories_min, calories_max]}
                   />
+                  <div>
+                    <div>0</div>
+                  </div>
                 </div>
               </div>
-
-              <button className="btn btn-primary self-end">
-                Apply Filters
-              </button>
             </div>
           </div>
         </div>
@@ -398,44 +403,12 @@ function Order({ isLoggedIn, permission }) {
         </Link>
       </button>
       <br></br>
-      <div className="form-control">
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Search for calories less than.."
-            title="Type in a calorie value"
-            className="input input-bordered w-96"
-            onChange={(e) => {
-              if (e.target.value !== "") {
-                setFilter(e.target.value);
-              } else {
-                setFilter("100000");
-              }
-            }}
-          />
-          <button className="btn btn-square">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
 
       <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
         {(items && permission === "Waiter") || permission === "Kitchen"
           ? items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
                 item.is_available === true ? (
@@ -525,7 +498,8 @@ function Order({ isLoggedIn, permission }) {
                 )
               )
           : items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
                 item.is_available === true ? (

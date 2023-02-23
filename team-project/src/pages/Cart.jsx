@@ -2,13 +2,25 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Cart = () => {
   const location = useLocation();
-  const { items, values } = location.state;
-
   const [cartItems, setCartItems] = useState([]);
   const [itemList, setItemList] = useState("");
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const fecthAllImages = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/images");
+        setImages(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fecthAllImages();
+  }, []);
 
   useEffect(() => {
     const cartData = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -91,19 +103,16 @@ const Cart = () => {
             <>
               <div className="items-in-cart">
                 <div className="image-box">
-                  <img
-                    src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      objectFit: "cover",
-                      backgroundColor: "white",
-                    }}
-                    alt={`${item.name} image`}
-                    onError={(e) =>
-                      (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                    }
-                  />
+                  {images
+                    .filter((image) => image.item_id === item.item_id)
+                    .map((image) => (
+                      <img
+                        key={image.item_id}
+                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                        src={image.link}
+                        alt={`${item.name} image`}
+                      />
+                    ))}
                 </div>
                 <div className="about">
                   <h1 className="title">
