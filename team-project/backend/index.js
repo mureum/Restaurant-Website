@@ -63,6 +63,18 @@ app.get("/pendingOrders", async (req,res)=> {
         return res.json(err)
       }
 })
+
+app.get("/currentOrders", async (req,res)=> {
+  try {
+      const q = "SELECT * FROM inpreparation;"
+      client.query(q, (err,data)=>{
+        if(err) throw err
+        return res.json(data.rows)
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+})
   
   app.get("/orders/diets/:id", async(req,res) => {
     try {
