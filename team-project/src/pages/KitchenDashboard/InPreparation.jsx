@@ -133,70 +133,76 @@ export const InPreparation = ({ nextStepText, isCancellable }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((order, i) => (
-              <tr key={i}>
-                <th>
-                  <label>
-                    <input
-                      type="checkbox"
-                      className="checkbox"
-                      checked={selectedItems[i]}
-                      onChange={(e) => {
-                        setSelectedItems({
-                          ...selectedItems,
-                          [i]: e.target.checked,
-                        });
-                      }}
-                    />
-                  </label>
-                </th>
-                <td>
-                  <div className="font-bold">#{order.tableNumber}</div>
-                </td>
-                <td>
-                  <div className="flex items-center space-x-3">
-                    <div className="avatar">
-                      <div className="mask mask-squircle w-12 h-12">
-                        <img
-                          src="https://api.lorem.space/image/burger?w=150&h=150"
-                          alt="Avatar Tailwind CSS Component"
-                        />
-                      </div>
-                    </div>
-                    <div>
-                      <div className="font-bold">Order {order.orderNumber}</div>
-                      <label
-                        htmlFor={`my-modal-${order.orderNumber}`}
-                        className="badge badge-success cursor-pointer"
-                      >
-                        Details
-                      </label>
+            {data
+              .sort((a, b) => a.time.localeCompare(b.time))
+              .map((order, i) => (
+                <tr key={i}>
+                  <th>
+                    <label>
                       <input
                         type="checkbox"
-                        id={`my-modal-${order.orderNumber}`}
-                        className="modal-toggle"
+                        className="checkbox"
+                        checked={selectedItems[i]}
+                        onChange={(e) => {
+                          setSelectedItems({
+                            ...selectedItems,
+                            [i]: e.target.checked,
+                          });
+                        }}
                       />
-                      <div className="modal">
-                        <div className="modal-box relative">
-                          <label
-                            htmlFor={`my-modal-${order.orderNumber}`}
-                            className="btn btn-sm btn-circle absolute right-2 top-2"
-                          >
-                            ✕
-                          </label>
-                          <h3 className="text-lg font-bold">Details</h3>
-                          <p className="py-4">{order.details}</p>
+                    </label>
+                  </th>
+                  <td>
+                    <div className="font-bold">#{order.tableNumber}</div>
+                  </td>
+                  <td>
+                    <div className="flex items-center space-x-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                          <img
+                            src="https://api.lorem.space/image/burger?w=150&h=150"
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">
+                          Order {order.orderNumber}
+                        </div>
+                        <label
+                          htmlFor={`my-modal-${order.orderNumber}`}
+                          className="badge badge-success cursor-pointer"
+                        >
+                          Details
+                        </label>
+                        <input
+                          type="checkbox"
+                          id={`my-modal-${order.orderNumber}`}
+                          className="modal-toggle"
+                        />
+                        <div className="modal">
+                          <div className="modal-box relative">
+                            <label
+                              htmlFor={`my-modal-${order.orderNumber}`}
+                              className="btn btn-sm btn-circle absolute right-2 top-2"
+                            >
+                              ✕
+                            </label>
+                            <h3 className="text-lg font-bold">Details</h3>
+                            <p className="py-4">{order.details}</p>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td>{order.customerName}</td>
-                <th>
-                  <button className="btn btn-ghost btn-xs">{order.time}</button>
-                </th>
-              </tr>
-            ))}
+                  </td>
+                  <td>{order.customerName}</td>
+                  <th>
+                    <button className="btn btn-ghost btn-xs">
+                      {order.time}
+                    </button>
+                  </th>
+                </tr>
+              ))}
           </tbody>
         </table>
       )}
