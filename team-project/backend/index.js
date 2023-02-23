@@ -280,6 +280,39 @@ app.post("/sendToKitchen", async (req, res) => {
   }
 });
 
+app.post("/makeOrderReady", async (req, res) => {
+  try {
+    const orders = req.body.orders;
+
+    if (orders.length === 0) {
+      res.status(400).json({ error: "Please select at least one order to send to kitchen" });
+      return;
+    }
+
+    const values = orders.map(
+      ({ table, orderNumber, customerName, time, details }) =>
+        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}')`
+    );
+
+    const insertQuery = `INSERT INTO ready_orders (table_no, order_no, customer_name, time, order_description) VALUES ${values.join(
+      ","
+    )};`;
+
+    await client.query(insertQuery);
+
+    const orderNumbers = orders.map((order) => order.orderNumber).join(",");
+    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${orderNumbers})`;
+
+    await client.query(deleteQuery);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the orders" });
+  }
+});
+
+
 
 app.delete("/deleteOrder", async (req, res) => {
   try {

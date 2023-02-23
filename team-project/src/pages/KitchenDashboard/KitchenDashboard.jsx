@@ -71,7 +71,8 @@ function KitchenDashboard({ setIsLoggedIn, handleLogin }) {
           <h1 className="text-3xl font-bold">
             Ready for delivery <i className="fa-solid fa-circle-check"></i>
           </h1>
-          <ReadyDelivery/>
+          <ReadyDelivery nextStepText = "Delivered"/>
+          <h1></h1>
           
         </div>
       </>

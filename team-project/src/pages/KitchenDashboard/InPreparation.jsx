@@ -23,6 +23,7 @@ const ORDER = [
 export const InPreparation = ({ nextStepText, isCancellable }) => {
   const [items, setItems] = useState([]);
 
+
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
@@ -43,33 +44,45 @@ export const InPreparation = ({ nextStepText, isCancellable }) => {
     fetchAlltems();
   }, []);
 
-  
-  const deleteOrder = async (selectedItems) => {
+  const readyOrder  = async (selectedItems) => {
     try {
-      const itemsToDelete = Object.entries(selectedItems)
-        .filter(([_, isSelected]) => isSelected)
-        .map(([index, _]) => items[index]);
-
-      if (itemsToDelete.length === 0) {
-        window.alert("Please select at least one order to delete");
-        return;
+        const itemsToSend = Object.entries(selectedItems)
+          .filter(([_, isSelected]) => isSelected)
+          .map(([index, _]) => items[index]);
+  
+        if (itemsToSend.length === 0) {
+          window.alert("Please select at least one order to ready");
+          return;
+        }
+  
+        const orders = itemsToSend.map(
+          ({ tableNumber, orderNumber, customerName, time, details }) => ({
+            table: tableNumber,
+            orderNumber,
+            customerName,
+            time,
+            details,
+          })
+        );
+  
+        const response = await axios.post(`http://localhost:8800/makeOrderReady`, {
+          orders,
+        });
+  
+        if (response.data.success) {
+          window.alert("Selected orders readied");
+          window.location.reload();
+        } else {
+          window.alert("Error on readying the orders");
+        }
+      } catch (err) {
+        window.alert("Error on readying the orders");
+        console.log(err);
       }
-
-      const orderNumbers = itemsToDelete
-        .map((item) => item.orderNumber)
-        .join(",");
-      const deleteQuery = `DELETE FROM inPreparation WHERE order_no IN (${orderNumbers})`;
-
-      await axios.delete("http://localhost:8800/deleteOrder", {
-        data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },
-      });
-
-      window.alert("Selected orders deleted from the table");
-      window.location.reload();
-    } catch (err) {
-      window.alert("Error on deleting the orders");
-      console.log(err);
     }
+    
+  const deleteOrder = async (selectedItems) => {
+    
   };
 
   const data =
@@ -187,6 +200,18 @@ export const InPreparation = ({ nextStepText, isCancellable }) => {
           </tbody>
         </table>
       )}
+      <div className="flex gap-2 self-end">
+        {nextStepText ? (
+          <button
+            className="btn btn-primary"
+            onClick={() => readyOrder(selectedItems)}
+          >
+            {nextStepText}
+          </button>
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 };

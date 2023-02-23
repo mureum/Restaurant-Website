@@ -187,7 +187,18 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
           </tbody>
         </table>
       )}
-    </div>
+    <div className="flex gap-2 self-end">
+    {nextStepText ? (
+      <button
+        className="btn btn-primary"
+      >
+        {nextStepText}
+      </button>
+    ) : (
+      <></>
+    )}
+  </div>
+  </div>
   );
 };
 
