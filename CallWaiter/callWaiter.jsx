@@ -1,54 +1,56 @@
-import React from 'react';
-import { useState } from "react";
-import { JSDOM } from "jsdom";
-import { Pool } from 'pg';
-import fs from 'fs';
-
-const pool = new Pool({
-  user: 'boladale',
-  host: 'db.bit.io',
-  database: 'alelentini2001/oaxaca', 
-  password: 'v2_3z5Rc_3Y3niQU6FKgG7DwzMQZYzsq',
-  port: 5432,
-  ssl: true,
-});
-
-const html = fs.readFileSync("waiterCall.html", "utf-8");
-const dom = new JSDOM(html);
-const document = dom.window.document;
-
-function callWaiter(event) {
-  const tableNumber = document.getElementById("table").value;
-  const problemDescription = document.getElementById("problem").value;
-
-  if ((tableNumber === "") || (problemDescription === "")) {
-    window.alert("Please enter your table number and problem description!");
-  } else {
-    window.alert("Your request has been sent.");   
-    waiterCallInfo(tableNumber, problemDescription);
-  }   
-  event.preventDefault();
-}
-
-function waiterCallInfo(tableNumber, problemDescription) {
-  let myquery = `INSERT INTO test_Call VALUES (${tableNumber}, '${problemDescription}');`;
-
-  pool.query(myquery, [tableNumber, problemDescription], (err, res) => {
-    console.table(res.rows);
-  });
-}
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router";
+import axios from "axios";
 
 function WaiterCall() {
+  const location = useLocation();
+  const { itemList: itemList } = location.state;
   const [table, setTable] = useState("");
-  const [problem, setProblem] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [time, setTime] = useState(new Date().toLocaleTimeString()); // Initialize the time to the current time
 
-  const handleSubmit = (event) => {
-    callWaiter(event);
-  }
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(new Date().toLocaleTimeString()); // Update the time every second
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/waiter/" +
+          table +
+          "/" +
+          customerName +
+          "/" +
+          time +
+          "/" +
+          itemList
+      );
+      console.log(res);
+      window.location.href = "/";
+    } catch (err) {
+      window.alert("Error on sending the order");
+      console.log(err);
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
-      <div style={{margin: "100px", border: "2px solid rgb(11, 79, 110)", borderRadius: "10px", padding: "35px", backgroundColor: "rgb(223, 223, 223)"}}>
+      <div
+        style={{
+          margin: "100px",
+          border: "2px solid rgb(11, 79, 110)",
+          borderRadius: "10px",
+          padding: "35px",
+          backgroundColor: "rgb(223, 223, 223)",
+        }}
+      >
         <div className="mb-3">
           <label className="form-label">Table Number *</label>
           <input
@@ -56,28 +58,22 @@ function WaiterCall() {
             className="form-control"
             id="table"
             placeholder="Enter your table number"
-            value={table}
             onChange={(e) => setTable(e.target.value)}
             required
           />
         </div>
         <div className="mb-3">
-          <label className="form-label">Problem Description</label>
+          <label className="form-label">Customer Name</label>
           <input
             type="text"
             className="form-control"
             id="problem"
-            placeholder="Describe your issue if possible"
-            value={problem}
-            onChange={(e) => setProblem(e.target.value)}
+            placeholder="Customer Name"
+            onChange={(e) => setCustomerName(e.target.value)}
           />
         </div>
-        <div style={{display: "flex", justifyContent: "center"}}>
-          <button
-            type="submit"
-            id="call"
-            className="btn btn-secondary"
-          >
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <button type="submit" id="call" className="btn btn-secondary">
             Call for Waiter
           </button>
         </div>
