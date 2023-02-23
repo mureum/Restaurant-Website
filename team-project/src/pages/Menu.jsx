@@ -164,7 +164,6 @@ function Order({ isLoggedIn, permission }) {
 
   const [checked2, setChecked2] = useState([]); //allergens
 
-
   const handleCheck2 = async (id) => {
     setChecked2((prevState) => !prevState);
     const newChecked = new Set(checked2);
@@ -194,9 +193,8 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
-
-  const [calories_min, setCaloriesMin] = useState(0); 
-  const [calories_max, setCaloriesMax] = useState(0);
+  const [calories_min, setCaloriesMin] = useState(0);
+  const [calories_max, setCaloriesMax] = useState(1150);
 
   const fetchAlltems = async (id) => {
     try {
@@ -238,7 +236,6 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
-  const [filter, setFilter] = useState(100000);
   const [value, setValue] = useState({});
 
   const handleChange = (id) => (e) => {
@@ -379,15 +376,15 @@ function Order({ isLoggedIn, permission }) {
                     max={1150}
                     range={true}
                     tipFormatter={(value) => `${value}`}
-                    onChange = {(value) => { setCaloriesMax(value[1]); 
-                                            setCaloriesMin(value[0])
+                    onChange={(value) => {
+                      setCaloriesMax(value[1]);
+                      setCaloriesMin(value[0]);
                     }}
-                    
+                    defaultValue={[calories_min, calories_max]}
                   />
                   <div>
                     <div>0</div>
                   </div>
-                  
                 </div>
               </div>
             </div>
