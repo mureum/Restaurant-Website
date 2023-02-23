@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Slider from "rc-slider";
+import TooltipSlider from "../common/TooltipSlider.jsx";
 import "rc-slider/assets/index.css";
 
 const ALLERGENS = [
@@ -163,6 +163,12 @@ function Order({ isLoggedIn, permission }) {
   };
 
   const [checked2, setChecked2] = useState([]); //allergens
+  const [calories_min, setCaloriesMin] = useState(0); 
+  const [calories_max, setCaloriesMax] = useState(0);
+
+
+
+
 
   const handleCheck2 = async (id) => {
     setChecked2((prevState) => !prevState);
@@ -369,13 +375,20 @@ function Order({ isLoggedIn, permission }) {
               <div className="gap-2">
                 <h3 className="font-bold text-xl">Calories</h3>
                 <div className="my-4">
-                  <Slider
+                  <TooltipSlider
                     min={0}
-                    max={100}
+                    max={1150}
                     range={true}
-                    step={10}
-                    dots={true}
+                    tipFormatter={(value) => `${value}`}
+                    onChange = {(value) => { setCaloriesMax(value[1]); 
+                                            setCaloriesMin(value[0])
+                    }}
+                    
                   />
+                  <div>
+                    <div>0</div>
+                  </div>
+                  
                 </div>
               </div>
 
