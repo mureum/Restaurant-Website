@@ -163,11 +163,6 @@ function Order({ isLoggedIn, permission }) {
   };
 
   const [checked2, setChecked2] = useState([]); //allergens
-  const [calories_min, setCaloriesMin] = useState(0); 
-  const [calories_max, setCaloriesMax] = useState(0);
-
-
-
 
 
   const handleCheck2 = async (id) => {
@@ -198,6 +193,10 @@ function Order({ isLoggedIn, permission }) {
       }
     }
   };
+
+
+  const [calories_min, setCaloriesMin] = useState(0); 
+  const [calories_max, setCaloriesMax] = useState(0);
 
   const fetchAlltems = async (id) => {
     try {
@@ -448,7 +447,8 @@ function Order({ isLoggedIn, permission }) {
       <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
         {(items && permission === "Waiter") || permission === "Kitchen"
           ? items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
                 item.is_available === true ? (
@@ -538,7 +538,8 @@ function Order({ isLoggedIn, permission }) {
                 )
               )
           : items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
                 item.is_available === true ? (
