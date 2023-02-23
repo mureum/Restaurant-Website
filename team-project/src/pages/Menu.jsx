@@ -390,10 +390,6 @@ function Order({ isLoggedIn, permission }) {
                   
                 </div>
               </div>
-
-              <button className="btn btn-primary self-end">
-                Apply Filters
-              </button>
             </div>
           </div>
         </div>
