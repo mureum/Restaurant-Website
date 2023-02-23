@@ -297,9 +297,9 @@ app.post("/makeOrderReady", async (req, res) => {
     const insertQuery = `INSERT INTO ready_orders (table_no, order_no, customer_name, time, order_description) VALUES ${values.join(
       ","
     )};`;
+    
 
     await client.query(insertQuery);
-
     const orderNumbers = orders.map((order) => order.orderNumber).join(",");
     const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${orderNumbers})`;
 

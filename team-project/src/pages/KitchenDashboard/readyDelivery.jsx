@@ -44,7 +44,7 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
   }, []);
 
   
-  const deleteOrder = async (selectedItems) => {
+  const completeOrder = async (selectedItems) => {
     try {
       const itemsToDelete = Object.entries(selectedItems)
         .filter(([_, isSelected]) => isSelected)
@@ -187,18 +187,6 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
           </tbody>
         </table>
       )}
-    <div className="flex gap-2 self-end">
-    {nextStepText ? (
-      <button
-        className="btn btn-primary"
-        onClick={() => deleteOrder(selectedItems)}
-      >
-        {nextStepText}
-      </button>
-    ) : (
-      <></>
-    )}
-  </div>
   </div>
   );
 };
