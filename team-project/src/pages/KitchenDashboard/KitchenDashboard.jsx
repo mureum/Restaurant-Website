@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { KitchenTable } from "./KitchenTable";
 import {InPreparation} from "./InPreparation";
+import {ReadyDelivery} from "./ReadyDelivery";
 import cooking from "../../assets/cooking.png";
 
 function KitchenDashboard({ setIsLoggedIn, handleLogin }) {
@@ -70,7 +71,7 @@ function KitchenDashboard({ setIsLoggedIn, handleLogin }) {
           <h1 className="text-3xl font-bold">
             Ready for delivery <i className="fa-solid fa-circle-check"></i>
           </h1>
-          <readyDelivery/>
+          <ReadyDelivery/>
           
         </div>
       </>
