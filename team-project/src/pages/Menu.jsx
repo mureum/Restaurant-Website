@@ -388,6 +388,12 @@ function Order({ isLoggedIn, permission }) {
                   <div>
                     <div>0</div>
                   </div>
+
+                  <div>
+                    <div className="absolute top-[590px] right-[10px]" >1150</div>
+                  </div>
+
+                  
                   
                 </div>
               </div>
