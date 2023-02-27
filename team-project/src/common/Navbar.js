@@ -175,7 +175,25 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
           </li>
       </Menu>
       ) 
-      : (
+      : permission === "Admin" ? (
+        <Menu isOpen={isOpen} styles={styles} right>
+          <li>
+          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
+          </li>
+          <li>
+            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/admin-dashboard">Admin Dashboard</a>
+          </li>
+          <li>
+            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/order-dashboard">Order Dashboard</a>
+          </li>
+          <li>
+            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/kitchen-dashboard">Kitchen Dashboard</a>
+          </li>
+          <li>
+            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
+          </li>
+      </Menu>
+      ) : (
         <></>
       ) : (
       <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>

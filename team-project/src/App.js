@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
 import WaiterCall from "./pages/callWaiter";
+import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -72,6 +73,11 @@ function App() {
               <KitchenDashboard isLoggedIn={isLoggedIn} permission={permission} />
             }
             />
+            <Route
+            path="/admin-dashboard"
+            element={
+              <AdminDashboard isLoggedIn={isLoggedIn} permission={permission} />
+            } />
           <Route
             path="/callWaiter"
             element={<WaiterCall />}
