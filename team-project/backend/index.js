@@ -324,35 +324,29 @@ app.post("/makeOrderReady", async (req, res) => {
   }
 });
 
-app.delete("/deleteUser", async (req,res) => {
-  try {
-    const username = req.body.usernames;
-        
-    const deleteQuery = `DELETE FROM logins WHERE username IN (${username})`;
 
-    client.query(deleteQuery,[username], (err, data) => {
+app.delete('/deleteUser', async (req, res) => {
+  try {
+    const usernames = req.body.usernames.map(username => username.replace(/"/g, ''));
+    console.log(usernames);
+      
+    const deleteQuery = `DELETE FROM logins WHERE username IN (${usernames.join(",")})`;
+
+    client.query(deleteQuery, (err, data) => {
       if (err) {
         console.log("Error");
+        console.error(err);
         return res.json(err);
       }
       console.log("Users deleted from the database");
-      res.json({ message: "Users deleted from the database" });
+      res.json({ success: true });
     });
   } catch (err) {
     console.log("Error");
-    return res.json(err);
+      return res.json(err);
   }
 })
 
-app.delete("/books/:id",(req,res)=>{
-  const bookId = req.params.id;
-  const q =  "DELETE FROM books WHERE id = ?"
-
-  db.query(q,[bookId], (err,data)=>{
-      if (err) return res.json(err);
-      return res.json("Book has been deleted successfully")
-  })
-})
 
 app.delete("/deleteOrder", async (req, res) => {
   try {

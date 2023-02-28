@@ -3,20 +3,16 @@ import React from "react";
 import axios from "axios";
 import { renderToString } from "react-dom/server";
 
-const ORDER = [
+const USERS = [
   {
-    tableNumber: 1,
-    orderNumber: 1234,
-    customerName: "John Doe",
-    time: "12:00",
-    details: "",
+    username: "Username1",
+    password: "Password1",
+    permission: "Waiter",
   },
   {
-    tableNumber: 1,
-    orderNumber: 1234,
-    customerName: "John Doe",
-    time: "12:00",
-    details: "",
+    username: "Username2",
+    password: "Password2",
+    permission: "Kitchen",
   },
 ];
 
@@ -54,13 +50,11 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
       }
 
       const usernamesToSend = itemsToSend.map(
-        (item) => "'" + item.username.replace(/"/g, "'") + "'"
+        (item) => "'" + item.username.replace(/'/g, "''") + "'"
       );
-      console.log(usernamesToSend);
-      const UsernameNumberString = usernamesToSend.join(",");
-      console.log(UsernameNumberString);
-      const response = await axios.post(`http://localhost:8800/deleteUser`, {
-        usernames: UsernameNumberString,
+      const usernamesQueryString = usernamesToSend.join(",");
+      const response = await axios.delete("http://localhost:8800/deleteUser", {
+        data: { usernames: usernamesToSend },
       });
 
       if (response.data.success) {
@@ -76,7 +70,7 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
   };
 
   const data =
-    items.length > 0 ? items.sort((a, b) => a.username - b.username) : ORDER;
+    items.length > 0 ? items.sort((a, b) => a.username - b.username) : USERS;
 
   // Render the data
   const [selectedItems, setSelectedItems] = useState(
