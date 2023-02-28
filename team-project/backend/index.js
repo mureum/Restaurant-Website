@@ -205,6 +205,24 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       return res.json(err)
     }
   })
+
+  app.put("/logins/update/:prevUsername/:username/:password", async (req, res) => {
+    try {
+      const prevUsername = req.params.prevUsername;
+      const username = req.params.username;
+      const password = req.params.password;
+      const q = `UPDATE logins
+        SET username = '${username}', password = '${password}'
+        WHERE username = '${prevUsername}';`;
+      client.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json("User has been updated successfully");
+      });
+    } catch (err) {
+      return res.json(err);
+    }
+  });
+  
   
 
   app.put("/orders/available/:id", async(req,res) => {

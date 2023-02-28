@@ -69,6 +69,31 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
     }
   };
 
+  const updateUser = async (prevUsername, username, password) => {
+    try {
+      console.log(prevUsername + " " + username + " " + password);
+      const response = await axios.put(
+        `http://localhost:8800/logins/update/` +
+          prevUsername +
+          "/" +
+          username +
+          "/" +
+          password
+      );
+      if (response.status === 200) {
+        window.alert("User updated successfully");
+        setSelectedItems({});
+        window.location.reload();
+      } else {
+        window.alert("Error updating user");
+        console.log("response.err");
+      }
+    } catch (err) {
+      window.alert("Error updating user");
+      console.log(err);
+    }
+  };
+
   const data =
     items.length > 0 ? items.sort((a, b) => a.username - b.username) : USERS;
 
@@ -140,6 +165,11 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
                   </th>
                   <td>
                     <div className="font-bold">{order.username}</div>
+                    <input
+                      type="checkbox"
+                      id={`my-modal-${order.username}`}
+                      className="modal-toggle"
+                    />
                   </td>
                   <td>
                     <div>
@@ -152,13 +182,61 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
                     </div>
                   </td>
                   <td>
+                    <div className="font-bold">{order.username}</div>
                     <div>
-                      <div className="font-bold">{order.permission}</div>
+                      <label
+                        htmlFor={`my-modal-toggle-${order.username}`}
+                        className="badge badge-success cursor-pointer"
+                      >
+                        Update
+                      </label>
                       <input
                         type="checkbox"
-                        id={`my-modal-${order.permission}`}
+                        id={`my-modal-toggle-${order.username}`}
                         className="modal-toggle"
                       />
+                      <div className="modal">
+                        <div className="modal-box relative">
+                          <label
+                            htmlFor={`my-modal-toggle-${order.username}`}
+                            className="btn btn-sm btn-circle absolute right-2 top-2"
+                          >
+                            ✕
+                          </label>
+                          <h3 className="text-lg font-bold">
+                            Update {order.username}
+                          </h3>
+                          <p>Username</p>
+                          <input
+                            type="text"
+                            id={`my-modal-username-${order.username}`}
+                            style={{ border: "1px solid black" }}
+                            defaultValue={order.username}
+                          />
+                          <p>Password</p>
+                          <input
+                            type="password"
+                            id={`my-modal-password-${order.username}`}
+                            style={{ border: "1px solid black" }}
+                          />
+                          <button
+                            className="btn btn-primary float-right"
+                            onClick={() =>
+                              updateUser(
+                                order.username,
+                                document.getElementById(
+                                  `my-modal-username-${order.username}`
+                                ).value,
+                                document.getElementById(
+                                  `my-modal-password-${order.username}`
+                                ).value
+                              )
+                            }
+                          >
+                            Update User
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </td>
                 </tr>
