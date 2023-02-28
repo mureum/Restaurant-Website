@@ -223,6 +223,33 @@ app.put("/orders/unavailable/:id", async(req,res) => {
     }
   });
   
+  app.put("/logins/insert/:username/:password/:permission", async (req, res) => {
+    try {
+      const username = req.params.username;
+      const password = req.params.password;
+      const permission = req.params.permission;
+  
+      const checkUsernameQuery = `SELECT COUNT(*) as count FROM logins WHERE username = '${username}'`;
+      client.query(checkUsernameQuery, (err, data) => {
+        if (err) return res.status(500).json({ error: "Internal Server Error" });
+  
+        if (data.rows[0].count > 0) {
+          return res.status(400).json({ error: `Username '${username}' already exists` });
+        } else {
+          const insertQuery = `INSERT INTO logins (username, password, permissions)
+                                VALUES ('${username}', '${password}', '${permission}');`;
+          client.query(insertQuery, (err, data) => {
+            if (err) return res.status(500).json({ error: "Internal Server Error" });
+            return res.status(200).json({ message: "User has been inserted successfully" });
+          });
+        }
+      });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  
   
 
   app.put("/orders/available/:id", async(req,res) => {

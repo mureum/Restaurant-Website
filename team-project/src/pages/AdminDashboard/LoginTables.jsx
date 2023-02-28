@@ -94,6 +94,23 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
     }
   };
 
+  const insertUser = async (username, password, permission) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:8800/logins/insert/${username}/${password}/${permission}`
+      );
+      if (response.status === 200) {
+        window.alert(response.data.message);
+        window.location.reload();
+      } else {
+        window.alert(response.data.error);
+      }
+    } catch (err) {
+      window.alert(err.response.data.error);
+      console.log(err);
+    }
+  };
+
   const data =
     items.length > 0 ? items.sort((a, b) => a.username - b.username) : USERS;
 
@@ -255,7 +272,68 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
         ) : (
           <></>
         )}
+        <div>
+          <button
+            className="btn btn-secondary"
+            htmlFor={`my-modal-toggle-username`}
+            onClick={() => {
+              document.getElementById(
+                "my-modal-toggle-username"
+              ).checked = true;
+            }}
+          >
+            Insert User
+          </button>
+          <input
+            type="checkbox"
+            id={`my-modal-toggle-username`}
+            className="modal-toggle"
+          />
+          <div className="modal">
+            <div className="modal-box relative">
+              <label
+                htmlFor={`my-modal-toggle-username`}
+                className="btn btn-sm btn-circle absolute right-2 top-2"
+              >
+                ✕
+              </label>
+              <h3 className="text-lg font-bold">Create New User</h3>
+              <p>Username</p>
+              <input
+                type="text"
+                id={`my-modal-username-username`}
+                style={{ border: "1px solid black" }}
+              />
+              <p>Password</p>
+              <input
+                type="password"
+                id={`my-modal-password-username`}
+                style={{ border: "1px solid black" }}
+              />
+              <p>Permission (Waiter, Kitchen, Admin)</p>
+              <input
+                type="text"
+                id={`my-modal-username-permission`}
+                style={{ border: "1px solid black" }}
+              />
+              <button
+                className="btn btn-primary float-right"
+                onClick={() =>
+                  insertUser(
+                    document.getElementById(`my-modal-username-username`).value,
+                    document.getElementById(`my-modal-password-username`).value,
+                    document.getElementById(`my-modal-username-permission`)
+                      .value
+                  )
+                }
+              >
+                Create User
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+      <br></br>
     </div>
   );
 };
