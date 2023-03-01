@@ -102,6 +102,13 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
           Menus
         </a>
         <a
+          id="custOrder"
+          className="text-2xl font-bold text-yellow-100 uppercase"
+          href="/custOrder"
+        >
+          Your Order
+        </a>
+        <a
           className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
           href=""
         >

@@ -4,6 +4,7 @@ import AboutUs from "./pages/AboutUs";
 import Order from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
+import CustOrder from "./pages/CustOrder/CustOrder";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
 import WaiterCall from "./pages/callWaiter";
@@ -54,11 +55,18 @@ function App() {
             path="/menu"
             element={<Order isLoggedIn={isLoggedIn} permission={permission} />}
           />
+          
           <Route path="/cart" element={<Cart />} />
           <Route
             path="/login"
             element={
               <Login setIsLoggedIn={setIsLoggedIn} handleLogin={handleLogin} />
+            }
+          />
+          <Route
+            path="/custOrder"
+            element={
+              <CustOrder/>
             }
           />
           <Route
