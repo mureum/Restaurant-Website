@@ -88,6 +88,40 @@ const Cart = () => {
 
   var total = 0;
 
+  const [table, setTable] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [time, setTime] = useState(new Date().toLocaleTimeString()); // Initialize the time to the current time
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(new Date().toLocaleTimeString()); // Update the time every second
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  const handleSubmit = async (event) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/waiter/" +
+          table +
+          "/" +
+          customerName +
+          "/" +
+          time +
+          "/" +
+          itemList
+      );
+      console.log(res);
+      window.location.href = "/";
+    } catch (err) {
+      window.alert("Error on sending the order");
+      console.log(err);
+    }
+  };
+
   return (
     <div className="App">
       <p>Don't refresh the page!</p>
@@ -160,11 +194,56 @@ const Cart = () => {
       </div>
       <p className="total-amount"> total = £{total}</p>
       <br></br>
-      <button>
-        <Link to="/callWaiter" state={{ itemList: itemList }}>
-          <i className="btn btn-primary">Call Waiter</i>
-        </Link>
+      <button
+        className="btn btn-primary"
+        htmlFor={`my-modal-toggle-username`}
+        onClick={() => {
+          document.getElementById("my-modal-toggle-username").checked = true;
+        }}
+      >
+        Call Waiter
       </button>
+      <input
+        type="checkbox"
+        id={`my-modal-toggle-username`}
+        className="modal-toggle"
+      />
+      <div className="modal">
+        <div className="modal-box relative">
+          <label
+            htmlFor={`my-modal-toggle-username`}
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+          >
+            ✕
+          </label>
+          <h3 className="text-lg font-bold">Call the waiter</h3>
+          <label className="form-label">Table Number *</label>
+          <input
+            type="number"
+            className="form-control"
+            style={{ border: "1px solid black" }}
+            id={`my-modal-username-username`}
+            placeholder="Enter your table number"
+            onChange={(e) => setTable(e.target.value)}
+            required
+          />
+          <label className="form-label">Customer Name</label>
+          <input
+            type="text"
+            style={{ border: "1px solid black" }}
+            className="form-control"
+            id={`my-modal-name-username`}
+            placeholder="Customer Name"
+            onChange={(e) => setCustomerName(e.target.value)}
+          />
+          <button
+            className="btn btn-primary float-right"
+            onClick={() => handleSubmit()}
+          >
+            Send Order
+          </button>
+        </div>
+      </div>
       <br></br>
     </div>
   );

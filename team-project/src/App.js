@@ -6,7 +6,6 @@ import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
-import WaiterCall from "./pages/callWaiter";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import React from "react";
 import { Navbar } from "./common/Navbar";
@@ -78,10 +77,6 @@ function App() {
             element={
               <AdminDashboard isLoggedIn={isLoggedIn} permission={permission} />
             } />
-          <Route
-            path="/callWaiter"
-            element={<WaiterCall />}
-          />
         </Routes>
       </div>
     </BrowserRouter>
