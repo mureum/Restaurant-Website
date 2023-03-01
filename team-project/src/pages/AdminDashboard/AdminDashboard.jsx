@@ -34,7 +34,7 @@ function AdminDashboard({ setIsLoggedIn, handleLogin }) {
           </div>
         </div>
         <h1 className="text-3xl font-bold">
-          To be made <i className="fa-solid fa-sign-in"></i>
+          Logins <i className="fa-solid fa-sign-in"></i>
         </h1>
         <LoginTables nextStepText="Delete User" isCancellable={true} />
       </div>
