@@ -1,0 +1,4 @@
+UPDATE item 
+     SET stock_available = stock_available - 1
+WHERE item_id = '000010';
+/* *change the value of item_id to corespond with the stock that needs to be deincrimented*/
