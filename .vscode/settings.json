@@ -5,6 +5,7 @@
                 "ssl": true
             },
             "previewLimit": 50,
+<<<<<<< HEAD
             "server": "db.bit.io",
             "port": 5432,
             "driver": "PostgreSQL",
@@ -12,6 +13,13 @@
             "username": "zkac249",
             "database": "alelentini2001/oaxaca",
             "password": "v2_3z933_6MyvJc5kbwxN5wjt9akwv6U"
+=======
+            "server": "localhost",
+            "driver": "PostgreSQL",
+            "name": "alelentini2001/oaxaca",
+            "username": "boladale",
+            "connectString": "postgresql://boladale:v2_3yzTR_RyhgPas2h926Sb2ijYVRYqH@db.bit.io:5432/alelentini2001/oaxaca"
+>>>>>>> feature-basket
         }
     ]
 }

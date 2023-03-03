@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Basket</title>
+	<link rel="stylesheet" type="text/css" href="./basket.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,900" rel="stylesheet">
+    <script src="basket.js"></script>
+</head>
+<body>
+   <div class="backgroundofcart">
+   	   <div class="Header">
+   	   	<h3 class="Heading">Shopping Cart</h3>
+   	   	<h5 class="Action">Remove all</h5>
+   	   </div>
+
+   	   <div class="items-in-cart">
+   	   	  <div class="image-box">
+   	   	  	<img src="https://hips.hearstapps.com/del.h-cdn.co/assets/18/11/2048x1152/hd-aspect-1520956952-chicken-tacos-horizontal.jpg?resize=1200:*" style=" height:120px">
+   	   	  </div>
+   	   	  <div class="about">
+   	   	  	<h1 class="title">Chicken Tacos</h1>
+   	   	  	<h3 class="subtitle">Chicken with Salad tacos</h3>
+   	   	  </div>
+   	   	  <div class="counter">
+   	   	  	<div class="btn">+</div>
+   	   	  	<div class="count">1</div>
+   	   	  	<div class="btn">-</div>
+   	   	  </div>
+   	   	  <div class="prices">
+   	   	  	<div class="amount">$7.50</div>
+   	   	  </div>
+   	   </div>
+
+   	   <div class="items-in-cart">
+   	   	  <div class="image-box">
+   	   	  	<img src="https://images-gmi-pmc.edge-generalmills.com/0798b070-1f82-4fa2-91ea-17e8175e44e3.jpg" style=" height:120px">
+   	   	  </div>
+   	   	  <div class="about">
+   	   	  	<h1 class="title">Enchallida</h1>
+   	   	  	<h3 class="subtitle">Don't know</h3>
+   	   	  </div>
+   	   	  <div class="counter">
+   	   	  	<div class="btn">+</div>
+   	   	  	<div class="count">1</div>
+   	   	  	<div class="btn">-</div>
+   	   	  </div>
+   	   	  <div class="prices">
+   	   	  	<div class="amount">$8.50</div>
+   	   	  </div>
+   	   </div>
+   	 <hr> 
+   	 <div class="checkout">
+   	 <div class="total">
+   	 	<div>
+   	 		<div class="Subtotal">Total</div>
+   	 	</div>
+   	 	<div class="total-amount"></div>
+   	 </div>
+
+		<form action="/Menu/cust_view.html">
+			<button class="button">Go Back</button> 
+		</form>
+	 
+		<form action="/CallWaiter/waiterCall.html">
+			<button class="button">Proceed</button> 
+		</form>
+	  </div>
+   </div>
+</body>
+
+<script>
+	let total = 0;
+//When + button is clicked
+let plusButton = document.querySelectorAll('.btn');
+plusButton.forEach( btn => {
+btn.addEventListener('click', () => {
+    let counter = btn.parentElement.querySelector('.count');
+    let amount = btn.parentElement.parentElement.querySelector('.amount').textContent;
+    if(btn.textContent === '+'){
+        counter.textContent++;
+        total += Number(amount);
+		
+    } else if (btn.textContent === '-' && counter.textContent > 0){
+        counter.textContent--;
+        total -= Number(amount);
+	
+    }
+    document.querySelector('.total-amount').textContent = total;
+});
+});
+
+//Loop through each item in the cart
+let itemsInCart = document.querySelectorAll('.items-in-cart');
+itemsInCart.forEach( item => {
+    //Get the amount for the item
+    let amount = item.querySelector('.amount').textContent;
+    //Add the amount to the total
+    total += Number(amount);
+});
+//Set the total-amount element's textContent to the total
+document.querySelector('.total-amount').textContent = total;
+
+</script>
+</html>
