@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
+import { renderToString } from "react-dom/server";
 
 const ORDER = [
   {
@@ -19,7 +20,7 @@ const ORDER = [
   },
 ];
 
-export const OrderTable = ({ nextStepText, isCancellable }) => {
+export const KitchenTable = ({ nextStepText, isCancellable }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -116,6 +117,7 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
   const [selectedItems, setSelectedItems] = useState(
     data.map((_, i) => ({ [i]: false })).reduce((a, b) => ({ ...a, ...b }))
   );
+
   const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
@@ -246,3 +248,5 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
     </div>
   );
 };
+
+export default KitchenTable;

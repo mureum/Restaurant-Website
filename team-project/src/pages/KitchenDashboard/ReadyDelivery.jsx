@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
+import { renderToString } from "react-dom/server";
 
 const ORDER = [
   {
@@ -19,13 +20,13 @@ const ORDER = [
   },
 ];
 
-export const OrderTable = ({ nextStepText, isCancellable }) => {
+export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/pendingOrders");
+        const res = await axios.get("http://localhost:8800/readyOrders");
         const transformedData = res.data.map((item) => ({
           tableNumber: item.table_no,
           orderNumber: item.order_no,
@@ -42,44 +43,7 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
     fetchAlltems();
   }, []);
 
-  const sendToKitchen = async (selectedItems) => {
-    try {
-      const itemsToSend = Object.entries(selectedItems)
-        .filter(([_, isSelected]) => isSelected)
-        .map(([index, _]) => items[index]);
-
-      if (itemsToSend.length === 0) {
-        window.alert("Please select at least one order to send to kitchen");
-        return;
-      }
-
-      const orders = itemsToSend.map(
-        ({ tableNumber, orderNumber, customerName, time, details }) => ({
-          table: tableNumber,
-          orderNumber,
-          customerName,
-          time,
-          details,
-        })
-      );
-
-      const response = await axios.post(`http://localhost:8800/sendToKitchen`, {
-        orders,
-      });
-
-      if (response.data.success) {
-        window.alert("Selected orders sent to kitchen");
-        window.location.reload();
-      } else {
-        window.alert("Error on sending the orders");
-      }
-    } catch (err) {
-      window.alert("Error on sending the orders");
-      console.log(err);
-    }
-  };
-
-  const deleteOrder = async (selectedItems) => {
+  const completeOrder = async (selectedItems) => {
     try {
       const itemsToDelete = Object.entries(selectedItems)
         .filter(([_, isSelected]) => isSelected)
@@ -95,7 +59,7 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
         .join(",");
       const deleteQuery = `DELETE FROM inPreparation WHERE order_no IN (${orderNumbers})`;
 
-      await axios.delete("http://localhost:8800/deleteOrder", {
+      await axios.delete("http://localhost:8800/completeOrder", {
         data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },
       });
 
@@ -116,6 +80,7 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
   const [selectedItems, setSelectedItems] = useState(
     data.map((_, i) => ({ [i]: false })).reduce((a, b) => ({ ...a, ...b }))
   );
+
   const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
@@ -221,28 +186,8 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
           </tbody>
         </table>
       )}
-      <div className="flex gap-2 self-end">
-        {nextStepText ? (
-          <button
-            className="btn btn-primary"
-            onClick={() => sendToKitchen(selectedItems)}
-          >
-            {nextStepText}
-          </button>
-        ) : (
-          <></>
-        )}
-        {isCancellable ? (
-          <button
-            className="btn btn-warning"
-            onClick={() => deleteOrder(selectedItems)}
-          >
-            Cancel Order
-          </button>
-        ) : (
-          <></>
-        )}
-      </div>
     </div>
   );
 };
+
+export default ReadyDelivery;

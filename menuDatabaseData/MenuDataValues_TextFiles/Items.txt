@@ -1,0 +1,42 @@
+000001,Nachos con queso,06.00,650,ST,true
+000010,Nachos vegan,06.00,500,ST,true
+000011,Grilled Halloumi,06.00,200,ST,true
+000100,Chipotle Wings,07.00,250,ST,true
+000101,Chicken Soup,07.50,330,ST,true
+000110,Black beans Soup,06.50,300,ST,true
+000111,Tuna Tostada,05.00,300,ST,true
+001000,Cod Fillets,06.50,1030,ST,true
+001001,Chicken Enchilada,14.90,400,MA,true
+001010,Beef Enchilada,14.90,400,MA,true
+001011,Mixed Vegetables Enchilada,14.90,500,MA,true
+001100,Chicken Burrito,09.00,600,MA,true
+001101,Beef Burrito,09.00,800,MA,true
+001110,Mixed Vegetables Burrito,09.00,500,MA,true
+001111,Chicken Quesadilla,07.95,600,MA,true
+010000,Beef Quesadilla,07.95,700,MA,true
+010001,Mixed Vegetables Quesadilla,07.95,500,MA,true
+010010,Chicken Fajita,07.50,500,MA,true
+010011,Steak Fajita,08.00,560,MA,true
+010100,Prawn Fajita,08.00,400,MA,true
+010101,Chicken Burger,06.90,700,MA,true
+010110,Beef Burger,06.00,800,MA,true
+010111,Vegan Burger,06.00,700,MA,true
+011000,Margherita Pizza,11.00,940,MA,true
+011001,Pepperoni Pizza,11.00,1190,MA,true
+011010,Vegan Pizza,11.00,710,MA,true
+011011,Cheese Cake,04.95,800,DE,true
+011100,Vanilla Icecream,03.00,300,DE,true
+011101,Churros,04.00,800,DE,true
+011110,Chicken Salad,05.00,400,SI,true
+011111,Vegan Salad,03.00,300,SI,true
+100000,Coleslaw,01.50,80,SI,true
+100001,Mexican Rice,03.00,160,SI,true
+100010,Fries,03.00,900,SI,true
+100011,Corn,03.00,90,SI,true
+100100,Onion Rings,01.50,200,SI,true
+100101,Coke,01.50,140,DR,true
+100110,Diet Coke,01.50,0,DR,true
+100111,Sprite,01.50,140,DR,true
+101000,Fanta Orange,01.50,150,DR,true
+101001,Still Water,01.00,0,DR,true
+101010,Sparkling water,01.00,0,DR,true

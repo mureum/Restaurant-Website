@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import Slider from "rc-slider";
+import TooltipSlider from "../common/TooltipSlider.jsx";
 import "rc-slider/assets/index.css";
 
 const ALLERGENS = [
@@ -76,6 +76,7 @@ const DIETS = [
 
 function Order({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fecthAllItems = async () => {
@@ -86,7 +87,16 @@ function Order({ isLoggedIn, permission }) {
         console.log(err);
       }
     };
+    const fecthAllImages = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/images");
+        setImages(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     fecthAllItems();
+    fecthAllImages();
   }, []);
 
   const fetchFilterDiets = async (id) => {
@@ -183,6 +193,9 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
+  const [calories_min, setCaloriesMin] = useState(0);
+  const [calories_max, setCaloriesMax] = useState(1150);
+
   const fetchAlltems = async (id) => {
     try {
       const res = await axios.get("http://localhost:8800/orders");
@@ -223,26 +236,6 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
-  const checkListRef1 = useRef(null);
-  const checkListRef2 = useRef(null);
-
-  const handleClick1 = (event) => {
-    if (checkListRef1.current.classList.contains("visible")) {
-      checkListRef1.current.classList.remove("visible");
-    } else {
-      checkListRef1.current.classList.add("visible");
-    }
-  };
-
-  const handleClick2 = (event) => {
-    if (checkListRef2.current.classList.contains("visible")) {
-      checkListRef2.current.classList.remove("visible");
-    } else {
-      checkListRef2.current.classList.add("visible");
-    }
-  };
-
-  const [filter, setFilter] = useState(100000);
   const [value, setValue] = useState({});
 
   const handleChange = (id) => (e) => {
@@ -339,7 +332,6 @@ function Order({ isLoggedIn, permission }) {
                       <label className="label cursor-pointer justify-start gap-2">
                         <input
                           type="checkbox"
-                          className="toggle"
                           checked={checked.includes("'" + diet.id + "'")}
                           onChange={() => handleCheck(diet.id)}
                           id={diet.id}
@@ -362,7 +354,6 @@ function Order({ isLoggedIn, permission }) {
                       <label className="label cursor-pointer justify-start gap-2">
                         <input
                           type="checkbox"
-                          className="toggle"
                           checked={checked2.includes("'" + allergen.id + "'")}
                           onChange={() => handleCheck2(allergen.id)}
                           id={allergen.id}
@@ -380,19 +371,22 @@ function Order({ isLoggedIn, permission }) {
               <div className="gap-2">
                 <h3 className="font-bold text-xl">Calories</h3>
                 <div className="my-4">
-                  <Slider
+                  <TooltipSlider
                     min={0}
-                    max={100}
+                    max={1150}
                     range={true}
-                    step={10}
-                    dots={true}
+                    tipFormatter={(value) => `${value}`}
+                    onChange={(value) => {
+                      setCaloriesMax(value[1]);
+                      setCaloriesMin(value[0]);
+                    }}
+                    defaultValue={[calories_min, calories_max]}
                   />
+                  <div>
+                    <div>0</div>
+                  </div>
                 </div>
               </div>
-
-              <button className="btn btn-primary self-end">
-                Apply Filters
-              </button>
             </div>
           </div>
         </div>
@@ -409,44 +403,12 @@ function Order({ isLoggedIn, permission }) {
         </Link>
       </button>
       <br></br>
-      <div className="form-control">
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Search for calories less than.."
-            title="Type in a calorie value"
-            className="input input-bordered w-96"
-            onChange={(e) => {
-              if (e.target.value !== "") {
-                setFilter(e.target.value);
-              } else {
-                setFilter("100000");
-              }
-            }}
-          />
-          <button className="btn btn-square">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
 
       <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
         {(items && permission === "Waiter") || permission === "Kitchen"
           ? items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
                 item.is_available === true ? (
@@ -460,14 +422,16 @@ function Order({ isLoggedIn, permission }) {
                           : "none",
                     }}
                   >
-                    <img
-                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                      alt={`${item.name} image`}
-                      onError={(e) =>
-                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                      }
-                    />
+                    {images
+                      .filter((image) => image.item_id === item.item_id)
+                      .map((image) => (
+                        <img
+                          key={image.item_id}
+                          className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                          src={image.link}
+                          alt={`${item.name} image`}
+                        />
+                      ))}
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
                         <div>
@@ -500,14 +464,16 @@ function Order({ isLoggedIn, permission }) {
                           : "none",
                     }}
                   >
-                    <img
-                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                      alt={`${item.name} image`}
-                      onError={(e) =>
-                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                      }
-                    />
+                    {images
+                      .filter((image) => image.item_id === item.item_id)
+                      .map((image) => (
+                        <img
+                          key={image.item_id}
+                          className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                          src={image.link}
+                          alt={`${item.name} image`}
+                        />
+                      ))}
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
                         <div>
@@ -532,7 +498,8 @@ function Order({ isLoggedIn, permission }) {
                 )
               )
           : items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
                 item.is_available === true ? (
@@ -546,14 +513,16 @@ function Order({ isLoggedIn, permission }) {
                           : "none",
                     }}
                   >
-                    <img
-                      className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
-                      src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                      alt={`${item.name} image`}
-                      onError={(e) =>
-                        (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                      }
-                    />
+                    {images
+                      .filter((image) => image.item_id === item.item_id)
+                      .map((image) => (
+                        <img
+                          key={image.item_id}
+                          className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                          src={image.link}
+                          alt={`${item.name} image`}
+                        />
+                      ))}
                     <div className="flex-1 flex flex-col p-4">
                       <div className="flex justify-between">
                         <div>
