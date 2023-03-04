@@ -102,7 +102,27 @@ const Cart = () => {
     };
   }, []);
 
+  const deleteFromStock = async (id, amount) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/reduceStock/" + id + "/" + amount
+      );
+      console.log("Item " + id + " stock reduced by " + amount);
+    } catch (err) {
+      window.alert("Error sending the order");
+      console.log(err);
+    }
+  };
+
   const handleSubmit = async (event) => {
+    // Create order object
+    const order = {
+      table: table,
+      customerName: customerName,
+      items: cartItems,
+    };
+
+    // Send order to server
     try {
       const res = await axios.put(
         "http://localhost:8800/orders/waiter/" +
@@ -115,11 +135,27 @@ const Cart = () => {
           itemList
       );
       console.log(res);
+      // Call deleteFromStock for each item in cart
+      try {
+        for (const item of cartItems) {
+          console.log(item.item_id + " - " + item.amount);
+          await deleteFromStock(item.item_id, item.amount);
+        }
+      } catch (err) {
+        console.log(err);
+        return;
+      }
+      alert("Your order has been sent!");
       window.location.href = "/";
     } catch (err) {
-      window.alert("Error on sending the order");
+      window.alert("Error sending the order");
       console.log(err);
     }
+
+    // Reset cart and form
+    setCartItems([]);
+    setTable("");
+    setCustomerName("");
   };
 
   return (
