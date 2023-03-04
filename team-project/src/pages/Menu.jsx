@@ -273,6 +273,17 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
+  const addStock = async (id, amount) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/addstock/" + id + "/" + amount
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="container mx-auto">
       <div className="flex justify-between">
@@ -411,7 +422,7 @@ function Order({ isLoggedIn, permission }) {
               .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
-                item.is_available === true ? (
+                item.is_available === true && item.stock_available > 0 ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
                     key={item.item_id}
@@ -439,8 +450,61 @@ function Order({ isLoggedIn, permission }) {
                           <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
-                          <p>£{item.price}</p>
+                          <p style={{ textAlign: "right" }}>£{item.price}</p>
                           <span className="self-end">{item.calories}cal</span>
+                          <p style={{ textAlign: "right" }}>
+                            Items in stock: {item.stock_available}
+                          </p>
+                          <br></br>
+                          <button
+                            className="btn btn-secondary"
+                            htmlFor={`my-modal-toggle-username`}
+                            onClick={() => {
+                              document.getElementById(
+                                "my-modal-toggle-username"
+                              ).checked = true;
+                            }}
+                          >
+                            Edit Stock
+                          </button>
+                          <input
+                            type="checkbox"
+                            id={`my-modal-toggle-username`}
+                            className="modal-toggle"
+                          />
+                          <div className="modal">
+                            <div className="modal-box relative">
+                              <label
+                                htmlFor={`my-modal-toggle-username`}
+                                className="btn btn-sm btn-circle absolute right-2 top-2"
+                              >
+                                ✕
+                              </label>
+                              <h3 className="text-lg font-bold">
+                                Add Stock to items
+                              </h3>
+                              <p>Stock</p>
+                              <input
+                                type="number"
+                                id={`my-modal-stock-number`}
+                                style={{ border: "1px solid black" }}
+                              />
+                              <button
+                                className="btn btn-primary float-right"
+                                onClick={() =>
+                                  addStock(
+                                    item.item_id,
+                                    document.getElementById(
+                                      `my-modal-stock-number`
+                                    ).value
+                                  )
+                                }
+                              >
+                                Update Stock
+                              </button>
+                            </div>
+                          </div>
+                          <br></br>
                           <button
                             className="text-2xl font-bold uppercase space-x-2"
                             style={{ backgroundColor: "pink" }}
@@ -481,8 +545,68 @@ function Order({ isLoggedIn, permission }) {
                           <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
-                          <p>£{item.price}</p>
+                          <p style={{ textAlign: "right" }}>£{item.price}</p>
                           <span className="self-end">{item.calories}cal</span>
+                          <p style={{ textAlign: "right" }}>
+                            Items in stock: {item.stock_available}
+                          </p>
+                          {item.stock_available == 0 ? (
+                            <>
+                              <p>Items out of stock, add stock now</p>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                          <br></br>
+                          <button
+                            className="btn btn-secondary"
+                            htmlFor={`my-modal-toggle-username`}
+                            onClick={() => {
+                              document.getElementById(
+                                "my-modal-toggle-username"
+                              ).checked = true;
+                            }}
+                          >
+                            Edit Stock
+                          </button>
+                          <input
+                            type="checkbox"
+                            id={`my-modal-toggle-username`}
+                            className="modal-toggle"
+                          />
+                          <div className="modal">
+                            <div className="modal-box relative">
+                              <label
+                                htmlFor={`my-modal-toggle-username`}
+                                className="btn btn-sm btn-circle absolute right-2 top-2"
+                              >
+                                ✕
+                              </label>
+                              <h3 className="text-lg font-bold">
+                                Add Stock to items
+                              </h3>
+                              <p>Stock</p>
+                              <input
+                                type="number"
+                                id={`my-modal-stock-number`}
+                                style={{ border: "1px solid black" }}
+                              />
+                              <button
+                                className="btn btn-primary float-right"
+                                onClick={() =>
+                                  addStock(
+                                    item.item_id,
+                                    document.getElementById(
+                                      `my-modal-stock-number`
+                                    ).value
+                                  )
+                                }
+                              >
+                                Update Stock
+                              </button>
+                            </div>
+                          </div>
+                          <br></br>
                           <button
                             className="text-2xl font-bold uppercase space-x-2"
                             style={{ backgroundColor: "pink" }}
@@ -502,7 +626,7 @@ function Order({ isLoggedIn, permission }) {
               .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
-                item.is_available === true ? (
+                item.is_available === true && item.stock_available > 0 ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
                     key={item.item_id}
@@ -574,6 +698,8 @@ function Order({ isLoggedIn, permission }) {
                       <br />
                     </div>
                   </div>
+                ) : item.stock_available == 0 ? (
+                  <>{() => setUnavailable(item.item_id)}</>
                 ) : (
                   <></>
                 )

@@ -441,7 +441,19 @@ app.delete("/completeOrder", async (req, res) => {
   }
 });
 
-
+app.put("/orders/addstock/:id/:amount", async(req,res) => {
+  try {
+    const id = req.params.id;
+    const amount = req.params.amount;
+    const q = `UPDATE item SET stock_available = ${amount} WHERE item_id = '${id}';`
+    client.query(q, (err,data)=>{
+      if (err) return res.json(err);
+      return res.json("Item has been updated successfully")
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
 
 
 app.listen(8800, ()=>{
