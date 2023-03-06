@@ -63,6 +63,43 @@ app.get("/pendingOrders", async (req,res)=> {
         return res.json(err)
       }
 })
+
+app.get("/currentOrders", async (req,res)=> {
+  try {
+      const q = "SELECT * FROM inpreparation;"
+      client.query(q, (err,data)=>{
+        if(err) throw err
+        return res.json(data.rows)
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+})
+
+app.get("/logins", async (req,res)=> {
+  try {
+    const q = "SELECT * FROM logins;"
+    client.query(q, (err,data)=>{
+      if(err) throw err
+      return res.json(data.rows)
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
+
+app.get("/readyOrders", async (req,res)=> {
+  try {
+      const q = "SELECT * FROM ready_orders;"
+      client.query(q, (err,data)=>{
+        if(err) throw err
+        return res.json(data.rows)
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+})
+
   
   app.get("/orders/diets/:id", async(req,res) => {
     try {
@@ -168,6 +205,51 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       return res.json(err)
     }
   })
+
+  app.put("/logins/update/:prevUsername/:username/:password", async (req, res) => {
+    try {
+      const prevUsername = req.params.prevUsername;
+      const username = req.params.username;
+      const password = req.params.password;
+      const q = `UPDATE logins
+        SET username = '${username}', password = '${password}'
+        WHERE username = '${prevUsername}';`;
+      client.query(q, (err, data) => {
+        if (err) return res.json(err);
+        return res.json("User has been updated successfully");
+      });
+    } catch (err) {
+      return res.json(err);
+    }
+  });
+  
+  app.put("/logins/insert/:username/:password/:permission", async (req, res) => {
+    try {
+      const username = req.params.username;
+      const password = req.params.password;
+      const permission = req.params.permission;
+  
+      const checkUsernameQuery = `SELECT COUNT(*) as count FROM logins WHERE username = '${username}'`;
+      client.query(checkUsernameQuery, (err, data) => {
+        if (err) return res.status(500).json({ error: "Internal Server Error" });
+  
+        if (data.rows[0].count > 0) {
+          return res.status(400).json({ error: `Username '${username}' already exists` });
+        } else {
+          const insertQuery = `INSERT INTO logins (username, password, permissions)
+                                VALUES ('${username}', '${password}', '${permission}');`;
+          client.query(insertQuery, (err, data) => {
+            if (err) return res.status(500).json({ error: "Internal Server Error" });
+            return res.status(200).json({ message: "User has been inserted successfully" });
+          });
+        }
+      });
+    } catch (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  
   
 
   app.put("/orders/available/:id", async(req,res) => {
@@ -184,6 +266,208 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       return res.json(err)
     }
   })
+
+  app.put("/orders/waiter/:table/:customerName/:time/:itemList", async (req, res) => {
+    try {
+      const table = parseInt(req.params.table);
+      const name = req.params.customerName;
+      const time = req.params.time;
+      const itemList = req.params.itemList;
+  
+      // Retrieve the maximum order number from the totalorders table
+      const maxOrderNumberQuery = `SELECT MAX(order_no) as max_order_no FROM totalorders`;
+      const { rows } = await client.query(maxOrderNumberQuery);
+      const maxOrderNumber = parseInt(rows[0].max_order_no) || 0;
+  
+      // If the maximum order number has reached 1000, clear the totalorders table
+      if (maxOrderNumber === 1000) {
+        const clearTable = `DELETE FROM totalorders;`;
+        await client.query(clearTable);
+      }
+  
+      // Increment the order number
+      const orderNumber = maxOrderNumber + 1;
+  
+      // Insert the new order into the waiter_calls and totalorders tables
+      const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
+                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
+                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description) 
+                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}')`;
+  
+      await client.query(insertQuery);
+  
+      console.log("Success");
+      return res.json("Item has been updated successfully");
+    } catch (err) {
+      console.log("Error");
+      return res.json(err);
+    }
+  });
+  
+
+app.post("/sendToKitchen", async (req, res) => {
+  try {
+    const orders = req.body.orders;
+
+    if (orders.length === 0) {
+      res.status(400).json({ error: "Please select at least one order to send to kitchen" });
+      return;
+    }
+
+    const values = orders.map(
+      ({ table, orderNumber, customerName, time, details }) =>
+        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}')`
+    );
+
+    const insertQuery = `INSERT INTO inpreparation (table_no, order_no, customer_name, time, order_description) VALUES ${values.join(
+      ","
+    )};`;
+
+    await client.query(insertQuery);
+
+    const orderNumbers = orders.map((order) => order.orderNumber).join(",");
+    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumbers})`;
+
+    await client.query(deleteQuery);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the orders" });
+  }
+});
+
+app.post("/makeOrderReady", async (req, res) => {
+  try {
+    const orders = req.body.orders;
+
+    if (orders.length === 0) {
+      res.status(400).json({ error: "Please select at least one order to send to kitchen" });
+      return;
+    }
+
+    const values = orders.map(
+      ({ table, orderNumber, customerName, time, details }) =>
+        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}')`
+    );
+
+    const insertQuery = `INSERT INTO ready_orders (table_no, order_no, customer_name, time, order_description) VALUES ${values.join(
+      ","
+    )};`;
+    
+
+    await client.query(insertQuery);
+    const orderNumbers = orders.map((order) => order.orderNumber).join(",");
+    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${orderNumbers})`;
+
+    await client.query(deleteQuery);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the orders" });
+  }
+});
+
+
+app.delete('/deleteUser', async (req, res) => {
+  try {
+    const usernames = req.body.usernames.map(username => username.replace(/"/g, ''));
+    console.log(usernames);
+      
+    const deleteQuery = `DELETE FROM logins WHERE username IN (${usernames.join(",")})`;
+
+    client.query(deleteQuery, (err, data) => {
+      if (err) {
+        console.log("Error");
+        console.error(err);
+        return res.json(err);
+      }
+      console.log("Users deleted from the database");
+      res.json({ success: true });
+    });
+  } catch (err) {
+    console.log("Error");
+      return res.json(err);
+  }
+})
+
+
+app.delete("/deleteOrder", async (req, res) => {
+  try {
+    const { orderNumbers } = req.body;
+
+    // Construct a comma-separated string of order numbers to delete
+    const orderNumberString = orderNumbers.join(",");
+
+    // Delete all orders with the given order numbers from the database
+    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString})`;
+
+    client.query(deleteQuery, (err, data) => {
+      if (err) {
+        console.log("Error");
+        return res.json(err);
+      }
+      console.log("Orders deleted from the database");
+      res.json({ message: "Orders deleted from the database" });
+    });
+  } catch (err) {
+    console.log("Error");
+    return res.json(err);
+  }
+});
+
+app.delete("/completeOrder", async (req, res) => {
+  try {
+    const { orderNumbers } = req.body;
+
+    // Construct a comma-separated string of order numbers to delete
+    const orderNumberString = orderNumbers.join(",");
+
+    // Delete all orders with the given order numbers from the database
+    const deleteQuery = `DELETE FROM ready_orders WHERE order_no IN (${orderNumberString})`;
+
+    client.query(deleteQuery, (err, data) => {
+      if (err) {
+        console.log("Error");
+        return res.json(err);
+      }
+      console.log("Orders deleted from the database");
+      res.json({ message: "Orders deleted from the database" });
+    });
+  } catch (err) {
+    console.log("Error");
+    return res.json(err);
+  }
+});
+
+app.put("/orders/addstock/:id/:amount", async(req,res) => {
+  try {
+    const id = req.params.id;
+    const amount = req.params.amount;
+    const q = `UPDATE item SET stock_available = ${amount} WHERE item_id = '${id}';`
+    client.query(q, (err,data)=>{
+      if (err) return res.json(err);
+      return res.json("Item has been updated successfully")
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
+
+app.put("/orders/reduceStock/:id/:amount", async(req,res) => {
+  try {
+    const id = req.params.id;
+    const amount = req.params.amount;
+    const q = `UPDATE item SET stock_available = stock_available - ${amount} WHERE item_id = '${id}';`
+    client.query(q, (err,data)=>{
+      if (err) return res.json(err);
+      return res.json("Item has been updated successfully")
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
 
 
 app.listen(8800, ()=>{
