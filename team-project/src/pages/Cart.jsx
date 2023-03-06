@@ -114,7 +114,7 @@ const Cart = () => {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (totCost) => {
     // Create order object
     const order = {
       table: table,
@@ -132,7 +132,9 @@ const Cart = () => {
           "/" +
           time +
           "/" +
-          itemList
+          itemList +
+          "/" +
+          totCost
       );
       console.log(res);
       // Call deleteFromStock for each item in cart
@@ -274,7 +276,7 @@ const Cart = () => {
           />
           <button
             className="btn btn-primary float-right"
-            onClick={() => handleSubmit()}
+            onClick={() => handleSubmit(total)}
           >
             Send Order
           </button>

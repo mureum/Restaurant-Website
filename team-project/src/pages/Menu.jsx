@@ -416,7 +416,9 @@ function Order({ isLoggedIn, permission }) {
       <br></br>
 
       <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-        {(items && permission === "Waiter") || permission === "Kitchen"
+        {(items && permission === "Waiter") ||
+        permission === "Kitchen" ||
+        permission === "Admin"
           ? items
               .filter((item) => item.calories >= Number(calories_min))
               .filter((item) => item.calories <= Number(calories_max))
