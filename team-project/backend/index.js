@@ -402,7 +402,7 @@ app.delete("/deleteOrder", async (req, res) => {
     const orderNumberString = orderNumbers.join(",");
 
     // Delete all orders with the given order numbers from the database
-    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString})`;
+    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString}); DELETE FROM totalorders WHERE order_no IN (${orderNumberString})`;
 
     client.query(deleteQuery, (err, data) => {
       if (err) {
