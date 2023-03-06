@@ -284,6 +284,8 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
+  const [currentItemId, setCurrentItemId] = useState(null);
+
   return (
     <div className="container mx-auto">
       <div className="flex justify-between">
@@ -462,6 +464,7 @@ function Order({ isLoggedIn, permission }) {
                             className="btn btn-secondary"
                             htmlFor={`my-modal-toggle-username`}
                             onClick={() => {
+                              setCurrentItemId(item.item_id);
                               document.getElementById(
                                 "my-modal-toggle-username"
                               ).checked = true;
@@ -495,7 +498,7 @@ function Order({ isLoggedIn, permission }) {
                                 className="btn btn-primary float-right"
                                 onClick={() =>
                                   addStock(
-                                    item.item_id,
+                                    currentItemId,
                                     document.getElementById(
                                       `my-modal-stock-number`
                                     ).value
@@ -564,6 +567,7 @@ function Order({ isLoggedIn, permission }) {
                             className="btn btn-secondary"
                             htmlFor={`my-modal-toggle-username`}
                             onClick={() => {
+                              setCurrentItemId(item.item_id);
                               document.getElementById(
                                 "my-modal-toggle-username"
                               ).checked = true;
@@ -597,7 +601,7 @@ function Order({ isLoggedIn, permission }) {
                                 className="btn btn-primary float-right"
                                 onClick={() =>
                                   addStock(
-                                    item.item_id,
+                                    currentItemId,
                                     document.getElementById(
                                       `my-modal-stock-number`
                                     ).value
