@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
+import { Link } from 'react-router-dom';
 
 const Cart = ({ isLoggedIn }) => {
   const [cartItems, setItems] = useState([]);
@@ -118,6 +119,14 @@ const Cart = ({ isLoggedIn }) => {
                 >
                   Delete
                 </button>
+                <Link to="/checkout">
+                <button
+                  className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete"
+                >
+
+                  Checkout
+                </button>
+                </Link>
               </div>
               <br></br>
             </>
