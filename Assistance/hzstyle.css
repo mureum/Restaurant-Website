@@ -1,18 +1,22 @@
-*   {box-sizing: border-box;}
+* {box-sizing: border-box;}
 
-.help-stuff {
-    width: 270px;
+body {
+    font-family: arial;
+} I
+
+.help-container {
+    width: 300px;
     height: 320px;
     background: #eee;
     position: absolute;
     top: 50px; left: 50px;
-
+    z-index: 1;
 }
 
-.button-help {
+.btn-help {
     width: 50px;
     height: 50px;
-    background: linear-gradient(lightgray, darkturquoise);
+    background: linear-gradient (light gray, darkturquoise);
     border-radius: 25px;
     border: 2px solid white;
     color: white;
@@ -21,6 +25,65 @@
     padding: 8px 14px;
     position: absolute;
     top: 0; left: 0;
-
-    
+    cursor: pointer;
+    z-index: 1;
 }
+
+.help-title {
+    width: 0;
+    height: 50px;
+    background: linear-gradient(lightgray, darkturquoise);
+    position: absolute;
+    top: 0; left: 25px;
+    border-radius: 0 25px 0 0;
+}
+
+.help-title h2 {
+    margin: 0;
+    padding: 0;
+    color: white;
+    display: none;
+    padding: 12px 35px;
+}
+
+.help-body {
+    width: 270px;
+    height: 0;
+    background: gray;
+    position: absolute;
+    top: 50px; left: 25px;
+    text-align: justify;
+    border-radius: 0 0 25px 25px;
+}
+
+.help-body p {
+    margin: 0;
+    padding: 0;
+    color: white;
+    display: none;
+    padding: 12px 35px;
+}
+
+@keyframes fadein-right {
+    0% { opacity: 0; margin-left: 45px; }
+    100% { opacity: 1; margin-left: 0; }
+}
+
+@keyframes fadein-bottom {
+    0% { opacity: 0; margin-top: 45px; }
+    100% { opacity: 1; margin-top: 0; }
+}
+
+@keyframes fadeout-right {
+    0% { opacity: 1; margin-left: 0; }
+    100% { opacity: 0; margin-left: 45px; }
+}
+
+@keyframes fadeout-bottom {
+    0% { opacity: 1; margin-top: 0; }
+    100% { opacity: 0; margin-top: 45px; }
+}
+
+
+
+
