@@ -284,6 +284,8 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
+  const [currentItemId, setCurrentItemId] = useState(null);
+
   return (
     <div className="container mx-auto">
       <div className="flex justify-between">
@@ -416,7 +418,9 @@ function Order({ isLoggedIn, permission }) {
       <br></br>
 
       <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-        {(items && permission === "Waiter") || permission === "Kitchen"
+        {(items && permission === "Waiter") ||
+        permission === "Kitchen" ||
+        permission === "Admin"
           ? items
               .filter((item) => item.calories >= Number(calories_min))
               .filter((item) => item.calories <= Number(calories_max))
@@ -460,6 +464,7 @@ function Order({ isLoggedIn, permission }) {
                             className="btn btn-secondary"
                             htmlFor={`my-modal-toggle-username`}
                             onClick={() => {
+                              setCurrentItemId(item.item_id);
                               document.getElementById(
                                 "my-modal-toggle-username"
                               ).checked = true;
@@ -493,7 +498,7 @@ function Order({ isLoggedIn, permission }) {
                                 className="btn btn-primary float-right"
                                 onClick={() =>
                                   addStock(
-                                    item.item_id,
+                                    currentItemId,
                                     document.getElementById(
                                       `my-modal-stock-number`
                                     ).value
@@ -562,6 +567,7 @@ function Order({ isLoggedIn, permission }) {
                             className="btn btn-secondary"
                             htmlFor={`my-modal-toggle-username`}
                             onClick={() => {
+                              setCurrentItemId(item.item_id);
                               document.getElementById(
                                 "my-modal-toggle-username"
                               ).checked = true;
@@ -595,7 +601,7 @@ function Order({ isLoggedIn, permission }) {
                                 className="btn btn-primary float-right"
                                 onClick={() =>
                                   addStock(
-                                    item.item_id,
+                                    currentItemId,
                                     document.getElementById(
                                       `my-modal-stock-number`
                                     ).value

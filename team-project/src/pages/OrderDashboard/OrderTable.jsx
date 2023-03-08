@@ -93,7 +93,6 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
       const orderNumbers = itemsToDelete
         .map((item) => item.orderNumber)
         .join(",");
-      const deleteQuery = `DELETE FROM inPreparation WHERE order_no IN (${orderNumbers})`;
 
       await axios.delete("http://localhost:8800/deleteOrder", {
         data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },

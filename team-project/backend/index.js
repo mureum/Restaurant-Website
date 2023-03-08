@@ -267,12 +267,13 @@ app.put("/orders/unavailable/:id", async(req,res) => {
     }
   })
 
-  app.put("/orders/waiter/:table/:customerName/:time/:itemList", async (req, res) => {
+  app.put("/orders/waiter/:table/:customerName/:time/:itemList/:totCost", async (req, res) => {
     try {
       const table = parseInt(req.params.table);
       const name = req.params.customerName;
       const time = req.params.time;
       const itemList = req.params.itemList;
+      const totCost = parseInt(req.params.totCost);
   
       // Retrieve the maximum order number from the totalorders table
       const maxOrderNumberQuery = `SELECT MAX(order_no) as max_order_no FROM totalorders`;
@@ -291,8 +292,8 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       // Insert the new order into the waiter_calls and totalorders tables
       const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
                             VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
-                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description) 
-                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}')`;
+                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description, total_cost) 
+                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost})`;
   
       await client.query(insertQuery);
   
@@ -401,7 +402,7 @@ app.delete("/deleteOrder", async (req, res) => {
     const orderNumberString = orderNumbers.join(",");
 
     // Delete all orders with the given order numbers from the database
-    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString})`;
+    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString}); DELETE FROM totalorders WHERE order_no IN (${orderNumberString})`;
 
     client.query(deleteQuery, (err, data) => {
       if (err) {
