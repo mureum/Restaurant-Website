@@ -10,7 +10,11 @@ const Cart = () => {
   const [itemList, setItemList] = useState("");
   const [images, setImages] = useState([]);
 
-  useEffect(() => {
+  const handleCheckout = () => {
+    history.push('/payment');
+  };
+  
+useEffect(() => {
     const fecthAllImages = async () => {
       try {
         const res = await axios.get("http://localhost:8800/images");
@@ -217,6 +221,14 @@ const Cart = () => {
                 >
                   Delete
                 </button>
+                
+                <button onClick={handleCheckout} 
+                  className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete"
+                >
+
+                  Checkout
+                </button>
+               
               </div>
               <br></br>
             </>

@@ -1,8 +1,10 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import './App.css';
 
 function App() {
   return (
+<Route exact path="/payment">
     <div className="container">
       <form>
         <div className="card-container">
@@ -14,7 +16,7 @@ function App() {
               </div>
             </div>
             <div className="card-number-box">
-              <span>**** **** **** 1234</span>
+              <span>* * ** 1234</span>
             </div>
             <div className="flexbox">
               <div className="box">
@@ -53,12 +55,13 @@ function App() {
           </div>
           <div className="inputBox">
             <span>CVV</span>
-            <input type="text" placeholder="***" />
+            <input type="text" placeholder="*" />
           </div>
         </div>
         <button className="submit-btn" type="submit">Submit</button>
-      </form>
+        </form>
     </div>
+    </Route>
   );
 }
 

@@ -7,11 +7,12 @@ import Login from "./pages/Login";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import payment from "./pages/payment";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+function payment() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
     // Use the stored value of isLoggedIn, or false if it hasn't been set
     return JSON.parse(localStorage.getItem("isLoggedIn")) || false;
@@ -83,4 +84,4 @@ function App() {
   );
 }
 
-export default App;
+export default payment;
