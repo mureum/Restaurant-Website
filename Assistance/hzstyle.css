@@ -1,88 +1,42 @@
-* {box-sizing: border-box;}
-
-body {
-    font-family: arial;
-} I
-
-.help-container {
-    width: 300px;
-    height: 320px;
-    background: #eee;
-    position: absolute;
-    top: 50px; left: 50px;
-    z-index: 1;
+#help-btn {
+    background-color: rgb(255, 153, 0) !important;
+    color: rgb(49, 45, 45) !important;
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 5px !important;
+    cursor: pointer !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 10px !important;
+    margin: 10px !important;
 }
 
-.btn-help {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient (light gray, darkturquoise);
-    border-radius: 25px;
-    border: 2px solid white;
-    color: white;
-    font-size: 30px;
-    font-weight: bold;
-    padding: 8px 14px;
-    position: absolute;
-    top: 0; left: 0;
-    cursor: pointer;
-    z-index: 1;
-}
-
-.help-title {
-    width: 0;
-    height: 50px;
-    background: linear-gradient(lightgray, darkturquoise);
-    position: absolute;
-    top: 0; left: 25px;
-    border-radius: 0 25px 0 0;
-}
-
-.help-title h2 {
-    margin: 0;
-    padding: 0;
-    color: white;
+#help-popup {
     display: none;
-    padding: 12px 35px;
-}
-
-.help-body {
-    width: 270px;
-    height: 0;
-    background: gray;
     position: absolute;
-    top: 50px; left: 25px;
-    text-align: justify;
-    border-radius: 0 0 25px 25px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(98, 223, 228);
+    padding: 20px;
+    border: 2px solid black;
 }
 
-.help-body p {
-    margin: 0;
-    padding: 0;
-    color: white;
-    display: none;
-    padding: 12px 35px;
+.issue-container {
+    position: relative;
 }
 
-@keyframes fadein-right {
-    0% { opacity: 0; margin-left: 45px; }
-    100% { opacity: 1; margin-left: 0; }
+.issue-container label {
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-@keyframes fadein-bottom {
-    0% { opacity: 0; margin-top: 45px; }
-    100% { opacity: 1; margin-top: 0; }
+.issue-container textarea {
+    margin-top: 20px;
 }
 
-@keyframes fadeout-right {
-    0% { opacity: 1; margin-left: 0; }
-    100% { opacity: 0; margin-left: 45px; }
-}
 
-@keyframes fadeout-bottom {
-    0% { opacity: 1; margin-top: 0; }
-    100% { opacity: 0; margin-top: 45px; }
-}
 
 
 

@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>test test :: CSS</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Help Button with Pop-up</title>
+    <link rel="stylesheet" type="text/css" href="hzstyle.css">
 </head>
 <body>
-    <div class="help-container">
-        <div class="btn-help" id="btnHelp">
-            ?
+
+    <button id="help-btn">ASSISTANCE REQUIRED</button>
+
+    <div id="help-popup">
+        <h2>Assistance Form</h2>
+        <label for="table-number">Table Number:</label>
+        <input type="number" id="table-number" name="table-number" min="1"><br><br>
+        <div class="issue-container">
+            <label for="issue">What's the issue?</label>
+            <textarea id="issue" name="issue"></textarea>
         </div>
-        <div class="help-title" id="helpTitle"> 
-            <h2 id="heading">Need Help?</h2>
-        </div>
-        <div class="help-body" id="helpBody">
-            <p id="description">
-                "brrr"
-            </p>
-        </div>
+        <button id="close-btn">Close</button>
     </div>
-    <script src="script.js"></script>
+
+    <script src="hzscript.js"></script>
+
 </body>
 </html>
+
