@@ -77,9 +77,21 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
               <option>Available</option>
               <option>Unavailable</option>
             </select>
-            <td>Purple</td>
+            <th></th>
             <th>
-              <button className="btn btn-ghost btn-xs">details</button>
+              <div className="dropdown dropdown-bottom">
+                <label tabIndex={0} className="btn m-1">
+                  Details
+                </label>
+                <ul tabIndex={0} className="dropdown-content menu bg-slate-300">
+                  <li>
+                    <div className="row" style={{ gap: "50px" }}>
+                      <span className="column">Tables no.</span>
+                      <span className="column">Time</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </th>
           </tr>
           {/* row 2 */}
@@ -108,9 +120,24 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
               <option>Available</option>
               <option>Unavailable</option>
             </select>
-            <td>Red</td>
+            <th></th>
             <th>
-              <button className="btn btn-ghost btn-xs">details</button>
+              <div className="dropdown dropdown-bottom">
+                <label tabIndex={0} className="btn m-1">
+                  Details
+                </label>
+                <ul
+                  tabIndex={0}
+                  className="dropdown-content menu  bg-slate-300"
+                >
+                  <li>
+                    <div className="row" style={{ gap: "50px" }}>
+                      <span className="column">Tables no.</span>
+                      <span className="column">Time</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
             </th>
           </tr>
         </tbody>
