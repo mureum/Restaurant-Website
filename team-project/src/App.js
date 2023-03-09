@@ -5,6 +5,7 @@ import Order from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import CustOrder from "./pages/CustOrder/CustOrder";
+import TableInput from "./pages/CustOrder/TableInput";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
 import WaiterCall from "./pages/callWaiter";
@@ -27,6 +28,8 @@ function App() {
   const [permission, setPermission] = React.useState(() => {
     return localStorage.getItem("permission") || "";
   });
+
+  const [tableNumber, setTableNumber]  = React.useState({});
 
   React.useEffect(() => {
     localStorage.setItem("permission", permission);
@@ -66,7 +69,13 @@ function App() {
           <Route
             path="/custOrder"
             element={
-              <CustOrder/>
+              <CustOrder tableNumber = {tableNumber}/>
+            }
+          />
+          <Route
+            path="/TableInput"
+            element={
+              <TableInput setTableNumber = {setTableNumber}/>
             }
           />
           <Route

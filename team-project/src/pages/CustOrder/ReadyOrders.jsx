@@ -49,17 +49,6 @@ export const ReadyOrders = ({ nextStepText, isCancellable }) => {
       ? items.sort((a, b) => a.orderNumber - b.orderNumber)
       : ORDER;
 
-  // Render the data
-  const [selectedItems, setSelectedItems] = useState(
-    data.map((_, i) => ({ [i]: false })).reduce((a, b) => ({ ...a, ...b }))
-  );
-  const [selectAll, setSelectAll] = useState(false);
-
-  useEffect(() => {
-    const allSelected = Object.values(selectedItems).every((v) => v);
-    setSelectAll(allSelected);
-  }, [selectedItems]);
-
   return (
     <div className="flex flex-col gap-4">
       {items.length > 0 && (

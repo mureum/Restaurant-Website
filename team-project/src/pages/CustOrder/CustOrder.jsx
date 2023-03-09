@@ -1,14 +1,11 @@
 import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
-import axios from "axios";
 import CustDashboard from "./CustDashboard"
 import ReadyOrders from "./ReadyOrders"
 
-function CustOrder({ setIsLoggedIn, handleLogin }) {
+function CustOrder({tableNumber}) {
 
   const buttonStyle = {
-    backgroundColor: "gray",
+    backgroundColor: "#36d399",
     color: "black",
     textAlign: 'center',
     width:170,
@@ -16,6 +13,7 @@ function CustOrder({ setIsLoggedIn, handleLogin }) {
     marginLeft: 850,
     borderRadius : 50,
   };
+
 
     return (
         <>
@@ -31,11 +29,10 @@ function CustOrder({ setIsLoggedIn, handleLogin }) {
             <h1 className="text-3xl font-bold">
               Ready to collect:
             </h1>     
-            <ReadyOrders/>
-
-                
+            <ReadyOrders/>       
           </div>
           <button style = {buttonStyle}>Call Waiter</button> 
+          <h1>{tableNumber}</h1>
         </>
       );
 }
