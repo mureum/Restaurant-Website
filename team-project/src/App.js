@@ -12,7 +12,7 @@ import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function payment() {
+function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
     // Use the stored value of isLoggedIn, or false if it hasn't been set
     return JSON.parse(localStorage.getItem("isLoggedIn")) || false;
@@ -67,21 +67,25 @@ function payment() {
               <OrderDashboard isLoggedIn={isLoggedIn} permission={permission} />
             }
           />
-            <Route
+          <Route
             path="/kitchen-dashboard"
             element={
-              <KitchenDashboard isLoggedIn={isLoggedIn} permission={permission} />
+              <KitchenDashboard
+                isLoggedIn={isLoggedIn}
+                permission={permission}
+              />
             }
-            />
-            <Route
+          />
+          <Route
             path="/admin-dashboard"
             element={
               <AdminDashboard isLoggedIn={isLoggedIn} permission={permission} />
-            } />
+            }
+          />
         </Routes>
       </div>
     </BrowserRouter>
   );
 }
 
-export default payment;
+export default App;
