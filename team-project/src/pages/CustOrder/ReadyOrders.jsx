@@ -19,13 +19,13 @@ const ORDER = [
   },
 ];
 
-export const CustDashboard = ({ nextStepText, isCancellable }) => {
+export const ReadyOrders = ({ nextStepText, isCancellable }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/pendingOrders");
+        const res = await axios.get("http://localhost:8800/readyOrders");
         const transformedData = res.data.map((item) => ({
           tableNumber: item.table_no,
           orderNumber: item.order_no,
@@ -124,4 +124,4 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
   );
 };
 
-export default CustDashboard
+export default ReadyOrders;
