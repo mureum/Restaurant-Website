@@ -8,11 +8,13 @@ import CustOrder from "./pages/CustOrder/CustOrder";
 import TableInput from "./pages/CustOrder/TableInput";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
-import WaiterCall from "./pages/callWaiter";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import Payment from "./pages/payment";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { TableAssignment } from "./pages/TableAssignment/TableAssignment";
+import Stats from './pages/AdminDashboard/stats';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
@@ -67,6 +69,7 @@ function App() {
             }
           />
           <Route
+<<<<<<< HEAD
             path="/custOrder"
             element={
               <CustOrder tableNumber = {tableNumber}/>
@@ -76,6 +79,14 @@ function App() {
             path="/TableInput"
             element={
               <TableInput setTableNumber = {setTableNumber}/>
+=======
+            path="/table-assignment"
+            element={
+              <TableAssignment
+                isLoggedIn={isLoggedIn}
+                permission={permission}
+              />
+>>>>>>> b35570f5a3e4f316169b30706e5f408cd9945e1a
             }
           />
           <Route
@@ -84,20 +95,32 @@ function App() {
               <OrderDashboard isLoggedIn={isLoggedIn} permission={permission} />
             }
           />
-            <Route
+          <Route
             path="/kitchen-dashboard"
             element={
-              <KitchenDashboard isLoggedIn={isLoggedIn} permission={permission} />
+              <KitchenDashboard
+                isLoggedIn={isLoggedIn}
+                permission={permission}
+              />
             }
-            />
-            <Route
+          />
+          <Route
             path="/admin-dashboard"
             element={
               <AdminDashboard isLoggedIn={isLoggedIn} permission={permission} />
-            } />
+            }
+          />
           <Route
-            path="/callWaiter"
-            element={<WaiterCall />}
+            path="/payment"
+            element={
+              <Payment/>
+            }
+          />
+          <Route
+            path="/stats.jsx"
+            element={
+              <Stats/>
+            }
           />
         </Routes>
       </div>
