@@ -4,6 +4,11 @@ import { useEffect, useState } from "react";
 export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
   const [waiters, setWaiters] = useState([]);
 
+  const update = () => {
+    // TODO
+    // Call the backend to update
+  };
+
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
@@ -58,7 +63,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
@@ -92,7 +97,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
@@ -124,7 +129,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
@@ -158,7 +163,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
@@ -192,6 +197,9 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
           </tr>
         </tfoot>
       </table>
+      <button className="btn btn-warning self-end" onClick={() => update()}>
+        Update
+      </button>
 
       <h1 className="font-bold text-2xl">Tables</h1>
 
@@ -311,6 +319,9 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
           </tr>
         </tfoot>
       </table>
+      <button className="btn btn-warning self-end" onClick={() => update()}>
+        Update
+      </button>
     </div>
   );
 };
