@@ -59,16 +59,16 @@ function KitchenDashboard({ setIsLoggedIn, handleLogin }) {
               </button>
             </div>
           </div>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold" style={{ fontSize: '24px' }}>
             To be made <i className="fa-solid fa-clipboard"></i>
           </h1>
           <KitchenTable nextStepText="Pick up order" isCancellable={true} />
-          <h1 className="text-3xl font-bold flex gap-4 items-center">
+          <h1 className="text-3xl font-bold flex gap-4 items-center" style={{ fontSize: '24px' }}>
             <span>In preparation</span>
             <img className="object-cover h-[40px] h-[40px]" src={cooking} />
           </h1>
           <InPreparation nextStepText="Mark as Ready" isCancellable={true} />
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold" style={{ fontSize: '24px' }}>
             Ready for delivery <i className="fa-solid fa-circle-check"></i>
           </h1>
           <ReadyDelivery nextStepText = "Delivered"/>
