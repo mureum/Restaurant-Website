@@ -4,6 +4,7 @@ import "../App.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const history = [];
 const Cart = () => {
   const location = useLocation();
   const [cartItems, setCartItems] = useState([]);
@@ -11,10 +12,10 @@ const Cart = () => {
   const [images, setImages] = useState([]);
 
   const handleCheckout = () => {
-    history.push('/payment');
+    history.push("/payment");
   };
-  
-useEffect(() => {
+
+  useEffect(() => {
     const fecthAllImages = async () => {
       try {
         const res = await axios.get("http://localhost:8800/images");
@@ -223,14 +224,13 @@ useEffect(() => {
                 >
                   Delete
                 </button>
-                
-                <button onClick={handleCheckout} 
+
+                <button
+                  onClick={handleCheckout}
                   className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete"
                 >
-
                   Checkout
                 </button>
-               
               </div>
               <br></br>
             </>
