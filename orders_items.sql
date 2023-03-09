@@ -22,7 +22,7 @@ For example, lets day that there are 100 Chiptole Wings in stock. 2 will be subt
 */
 
 --This is the SQL query that can be used to update the stock level whenever an item is ordered.
-UPDATE stock_level
+UPDATE stocklevel
 SET in_stock = in_stock - order_items.quantity --stock level reduces 
     sold = sold + order_items.quantity, -- quantity of sold items increases
     is_available = (in_stock - order_items.quantity) > 0 OR (in_stock - order_items.quantity) = 0 --true if in_stock>0, false if in_stock<0
