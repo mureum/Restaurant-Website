@@ -192,6 +192,125 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
           </tr>
         </tfoot>
       </table>
+
+      <h1 className="font-bold text-2xl">Tables</h1>
+
+      <table className="table w-full">
+        {/* head */}
+        <thead>
+          <tr>
+            <th>
+              <label>
+                <input type="checkbox" className="checkbox" />
+              </label>
+            </th>
+            <th>Table No.</th>
+            <th>Time</th>
+            <th>Waiter</th>
+          </tr>
+        </thead>
+        <tbody>
+          {/* row 1 */}
+          <tr>
+            <th>
+              <label>
+                <input type="checkbox" className="checkbox" />
+              </label>
+            </th>
+            <td>
+              <div className="flex items-center space-x-3">
+                <div>
+                  <div className="font-bold">Hart Hagerty</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              Zemlak, Daniel and Leannon
+              <br />
+              <span className="badge badge-ghost badge-sm">
+                Desktop Support Technician
+              </span>
+            </td>
+            <td>Purple</td>
+          </tr>
+          {/* row 2 */}
+          <tr>
+            <th>
+              <label>
+                <input type="checkbox" className="checkbox" />
+              </label>
+            </th>
+            <td>
+              <div className="flex items-center space-x-3">
+                <div>
+                  <div className="font-bold">Brice Swyre</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              Carroll Group
+              <br />
+              <span className="badge badge-ghost badge-sm">Tax Accountant</span>
+            </td>
+            <td>Red</td>
+          </tr>
+          {/* row 3 */}
+          <tr>
+            <th>
+              <label>
+                <input type="checkbox" className="checkbox" />
+              </label>
+            </th>
+            <td>
+              <div className="flex items-center space-x-3">
+                <div>
+                  <div className="font-bold">Marjy Ferencz</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              Rowe-Schoen
+              <br />
+              <span className="badge badge-ghost badge-sm">
+                Office Assistant I
+              </span>
+            </td>
+            <td>Crimson</td>
+          </tr>
+          {/* row 4 */}
+          <tr>
+            <th>
+              <label>
+                <input type="checkbox" className="checkbox" />
+              </label>
+            </th>
+            <td>
+              <div className="flex items-center space-x-3">
+                <div>
+                  <div className="font-bold">Yancy Tear</div>
+                </div>
+              </div>
+            </td>
+            <td>
+              Wyman-Ledner
+              <br />
+              <span className="badge badge-ghost badge-sm">
+                Community Outreach Specialist
+              </span>
+            </td>
+            <td>Indigo</td>
+          </tr>
+        </tbody>
+        {/* foot */}
+        <tfoot>
+          <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </tfoot>
+      </table>
     </div>
   );
 };
