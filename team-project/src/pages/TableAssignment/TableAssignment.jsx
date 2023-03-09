@@ -183,18 +183,17 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
             <td>
               <div className="flex items-center space-x-3">
                 <div>
-                  <div className="font-bold">Hart Hagerty</div>
+                  <div className="font-bold">#3</div>
                 </div>
               </div>
             </td>
+            <td></td>
             <td>
-              Zemlak, Daniel and Leannon
-              <br />
-              <span className="badge badge-ghost badge-sm">
-                Desktop Support Technician
-              </span>
+              <select className="select w-40 max-w-xs">
+                <option>Homer</option>
+                <option>Marge</option>
+              </select>
             </td>
-            <td>Purple</td>
           </tr>
           {/* row 2 */}
           <tr>
@@ -210,12 +209,13 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 </div>
               </div>
             </td>
+            <td></td>
             <td>
-              Carroll Group
-              <br />
-              <span className="badge badge-ghost badge-sm">Tax Accountant</span>
+              <select className="select w-40 max-w-xs">
+                <option>Homer</option>
+                <option>Marge</option>
+              </select>
             </td>
-            <td>Red</td>
           </tr>
         </tbody>
         {/* foot */}
