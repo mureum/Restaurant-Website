@@ -63,7 +63,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
@@ -73,13 +73,10 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 </div>
               </div>
             </td>
-            <td>
-              Zemlak, Daniel and Leannon
-              <br />
-              <span className="badge badge-ghost badge-sm">
-                Desktop Support Technician
-              </span>
-            </td>
+            <select className="select w-40 max-w-xs">
+              <option>Available</option>
+              <option>Unavailable</option>
+            </select>
             <td>Purple</td>
             <th>
               <button className="btn btn-ghost btn-xs">details</button>
@@ -97,7 +94,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
@@ -129,7 +126,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
@@ -163,7 +160,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                 <div className="avatar">
                   <div className="mask mask-squircle w-12 h-12">
                     <img
-                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random}`}
+                      src={`https://api.lorem.space/image/face?w=150&h=150&${Math.random()}`}
                       alt="Avatar Tailwind CSS Component"
                     />
                   </div>
