@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
-const history = [];
 const Cart = () => {
   const location = useLocation();
   const [cartItems, setCartItems] = useState([]);
   const [itemList, setItemList] = useState("");
   const [images, setImages] = useState([]);
-
-  const handleCheckout = () => {
-    history.push("/payment");
-  };
 
   useEffect(() => {
     const fecthAllImages = async () => {
@@ -56,9 +50,13 @@ const Cart = () => {
 
   const incrementItemAmount = (index) => {
     const updatedItems = [...cartItems];
-    if (updatedItems[index].amount >= 0) {
+    if (updatedItems[index].amount < updatedItems[index].stock_available) {
       updatedItems[index].amount += 1;
       setCartItems(updatedItems);
+    } else {
+      alert(
+        `Not enough stock for ${updatedItems[index].name} (available: ${updatedItems[index].stock_available})`
+      );
     }
   };
 
@@ -120,13 +118,6 @@ const Cart = () => {
   };
 
   const handleSubmit = async (totCost) => {
-    // Create order object
-    const order = {
-      table: table,
-      customerName: customerName,
-      items: cartItems,
-    };
-
     // Send order to server
     try {
       const res = await axios.put(
@@ -223,13 +214,6 @@ const Cart = () => {
                   onClick={() => deleteFromCart(item.item_id)}
                 >
                   Delete
-                </button>
-
-                <button
-                  onClick={handleCheckout}
-                  className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete"
-                >
-                  Checkout
                 </button>
               </div>
               <br></br>
