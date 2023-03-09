@@ -163,12 +163,6 @@ function Order({ isLoggedIn, permission }) {
   };
 
   const [checked2, setChecked2] = useState([]); //allergens
-  const [calories_min, setCaloriesMin] = useState(0); 
-  const [calories_max, setCaloriesMax] = useState(0);
-
-
-
-
 
   const handleCheck2 = async (id) => {
     setChecked2((prevState) => !prevState);
@@ -198,6 +192,9 @@ function Order({ isLoggedIn, permission }) {
       }
     }
   };
+
+  const [calories_min, setCaloriesMin] = useState(0);
+  const [calories_max, setCaloriesMax] = useState(1150);
 
   const fetchAlltems = async (id) => {
     try {
@@ -239,7 +236,6 @@ function Order({ isLoggedIn, permission }) {
     }
   };
 
-  const [filter, setFilter] = useState(100000);
   const [value, setValue] = useState({});
 
   const handleChange = (id) => (e) => {
@@ -276,6 +272,19 @@ function Order({ isLoggedIn, permission }) {
       console.log(err);
     }
   };
+
+  const addStock = async (id, amount) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/addstock/" + id + "/" + amount
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const [currentItemId, setCurrentItemId] = useState(null);
 
   return (
     <div className="container mx-auto">
@@ -380,27 +389,23 @@ function Order({ isLoggedIn, permission }) {
                     max={1150}
                     range={true}
                     tipFormatter={(value) => `${value}`}
-                    onChange = {(value) => { setCaloriesMax(value[1]); 
-                                            setCaloriesMin(value[0])
+                    onChange={(value) => {
+                      setCaloriesMax(value[1]);
+                      setCaloriesMin(value[0]);
                     }}
-                    
+                    defaultValue={[calories_min, calories_max]}
                   />
                   <div>
                     <div>0</div>
                   </div>
 
                   <div>
-                    <div className="absolute top-[590px] right-[10px]" >1150</div>
+                    <div className="absolute top-[590px] right-[10px]">
+                      1150
+                    </div>
                   </div>
-
-                  
-                  
                 </div>
               </div>
-
-              <button className="btn btn-primary self-end">
-                Apply Filters
-              </button>
             </div>
           </div>
         </div>
@@ -417,47 +422,17 @@ function Order({ isLoggedIn, permission }) {
         </Link>
       </button>
       <br></br>
-      <div className="form-control">
-        <div className="input-group">
-          <input
-            type="text"
-            placeholder="Search for calories less than.."
-            title="Type in a calorie value"
-            className="input input-bordered w-96"
-            onChange={(e) => {
-              if (e.target.value !== "") {
-                setFilter(e.target.value);
-              } else {
-                setFilter("100000");
-              }
-            }}
-          />
-          <button className="btn btn-square">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
-        </div>
-      </div>
 
       <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-        {(items && permission === "Waiter") || permission === "Kitchen"
+        {(items && permission === "Waiter") ||
+        permission === "Kitchen" ||
+        permission === "Admin"
           ? items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
-                item.is_available === true ? (
+                item.is_available === true && item.stock_available > 0 ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
                     key={item.item_id}
@@ -485,8 +460,62 @@ function Order({ isLoggedIn, permission }) {
                           <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
-                          <p>£{item.price}</p>
+                          <p style={{ textAlign: "right" }}>£{item.price}</p>
                           <span className="self-end">{item.calories}cal</span>
+                          <p style={{ textAlign: "right" }}>
+                            Items in stock: {item.stock_available}
+                          </p>
+                          <br></br>
+                          <button
+                            className="btn btn-secondary"
+                            htmlFor={`my-modal-toggle-username`}
+                            onClick={() => {
+                              setCurrentItemId(item.item_id);
+                              document.getElementById(
+                                "my-modal-toggle-username"
+                              ).checked = true;
+                            }}
+                          >
+                            Edit Stock
+                          </button>
+                          <input
+                            type="checkbox"
+                            id={`my-modal-toggle-username`}
+                            className="modal-toggle"
+                          />
+                          <div className="modal">
+                            <div className="modal-box relative">
+                              <label
+                                htmlFor={`my-modal-toggle-username`}
+                                className="btn btn-sm btn-circle absolute right-2 top-2"
+                              >
+                                ✕
+                              </label>
+                              <h3 className="text-lg font-bold">
+                                Add Stock to items
+                              </h3>
+                              <p>Stock</p>
+                              <input
+                                type="number"
+                                id={`my-modal-stock-number`}
+                                style={{ border: "1px solid black" }}
+                              />
+                              <button
+                                className="btn btn-primary float-right"
+                                onClick={() =>
+                                  addStock(
+                                    currentItemId,
+                                    document.getElementById(
+                                      `my-modal-stock-number`
+                                    ).value
+                                  )
+                                }
+                              >
+                                Update Stock
+                              </button>
+                            </div>
+                          </div>
+                          <br></br>
                           <button
                             className="text-2xl font-bold uppercase space-x-2"
                             style={{ backgroundColor: "pink" }}
@@ -527,8 +556,69 @@ function Order({ isLoggedIn, permission }) {
                           <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
-                          <p>£{item.price}</p>
+                          <p style={{ textAlign: "right" }}>£{item.price}</p>
                           <span className="self-end">{item.calories}cal</span>
+                          <p style={{ textAlign: "right" }}>
+                            Items in stock: {item.stock_available}
+                          </p>
+                          {item.stock_available == 0 ? (
+                            <>
+                              <p>Items out of stock, add stock now</p>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                          <br></br>
+                          <button
+                            className="btn btn-secondary"
+                            htmlFor={`my-modal-toggle-username`}
+                            onClick={() => {
+                              setCurrentItemId(item.item_id);
+                              document.getElementById(
+                                "my-modal-toggle-username"
+                              ).checked = true;
+                            }}
+                          >
+                            Edit Stock
+                          </button>
+                          <input
+                            type="checkbox"
+                            id={`my-modal-toggle-username`}
+                            className="modal-toggle"
+                          />
+                          <div className="modal">
+                            <div className="modal-box relative">
+                              <label
+                                htmlFor={`my-modal-toggle-username`}
+                                className="btn btn-sm btn-circle absolute right-2 top-2"
+                              >
+                                ✕
+                              </label>
+                              <h3 className="text-lg font-bold">
+                                Add Stock to items
+                              </h3>
+                              <p>Stock</p>
+                              <input
+                                type="number"
+                                id={`my-modal-stock-number`}
+                                style={{ border: "1px solid black" }}
+                              />
+                              <button
+                                className="btn btn-primary float-right"
+                                onClick={() =>
+                                  addStock(
+                                    currentItemId,
+                                    document.getElementById(
+                                      `my-modal-stock-number`
+                                    ).value
+                                  )
+                                }
+                              >
+                                Update Stock
+                              </button>
+                            </div>
+                          </div>
+                          <br></br>
                           <button
                             className="text-2xl font-bold uppercase space-x-2"
                             style={{ backgroundColor: "pink" }}
@@ -544,10 +634,11 @@ function Order({ isLoggedIn, permission }) {
                 )
               )
           : items
-              .filter((item) => item.calories < Number(filter))
+              .filter((item) => item.calories >= Number(calories_min))
+              .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
-                item.is_available === true ? (
+                item.is_available === true && item.stock_available > 0 ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
                     key={item.item_id}
@@ -619,6 +710,8 @@ function Order({ isLoggedIn, permission }) {
                       <br />
                     </div>
                   </div>
+                ) : item.stock_available == 0 ? (
+                  <>{() => setUnavailable(item.item_id)}</>
                 ) : (
                   <></>
                 )

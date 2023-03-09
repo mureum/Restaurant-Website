@@ -2,13 +2,30 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
+const history = [];
 const Cart = () => {
   const location = useLocation();
-  const { items, values } = location.state;
-
   const [cartItems, setCartItems] = useState([]);
   const [itemList, setItemList] = useState("");
+  const [images, setImages] = useState([]);
+
+  const handleCheckout = () => {
+    history.push("/payment");
+  };
+
+  useEffect(() => {
+    const fecthAllImages = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/images");
+        setImages(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fecthAllImages();
+  }, []);
 
   useEffect(() => {
     const cartData = JSON.parse(localStorage.getItem("cartItems")) || [];
@@ -76,6 +93,78 @@ const Cart = () => {
 
   var total = 0;
 
+  const [table, setTable] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [time, setTime] = useState(new Date().toLocaleTimeString()); // Initialize the time to the current time
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTime(new Date().toLocaleTimeString()); // Update the time every second
+    }, 1000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  const deleteFromStock = async (id, amount) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/reduceStock/" + id + "/" + amount
+      );
+      console.log("Item " + id + " stock reduced by " + amount);
+    } catch (err) {
+      window.alert("Error sending the order");
+      console.log(err);
+    }
+  };
+
+  const handleSubmit = async (totCost) => {
+    // Create order object
+    const order = {
+      table: table,
+      customerName: customerName,
+      items: cartItems,
+    };
+
+    // Send order to server
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/waiter/" +
+          table +
+          "/" +
+          customerName +
+          "/" +
+          time +
+          "/" +
+          itemList +
+          "/" +
+          totCost
+      );
+      console.log(res);
+      // Call deleteFromStock for each item in cart
+      try {
+        for (const item of cartItems) {
+          console.log(item.item_id + " - " + item.amount);
+          await deleteFromStock(item.item_id, item.amount);
+        }
+      } catch (err) {
+        console.log(err);
+        return;
+      }
+      alert("Your order has been sent!");
+      window.location.href = "/";
+    } catch (err) {
+      window.alert("Error sending the order");
+      console.log(err);
+    }
+
+    // Reset cart and form
+    setCartItems([]);
+    setTable("");
+    setCustomerName("");
+  };
+
   return (
     <div className="App">
       <p>Don't refresh the page!</p>
@@ -91,19 +180,16 @@ const Cart = () => {
             <>
               <div className="items-in-cart">
                 <div className="image-box">
-                  <img
-                    src={`https://www.themealdb.com/images/ingredients/${item.name}.png`}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      objectFit: "cover",
-                      backgroundColor: "white",
-                    }}
-                    alt={`${item.name} image`}
-                    onError={(e) =>
-                      (e.target.src = `https://spoonacular.com/cdn/ingredients_100x100/${item.name}.jpg`)
-                    }
-                  />
+                  {images
+                    .filter((image) => image.item_id === item.item_id)
+                    .map((image) => (
+                      <img
+                        key={image.item_id}
+                        className="lg:w-[250px] object-cover lg:h-[220px] lg:m-0 mx-10 mb-10 lg:self-center"
+                        src={image.link}
+                        alt={`${item.name} image`}
+                      />
+                    ))}
                 </div>
                 <div className="about">
                   <h1 className="title">
@@ -138,6 +224,13 @@ const Cart = () => {
                 >
                   Delete
                 </button>
+
+                <button
+                  onClick={handleCheckout}
+                  className="text-3xl font-bold text-yellow-100 uppercase space-x-3 delete"
+                >
+                  Checkout
+                </button>
               </div>
               <br></br>
             </>
@@ -151,11 +244,56 @@ const Cart = () => {
       </div>
       <p className="total-amount"> total = £{total}</p>
       <br></br>
-      <button>
-        <Link to="/callWaiter" state={{ itemList: itemList }}>
-          <i className="btn btn-primary">Call Waiter</i>
-        </Link>
+      <button
+        className="btn btn-primary"
+        htmlFor={`my-modal-toggle-username`}
+        onClick={() => {
+          document.getElementById("my-modal-toggle-username").checked = true;
+        }}
+      >
+        Call Waiter
       </button>
+      <input
+        type="checkbox"
+        id={`my-modal-toggle-username`}
+        className="modal-toggle"
+      />
+      <div className="modal">
+        <div className="modal-box relative">
+          <label
+            htmlFor={`my-modal-toggle-username`}
+            className="btn btn-sm btn-circle absolute right-2 top-2"
+          >
+            ✕
+          </label>
+          <h3 className="text-lg font-bold">Call the waiter</h3>
+          <label className="form-label">Table Number *</label>
+          <input
+            type="number"
+            className="form-control"
+            style={{ border: "1px solid black" }}
+            id={`my-modal-username-username`}
+            placeholder="Enter your table number"
+            onChange={(e) => setTable(e.target.value)}
+            required
+          />
+          <label className="form-label">Customer Name</label>
+          <input
+            type="text"
+            style={{ border: "1px solid black" }}
+            className="form-control"
+            id={`my-modal-name-username`}
+            placeholder="Customer Name"
+            onChange={(e) => setCustomerName(e.target.value)}
+          />
+          <button
+            className="btn btn-primary float-right"
+            onClick={() => handleSubmit(total)}
+          >
+            Send Order
+          </button>
+        </div>
+      </div>
       <br></br>
     </div>
   );
