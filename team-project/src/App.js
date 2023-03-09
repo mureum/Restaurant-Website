@@ -12,6 +12,7 @@ import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { TableAssignment } from "./pages/TableAssignment/TableAssignment";
+import Stats from './pages/AdminDashboard/stats';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
@@ -96,6 +97,12 @@ function App() {
             path="/payment"
             element={
               <Payment/>
+            }
+          />
+          <Route
+            path="/stats.jsx"
+            element={
+              <Stats/>
             }
           />
         </Routes>

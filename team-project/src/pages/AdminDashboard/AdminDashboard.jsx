@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { LoginTables } from "./LoginTables";
+import { Stats } from "./stats";
+
 
 function AdminDashboard({ setIsLoggedIn, handleLogin }) {
   return (
