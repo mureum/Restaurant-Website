@@ -11,6 +11,7 @@ import payment from "./pages/payment";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { TableAssignment } from "./pages/TableAssignment/TableAssignment";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
@@ -59,6 +60,15 @@ function App() {
             path="/login"
             element={
               <Login setIsLoggedIn={setIsLoggedIn} handleLogin={handleLogin} />
+            }
+          />
+          <Route
+            path="/table-assignment"
+            element={
+              <TableAssignment
+                isLoggedIn={isLoggedIn}
+                permission={permission}
+              />
             }
           />
           <Route
