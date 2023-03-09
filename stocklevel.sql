@@ -10,7 +10,7 @@ CREATE TABLE stock_level(
     item_id NOT NULL,
     is_available BOOLEAN DEFAULT TRUE,
     in_stock int DEFAULT 100,
-    sold int,
+    sold int DEFAULT 0,
     PRIMARY KEY (item_id),
     FOREIGN KEY (item_id) REFERENCES item(item_id)
 );
