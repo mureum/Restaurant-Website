@@ -8,8 +8,8 @@ This table measures the stock level
 
 CREATE TABLE stock_level(
     item_id NOT NULL,
-    is_available BOOLEAN,
-    in_stock int,
+    is_available BOOLEAN DEFAULT TRUE,
+    in_stock int DEFAULT 100,
     sold int,
     PRIMARY KEY (item_id),
     FOREIGN KEY (item_id) REFERENCES item(item_id)
