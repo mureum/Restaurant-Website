@@ -93,6 +93,7 @@ export const OrderTable = ({
               <th>Order number</th>
               <th>Customer Name</th>
               <th>Time</th>
+              <th>Assigned Waiter</th>
             </tr>
           </thead>
           <tbody>
@@ -158,6 +159,7 @@ export const OrderTable = ({
                 <th>
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
                 </th>
+                <td></td>
               </tr>
             ))}
           </tbody>
