@@ -17,22 +17,22 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgb(98, 223, 228);
-    padding: 20px;
-    border: 2px solid black;
+    background-color: rgb(165, 242, 245);
+    padding: 15px;
+    border: 3px solid black;
 }
 
-.issue-container {
+.problem {
     position: relative;
 }
 
-.issue-container label {
+.problem label {
     position: absolute;
     top: 0;
     left: 0;
 }
 
-.issue-container textarea {
+.problem textarea {
     margin-top: 20px;
 }
 
