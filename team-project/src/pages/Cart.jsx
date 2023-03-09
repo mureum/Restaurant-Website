@@ -153,7 +153,7 @@ const Cart = () => {
         return;
       }
       alert("Your order has been sent!");
-      window.location.href = "/";
+      window.location.href = "/payment";
     } catch (err) {
       window.alert("Error sending the order");
       console.log(err);
