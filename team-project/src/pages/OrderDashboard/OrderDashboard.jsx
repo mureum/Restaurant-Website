@@ -4,7 +4,12 @@ import { useState } from "react";
 import axios from "axios";
 import { OrderTable } from "./OrderTable";
 import cooking from "../../assets/cooking.png";
-import { completeOrder, markAsReady, sendToKitchen } from "./orderFunctions";
+import {
+  completeOrder,
+  markAsDelivered,
+  markAsReady,
+  sendToKitchen,
+} from "./orderFunctions";
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
@@ -82,12 +87,12 @@ function OrderDashboard({ isLoggedIn, permission }) {
         <OrderTable
           nextStepText="Mark as Delivered"
           endPoint="readyOrders"
-          nextCb={completeOrder}
+          nextCb={markAsDelivered}
         />
         <h1 className="text-3xl font-bold">
           Delivered orders <i className="fa-solid fa-circle-check"></i>
         </h1>
-        <OrderTable />
+        <OrderTable nextStepText="" nextCb={""} endPoint="delivered" />
       </div>
     </>
   );
