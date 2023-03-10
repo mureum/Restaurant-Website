@@ -256,6 +256,14 @@ export const Navbar = ({
             <li>
               <a
                 className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/table-assignment"
+              >
+                Table Assignment
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
                 href="/kitchen-dashboard"
               >
                 Kitchen Dashboard
