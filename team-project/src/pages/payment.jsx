@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route } from "react-router-dom";
+import chip from "../assets/chip.png";
+import visa from "../assets/visa.png";
 import "../App.css";
+import "./style.css";
 
 function Payment() {
+
   return (
     <div className="container">
       <form>
@@ -10,12 +14,12 @@ function Payment() {
           <div className="front">
             <div className="image">
               <img
-                src="https://cdn.pixabay.com/photo/2017/01/13/01/22/rocket-1976108_960_720.png"
+                src={chip}
                 alt="card-logo"
               />
               <div className="chip">
                 <img
-                  src="https://cdn.pixabay.com/photo/2017/05/24/09/28/chip-2333153_960_720.png"
+                  src={visa}
                   alt="card-chip"
                 />
               </div>
@@ -54,12 +58,12 @@ function Payment() {
         </div>
         <div className="inputBox">
           <span>Card Number</span>
-          <input type="text" placeholder="0000 0000 0000 0000" />
+          <input type="text" placeholder="0000 0000 0000 0000"  />
         </div>
         <div className="flexbox">
           <div className="inputBox">
             <span>Expiration Date</span>
-            <input type="text" placeholder="MM / YY" />
+            <input type="text" placeholder="MM" />
           </div>
           <div className="inputBox">
             <span>CVV</span>
@@ -70,6 +74,7 @@ function Payment() {
           Submit
         </button>
       </form>
+      
     </div>
   );
 }
