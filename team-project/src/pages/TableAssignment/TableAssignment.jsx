@@ -62,7 +62,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
       }
 
       console.log("Tables and waiters updated!");
-      //window.location.reload();
+      window.location.reload();
     } catch (err) {
       console.log(err);
     }
