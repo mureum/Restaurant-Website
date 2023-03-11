@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 
 export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
   const [tables, setTables] = useState([]);
+  const [updatedWaiterss, setUpdatedWaiters] = useState([]);
+  const [tableNumb, setTableNumber] = useState();
   const [waiters, setWaiters] = useState([
     {
       username: "John",
@@ -32,11 +34,35 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
     }
   };
 
-  const Assign = async () => {
+  const Assign = async (updatedWaiters, tableNo) => {
+    console.log(tableNumb);
     try {
-      await axios.put(`http://localhost:8800/tables`, tables);
-      await axios.put(`http://localhost:8800/waiters`, waiters);
+      await axios.put(`http://localhost:8800/tables`, { tables });
+      const updatedTables = await axios.get(`http://localhost:8800/tables`);
+      const transformedTables = updatedTables.data.map((item) => ({
+        tableNo: item.tableno,
+        time: item.time,
+        waiter: item.waiter,
+      }));
+      setTables(transformedTables); // Set the updatedTables state here
+      await axios.put(`http://localhost:8800/waitersAssign`, {
+        waiters: updatedWaiterss,
+      });
+
+      // Delete the table from the database
+
+      const tableToDelete = transformedTables.find(
+        (table) => table.tableNo === tableNumb
+      );
+      if (tableToDelete) {
+        await axios.delete(`http://localhost:8800/tables/${tableNumb}`);
+        console.log(`Table ${tableNumb} deleted`);
+      } else {
+        console.log(`Table ${tableNumb} not found`);
+      }
+
       console.log("Tables and waiters updated!");
+      //window.location.reload();
     } catch (err) {
       console.log(err);
     }
@@ -49,19 +75,20 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
   };
 
   const handleAssignTable = (tableNo, selectedWaiter) => {
+    console.log("Waiter: " + selectedWaiter);
     const selectedTable = tables.find((table) => table.tableNo === tableNo);
 
-    if (!selectedTable || !selectedWaiter) {
-      return;
-    }
+    // if (!selectedTable || !selectedWaiter) {
+    //   return;
+    // }
 
-    if (selectedTable.waiter) {
-      // The table is already assigned to a waiter
-      return;
-    }
+    // if (selectedTable.waiter) {
+    //   // The table is already assigned to a waiter
+    //   return;
+    // }
 
     const updatedWaiters = waiters.map((waiter) => {
-      if (waiter.username === selectedWaiter.username) {
+      if (waiter.username === selectedWaiter) {
         const updatedAssignedTables = Array.isArray(waiter.assignedTables)
           ? [...waiter.assignedTables]
           : [];
@@ -89,18 +116,33 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
 
     setWaiters(updatedWaiters);
     setTables(updatedTables);
+
+    // Print the assignedTables array
+    const assignedTablesArray = updatedWaiters
+      .map((waiter) => waiter.assignedtables)
+      .filter((tables) => tables !== null);
+    console.log("Assigned tables:", assignedTablesArray);
+    console.log(tableNo);
+    setUpdatedWaiters(updatedWaiters); // Call Assign function with updatedWaiters as parameter
+    setTableNumber(tableNo); // Set the selected table number in the state
   };
 
   useEffect(() => {
     const fetchAllItems = async () => {
       try {
         const res = await axios.get(`http://localhost:8800/waiters`);
-        const transformedWaiters = res.data.map((item) => ({
-          username: item.username,
-          status: item.status,
-          assignedTables: item.assignedTables,
-          maxTables: 7,
-        }));
+        const transformedWaiters = res.data.map((item) => {
+          console.log("Assigned Tables: " + item.assignedtables);
+          const assignedTables = item.assignedtables
+            ? JSON.parse(item.assignedtables)
+            : [];
+          return {
+            username: item.username,
+            status: item.status,
+            assignedTables: Array.isArray(assignedTables) ? assignedTables : [], // Set to empty array if assignedTables is not an array
+            maxTables: 7,
+          };
+        });
         setWaiters(transformedWaiters);
       } catch (err) {
         console.log(err);
@@ -127,14 +169,9 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
       <h1 className="font-bold text-2xl">Waiters</h1>
 
       <table className="table w-full">
-        {/* head */}
         <thead>
           <tr>
-            <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th>
+            <th></th>
             <th>Name</th>
             <th>Status</th>
             <th>Empty Slots</th>
@@ -144,11 +181,6 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
         <tbody>
           {waiters.map((waiter, i) => (
             <tr key={i}>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
               <td>
                 <div className="flex items-center space-x-3">
                   <div className="avatar">
@@ -194,22 +226,20 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                             <span className="column">Table No.</span>
                             <span className="column">Time</span>
                           </div>
-                          {waiter.assignedTables &&
-                            waiter.assignedTables.length > 0 &&
-                            waiter.assignedTables.map((table, j) => (
-                              <div
-                                className="row"
-                                style={{ gap: "50px" }}
-                                key={j}
-                              >
-                                <span className="column">{table.tableNo}</span>
-                                <span className="column">{table.time}</span>
-                              </div>
-                            ))}
+                          {waiter.assignedTables.map((table, j) => (
+                            <div
+                              className="row"
+                              style={{ gap: "50px" }}
+                              key={j}
+                            >
+                              <span className="column">{table.tableNo}</span>
+                              <span className="column">{table.time}</span>
+                            </div>
+                          ))}
                         </li>
                       </ul>
                     </div>
-                  </td>
+                  </td> // move the closing tag here
                 ) : (
                   <td>No Tables Assigned</td>
                 )}
@@ -229,11 +259,6 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
         {/* head */}
         <thead>
           <tr>
-            <th>
-              <label>
-                <input type="checkbox" className="checkbox" />
-              </label>
-            </th>
             <th>Table No.</th>
             <th>Time</th>
             <th>Waiter</th>
@@ -242,11 +267,6 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
         <tbody>
           {tables.map((table, i) => (
             <tr key={i}>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
               <td>{table.tableNo}</td>
               <td>{table.time}</td>
               <td>
@@ -254,12 +274,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                   className="select w-40 max-w-xs"
                   value={table.waiter ? table.waiter.username : ""}
                   onChange={(event) =>
-                    handleAssignTable(
-                      table.tableNo,
-                      waiters.findIndex(
-                        (waiter) => waiter.username === event.target.value
-                      )
-                    )
+                    handleAssignTable(table.tableNo, event.target.value)
                   }
                 >
                   <option value="">--Select--</option>

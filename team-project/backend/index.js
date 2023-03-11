@@ -562,6 +562,87 @@ app.put("/waiters", async (req, res) => {
   }
 });
 
+// Update waiter status and assigned tables
+app.put("/waitersAssign", async (req, res) => {
+  try {
+    const { waiters } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = waiters.map((waiter) => {
+      const assignedTables =
+  waiter.assignedTables && waiter.assignedTables.length > 0
+    ? JSON.stringify(waiter.assignedTables)
+    : null;
+
+        
+      console.log(assignedTables);
+
+      const query = `
+        UPDATE waiters
+        SET status = '${waiter.status}', assignedtables = '${assignedTables}'
+        WHERE username = '${waiter.username}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    // Print the assignedTables array once
+    const assignedTablesArray = waiters.map((waiter) => waiter.assignedTables).filter((tables) => tables !== null);
+    console.log("Assigned tables:", assignedTablesArray);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+
+// Update table waiter assignments
+app.put("/tables", async (req, res) => {
+  try {
+    const { tables } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = tables && Array.isArray(tables) ? tables.map((table) => {
+      const query = `
+        UPDATE tables
+        SET waiter = '${table.waiter ? table.waiter.username : null}'
+        WHERE tableno = '${table.tableNo}';
+      `;
+      return client.query(query);
+    }) : [];
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Tables updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating tables" });
+  }
+});
+
+app.delete("/tables/:tableNo", async (req, res) => {
+  try {
+    const tableNo = req.params.tableNo;
+
+    const query = `
+      DELETE FROM tables
+      WHERE tableno = '${tableNo}';
+    `;
+    await client.query(query);
+
+    res.json({ message: `Table ${tableNo} deleted successfully!` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error deleting table" });
+  }
+});
+
+
 
 app.listen(8800, ()=>{
     console.log("Connected to backend!")
