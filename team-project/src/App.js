@@ -10,6 +10,7 @@ import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FoodSalesStatistics from "./pages/statistics";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
@@ -76,6 +77,11 @@ function App() {
             path="/admin-dashboard"
             element={
               <AdminDashboard isLoggedIn={isLoggedIn} permission={permission} />
+            } />
+            <Route
+            path="/statistics"
+            element={
+              <FoodSalesStatistics/>
             } />
         </Routes>
       </div>

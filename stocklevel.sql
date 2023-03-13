@@ -7,7 +7,7 @@ This table measures the stock level
 */
 
 CREATE TABLE stock_level(
-    item_id NOT NULL,
+    item_id VARCHAR NOT NULL,
     is_available BOOLEAN DEFAULT TRUE,
     in_stock int DEFAULT 100,
     sold int DEFAULT 0,
