@@ -2,6 +2,8 @@ import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 export const Navbar = ({
   isLoggedIn,
@@ -74,6 +76,27 @@ export const Navbar = ({
       marginTop: "100px",
     },
   };
+
+  useEffect(() => {
+    const deleteAllItems = async () => {
+      try {
+        const currentTime = new Date();
+        const endOfDay = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate() + 1, 0, 0, 0);
+        const timeUntilEndOfDay = endOfDay - currentTime;
+
+        setTimeout(async () => {
+          const res = await axios.delete("http://localhost:8800/delivered");
+          const res2 = await axios.delete("http://localhost:8800/totalorders");
+        }, timeUntilEndOfDay);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    deleteAllItems();
+  }, []);
+  
+
   return (
     <header className="flex items-center text-center">
       <img

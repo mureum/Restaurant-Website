@@ -34,8 +34,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
     }
   };
 
-  const Assign = async (updatedWaiters, tableNo) => {
-    console.log(tableNumb);
+  const Assign = async () => {
     try {
       await axios.put(`http://localhost:8800/tables`, { tables });
       const updatedTables = await axios.get(`http://localhost:8800/tables`);
@@ -49,16 +48,17 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
         waiters: updatedWaiterss,
       });
 
-      // Delete the table from the database
+      let tablesSelected = [];
+      for (let i = 0; i < tables.length; i++) {
+        if (tables[i].waiter) {
+          tablesSelected.push(tables[i].tableNo);
+        }
+      }
 
-      const tableToDelete = transformedTables.find(
-        (table) => table.tableNo === tableNumb
-      );
-      if (tableToDelete) {
-        await axios.delete(`http://localhost:8800/tables/${tableNumb}`);
+      // Delete the table from the database
+      for (let i = 0; i < tablesSelected.length; i++) {
+        await axios.delete(`http://localhost:8800/tables/${tablesSelected[i]}`);
         console.log(`Table ${tableNumb} deleted`);
-      } else {
-        console.log(`Table ${tableNumb} not found`);
       }
 
       console.log("Tables and waiters updated!");
@@ -70,25 +70,69 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
 
   const handleWaiterStatusChange = (event, index) => {
     const newWaiters = [...waiters];
-    newWaiters[index].status = event.target.value === "available";
+    const assignedTablesCount = newWaiters[index].assignedTables.length;
+    const newStatus = event.target.value === "available";
+    const currentStatus = newWaiters[index].status;
+
+    // If the new status is 'available', do not set the waiter's assignedTablesCount to 0 if the current status is 'unavailable'
+    if (newStatus && currentStatus) {
+      newWaiters[index].assignedTables = [];
+    }
+
+    newWaiters[index] = {
+      ...newWaiters[index],
+      status: newStatus,
+    };
+
+    if (newWaiters[index].maxTables === 0) {
+      newWaiters[index].status = false;
+      window.alert("Maximum tables assigned to waiter " + newWaiters[index]);
+    }
+
     setWaiters(newWaiters);
+    setUpdatedWaiters(newWaiters);
   };
 
   const handleAssignTable = (tableNo, selectedWaiter) => {
-    console.log("Waiter: " + selectedWaiter);
-    const selectedTable = tables.find((table) => table.tableNo === tableNo);
+    const selectedTable = tables.find(
+      (table) => table.tableNo === parseInt(tableNo)
+    );
 
-    // if (!selectedTable || !selectedWaiter) {
-    //   return;
-    // }
+    // Reset the waiter value to an empty string if the "--Select--" option is selected
+    let selectedWaiterObj;
+    if (selectedWaiter === "") {
+      selectedWaiterObj = { username: "", assignedTables: [] };
+    } else {
+      selectedWaiterObj = waiters.find(
+        (waiter) => waiter.username === selectedWaiter
+      );
+    }
 
-    // if (selectedTable.waiter) {
-    //   // The table is already assigned to a waiter
-    //   return;
-    // }
+    console.log("Max:" + selectedWaiterObj.assignedTables.length);
+    if (selectedWaiterObj.assignedTables.length >= 7) {
+      window.alert(
+        "Maximum tables assigned to waiter " + selectedWaiterObj.username
+      );
+      // Set the selected waiter to --Select--
+      document.getElementById(`select-${tableNo}`).value = "";
+      return;
+    }
+
+    const previouslyAssignedWaiter = waiters.find(
+      (waiter) => waiter.username === selectedTable.waiter
+    );
+
+    // Remove the table from the previously assigned waiter's assignedTables array
+    if (previouslyAssignedWaiter) {
+      const updatedAssignedTables =
+        previouslyAssignedWaiter.assignedTables.filter(
+          (table) => table.tableNo !== tableNo
+        );
+      previouslyAssignedWaiter.assignedTables = updatedAssignedTables;
+    }
 
     const updatedWaiters = waiters.map((waiter) => {
-      if (waiter.username === selectedWaiter) {
+      if (waiter.username === selectedWaiterObj.username) {
         const updatedAssignedTables = Array.isArray(waiter.assignedTables)
           ? [...waiter.assignedTables]
           : [];
@@ -103,28 +147,28 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
       }
       return waiter;
     });
+    // Set the updated waiters state
+    setWaiters(updatedWaiters);
+    // Set the updatedWaiterss state
+    setUpdatedWaiters(updatedWaiters);
 
     const updatedTables = tables.map((table) => {
       if (table.tableNo === tableNo) {
         return {
           ...table,
-          waiter: selectedWaiter,
+          waiter: selectedWaiterObj.username !== "" ? selectedWaiterObj : null,
         };
       }
       return table;
     });
 
-    setWaiters(updatedWaiters);
+    // Set the updated tables state
     setTables(updatedTables);
-
     // Print the assignedTables array
     const assignedTablesArray = updatedWaiters
       .map((waiter) => waiter.assignedtables)
       .filter((tables) => tables !== null);
     console.log("Assigned tables:", assignedTablesArray);
-    console.log(tableNo);
-    setUpdatedWaiters(updatedWaiters); // Call Assign function with updatedWaiters as parameter
-    setTableNumber(tableNo); // Set the selected table number in the state
   };
 
   useEffect(() => {
@@ -136,11 +180,17 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
           const assignedTables = item.assignedtables
             ? JSON.parse(item.assignedtables)
             : [];
+          const maxTables = 7;
+          const assignedTablesCount = assignedTables
+            ? assignedTables.length
+            : 0;
+          const status = assignedTablesCount < maxTables;
+
           return {
             username: item.username,
-            status: item.status,
-            assignedTables: Array.isArray(assignedTables) ? assignedTables : [], // Set to empty array if assignedTables is not an array
-            maxTables: 7,
+            status: status,
+            assignedTables: Array.isArray(assignedTables) ? assignedTables : [],
+            maxTables: maxTables,
           };
         });
         setWaiters(transformedWaiters);
@@ -276,6 +326,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                   onChange={(event) =>
                     handleAssignTable(table.tableNo, event.target.value)
                   }
+                  id={`select-${table.tableNo}`}
                 >
                   <option value="">--Select--</option>
                   {waiters

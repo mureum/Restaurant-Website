@@ -203,6 +203,31 @@ app.get("/delivered", async (req,res)=>{
   }
 })
 
+app.delete("/delivered", async (req, res) => {
+  try {
+    const q = "DELETE FROM delivered;"
+    client.query(q, (errors, result) => {
+      if (errors) throw errors;
+      return res.sendStatus(204); // No Content
+    });
+  } catch (errors) {
+    return res.status(500).json(errors);
+  }
+});
+
+app.delete("/totalorders", async (req, res) => {
+  try {
+    const q = "DELETE FROM totalorders;"
+    client.query(q, (errors, result) => {
+      if (errors) throw errors;
+      return res.sendStatus(204); // No Content
+    });
+  } catch (errors) {
+    return res.status(500).json(errors);
+  }
+});
+
+
 app.get("/waiters", async (req,res)=>{
   try {
     const q = "SELECT * FROM waiters;"
@@ -395,11 +420,11 @@ app.post("/makeOrderReady", async (req, res) => {
     
 
     await client.query(insertQuery);
-    const orderNumbers = orders.map((order) => order.orderNumber).join(",");
-    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${orderNumbers})`;
+    
+    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${values.map(val => val.split(",")[1]).join(",")})`;
 
-    await client.query(deleteQuery);
-
+    await client.query(deleteQuery);      
+    
     res.json({ success: true });
   } catch (err) {
     console.log(err);
@@ -432,12 +457,26 @@ app.post("/makeOrderDelivered", async (req, res) => {
 
     await client.query(deleteQuery);
 
+    console.log(values);
+    
+    let deleteQuery2;
+    for (const value of values) {
+      const tableNo = value.split(",")[0].substring(1); // extract tableNo and remove leading (
+        console.log(tableNo);
+        deleteQuery2 = `UPDATE waiters 
+        SET assignedtables = REGEXP_REPLACE(assignedtables, '{"tableNo":${tableNo},"time":".*?"},?,', '') 
+        WHERE assignedtables LIKE '%{"tableNo":${tableNo},%';`;
+      await client.query(deleteQuery2);
+      console.log(`Deleted assigned tables for table ${tableNo}`);
+    }
+
     res.json({ success: true });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error on sending the orders" });
   }
 });
+
 
 app.delete('/deleteUser', async (req, res) => {
   try {
