@@ -138,7 +138,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
           : [];
         updatedAssignedTables.push({
           tableNo: tableNo,
-          time: new Date().toISOString(),
+          time: new Date().toLocaleTimeString(),
         });
         return {
           ...waiter,
@@ -218,7 +218,6 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
       <table className="table w-full">
         <thead>
           <tr>
-            <th></th>
             <th>Name</th>
             <th>Status</th>
             <th>Empty Slots</th>
@@ -276,7 +275,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
                           {waiter.assignedTables.map((table, j) => (
                             <div
                               className="row"
-                              style={{ gap: "50px" }}
+                              style={{ gap: "120px" }}
                               key={j}
                             >
                               <span className="column">{table.tableNo}</span>
