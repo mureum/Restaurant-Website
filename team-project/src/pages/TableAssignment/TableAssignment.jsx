@@ -70,7 +70,6 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
 
   const handleWaiterStatusChange = (event, index) => {
     const newWaiters = [...waiters];
-    const assignedTablesCount = newWaiters[index].assignedTables.length;
     const newStatus = event.target.value === "available";
     const currentStatus = newWaiters[index].status;
 
@@ -90,6 +89,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
     }
 
     setWaiters(newWaiters);
+    console.log(newWaiters);
     setUpdatedWaiters(newWaiters);
   };
 
@@ -181,10 +181,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
             ? JSON.parse(item.assignedtables)
             : [];
           const maxTables = 7;
-          const assignedTablesCount = assignedTables
-            ? assignedTables.length
-            : 0;
-          const status = assignedTablesCount < maxTables;
+          const status = item.status; // set status based on fetched data
 
           return {
             username: item.username,
@@ -249,7 +246,7 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
               <td>
                 <select
                   className="select w-40 max-w-xs"
-                  value={waiter.status ? "available" : "unavailable"}
+                  value={waiter.status ? "available" : "unavailable"} // update the value prop here
                   onChange={(event) => handleWaiterStatusChange(event, i)}
                 >
                   <option value="available">Available</option>
