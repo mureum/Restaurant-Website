@@ -93,7 +93,6 @@ export const OrderTable = ({
               <th>Order number</th>
               <th>Customer Name</th>
               <th>Time</th>
-              <th>Assigned Waiter</th>
             </tr>
           </thead>
           <tbody>
