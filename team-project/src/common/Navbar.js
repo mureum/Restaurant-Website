@@ -106,13 +106,6 @@ export const Navbar = ({
         >
           Menus
         </a>
-        <a
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-          href=""
-        >
-          <span>Locations</span>
-          <i className="fa-solid fa-caret-down"></i>
-        </a>
         <a className="text-2xl font-bold text-yellow-100 uppercase" href="">
           Contact Us
         </a>
@@ -146,10 +139,7 @@ export const Navbar = ({
         >
           <a href="/menu">Menus</a>
         </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <span>Locations</span>
-          <i className="fa-solid fa-chevron-down"></i>
-        </li>
+
         <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           <a href="/about-us">Contact Us</a>
         </li>
