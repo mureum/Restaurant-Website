@@ -89,20 +89,26 @@ function KitchenDashboard({ setIsLoggedIn, handleLogin }) {
             Ready
           </a>
         </div>
-        <h1 className="text-3xl font-bold">
-          To be made <i className="fa-solid fa-clipboard"></i>
-        </h1>
-        <KitchenTable nextStepText="Pick up order" isCancellable={true} />
-        <h1 className="text-3xl font-bold flex gap-4 items-center">
-          <span>In preparation</span>
-          <img className="object-cover h-[40px] h-[40px]" src={cooking} />
-        </h1>
-        <InPreparation nextStepText="Mark as Ready" isCancellable={true} />
-        <h1 className="text-3xl font-bold">
-          Ready for delivery <i className="fa-solid fa-circle-check"></i>
-        </h1>
-        <ReadyDelivery nextStepText="Delivered" />
-        <h1></h1>
+        <div className={currentTab === "Pending Orders" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold">
+            To be made <i className="fa-solid fa-clipboard"></i>
+          </h1>
+          <KitchenTable nextStepText="Pick up order" isCancellable={true} />
+        </div>
+        <div className={currentTab === "In Preparation" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold flex gap-4 items-center">
+            <span>In Preparation</span>
+            <img className="object-cover h-[40px] h-[40px]" src={cooking} />
+          </h1>
+          <InPreparation nextStepText="Mark as Ready" isCancellable={true} />
+        </div>
+
+        <div className={currentTab === "Ready" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold">
+            Ready for delivery <i className="fa-solid fa-circle-check"></i>
+          </h1>
+          <ReadyDelivery nextStepText="Delivered" />
+        </div>
       </div>
     </>
   );
