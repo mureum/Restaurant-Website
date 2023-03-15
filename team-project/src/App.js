@@ -69,7 +69,6 @@ function App() {
             }
           />
           <Route
-<<<<<<< HEAD
             path="/custOrder"
             element={
               <CustOrder tableNumber = {tableNumber}/>
@@ -79,14 +78,15 @@ function App() {
             path="/TableInput"
             element={
               <TableInput setTableNumber = {setTableNumber}/>
-=======
+            }
+          />
+          <Route 
             path="/table-assignment"
             element={
               <TableAssignment
                 isLoggedIn={isLoggedIn}
                 permission={permission}
               />
->>>>>>> b35570f5a3e4f316169b30706e5f408cd9945e1a
             }
           />
           <Route

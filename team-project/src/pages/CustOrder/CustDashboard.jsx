@@ -70,6 +70,7 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
               <th>Order number</th>
               <th>Customer Name</th>
               <th>Time</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
