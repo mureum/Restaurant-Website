@@ -81,7 +81,14 @@ export const Navbar = ({
     const deleteAllItems = async () => {
       try {
         const currentTime = new Date();
-        const endOfDay = new Date(currentTime.getFullYear(), currentTime.getMonth(), currentTime.getDate() + 1, 0, 0, 0);
+        const endOfDay = new Date(
+          currentTime.getFullYear(),
+          currentTime.getMonth(),
+          currentTime.getDate() + 1,
+          0,
+          0,
+          0
+        );
         const timeUntilEndOfDay = endOfDay - currentTime;
 
         setTimeout(async () => {
@@ -92,10 +99,9 @@ export const Navbar = ({
         console.log(err);
       }
     };
-  
+
     deleteAllItems();
   }, []);
-  
 
   return (
     <header className="flex items-center text-center">
@@ -136,13 +142,7 @@ export const Navbar = ({
         >
           Your Order
         </a>
-        <a
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-          href=""
-        >
-          <span>Locations</span>
-          <i className="fa-solid fa-caret-down"></i>
-        </a>
+
         <a className="text-2xl font-bold text-yellow-100 uppercase" href="">
           Contact Us
         </a>
@@ -176,10 +176,7 @@ export const Navbar = ({
         >
           <a href="/menu">Menus</a>
         </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <span>Locations</span>
-          <i className="fa-solid fa-chevron-down"></i>
-        </li>
+
         <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
           <a href="/about-us">Contact Us</a>
         </li>

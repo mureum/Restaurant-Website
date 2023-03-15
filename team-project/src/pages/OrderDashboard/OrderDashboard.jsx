@@ -13,7 +13,6 @@ import {
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
-  const [currentTab, setCurrentTab] = useState("Pending Orders");
 
   useEffect(() => {
     const fetchAlltems = async () => {
@@ -64,12 +63,6 @@ function OrderDashboard({ isLoggedIn, permission }) {
             </button>
           </div>
         </div>
-        <div className="tabs tabs-boxed bg-transparent ">
-          <a className="tab text-3xl font-bold ">Pending Orders</a>
-          <a className="tab text-3xl font-bold tab-active">In Preparation</a>
-          <a className="tab text-3xl font-bold">Ready</a>
-          <a className="tab text-3xl font-bold">Delivered</a>
-        </div>
         <h1 className="text-3xl font-bold">
           Pending orders <i className="fa-solid fa-clipboard"></i>
         </h1>
@@ -94,12 +87,12 @@ function OrderDashboard({ isLoggedIn, permission }) {
         <OrderTable
           nextStepText="Mark as Delivered"
           endPoint="readyOrders"
-          nextCb={markAsDelivered}
+          nextCb={completeOrder}
         />
         <h1 className="text-3xl font-bold">
           Delivered orders <i className="fa-solid fa-circle-check"></i>
         </h1>
-        <OrderTable nextStepText="" nextCb={""} endPoint="delivered" />
+        <OrderTable />
       </div>
     </>
   );
