@@ -268,17 +268,17 @@ export const Navbar = ({
             <li>
               <a
                 className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-                href="/order-dashboard"
+                href="/table-assignment"
               >
-                Order Dashboard
+                Table Assignment
               </a>
             </li>
             <li>
               <a
                 className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-                href="/table-assignment"
+                href="/order-dashboard"
               >
-                Table Assignment
+                Order Dashboard
               </a>
             </li>
             <li>
