@@ -145,7 +145,7 @@ function OrderDashboard({ isLoggedIn, permission }) {
         </div>
         <div className={currentTab === "Delivered" ? "show" : "hidden"}>
           <h1 className="text-3xl font-bold">
-            Delivered<i className="fa-solid fa-circle-check"></i>
+            Delivered <i className="fa-solid fa-circle-check"></i>
           </h1>
           <OrderTable nextStepText="" nextCb={""} endPoint="delivered" />
         </div>
