@@ -63,6 +63,15 @@ function OrderDashboard({ isLoggedIn, permission }) {
           <a
             className={
               "tab text-3xl font-bold" +
+              (currentTab === "Assistance" ? " tab-active" : "")
+            }
+            onClick={() => setCurrentTab("Assistance")}
+          >
+            Assistance
+          </a>
+          <a
+            className={
+              "tab text-3xl font-bold" +
               (currentTab === "Pending Orders" ? " tab-active" : "")
             }
             onClick={() => setCurrentTab("Pending Orders")}
@@ -96,6 +105,9 @@ function OrderDashboard({ isLoggedIn, permission }) {
           >
             Delivered
           </a>
+        </div>
+        <div className={currentTab === "Assistance" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold">Assistance</h1>
         </div>
         <div className={currentTab === "Pending Orders" ? "show" : "hidden"}>
           <h1 className="text-3xl font-bold">
