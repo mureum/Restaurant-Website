@@ -23,7 +23,7 @@ function CustOrder({tableNumber}) {
               </div>
             </div>
             <h1 className="text-3xl font-bold">
-              Pending Orders :
+              Your orders :
             </h1>     
             <CustDashboard/>              
           </div>
