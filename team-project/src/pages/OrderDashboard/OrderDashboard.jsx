@@ -61,25 +61,37 @@ function OrderDashboard({ isLoggedIn, permission }) {
         </div>
         <div className="tabs tabs-boxed bg-transparent">
           <a
-            className="tab text-3xl font-bold"
+            className={
+              "tab text-3xl font-bold" +
+              (currentTab === "Pending Orders" ? " tab-active" : "")
+            }
             onClick={() => setCurrentTab("Pending Orders")}
           >
             Pending Orders
           </a>
           <a
-            className="tab text-3xl font-bold"
+            className={
+              "tab text-3xl font-bold" +
+              (currentTab === "In Preparation" ? " tab-active" : "")
+            }
             onClick={() => setCurrentTab("In Preparation")}
           >
             In Preparation
           </a>
           <a
-            className="tab text-3xl font-bold"
+            className={
+              "tab text-3xl font-bold" +
+              (currentTab === "Ready" ? " tab-active" : "")
+            }
             onClick={() => setCurrentTab("Ready")}
           >
             Ready
           </a>
           <a
-            className="tab text-3xl font-bold"
+            className={
+              "tab text-3xl font-bold" +
+              (currentTab === "Delivered" ? " tab-active" : "")
+            }
             onClick={() => setCurrentTab("Delivered")}
           >
             Delivered
