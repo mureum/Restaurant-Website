@@ -8,6 +8,7 @@ import { completeOrder, markAsReady, sendToKitchen } from "./orderFunctions";
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
+  const [currentTab, setCurrentTab] = useState("Pending Orders");
 
   useEffect(() => {
     const fetchAlltems = async () => {
@@ -58,36 +59,70 @@ function OrderDashboard({ isLoggedIn, permission }) {
             </button>
           </div>
         </div>
-        <h1 className="text-3xl font-bold">
-          Pending orders <i className="fa-solid fa-clipboard"></i>
-        </h1>
-        <OrderTable
-          nextStepText="Send to Kitchen"
-          isCancellable={true}
-          endPoint="pendingOrders"
-          nextCb={sendToKitchen}
-        />
-        <h1 className="text-3xl font-bold flex gap-4 items-center">
-          <span>In preparation</span>
-          <img className="object-cover h-[40px] h-[40px]" src={cooking} />
-        </h1>
-        <OrderTable
-          nextStepText="Mark as Ready"
-          endPoint="currentOrders"
-          nextCb={markAsReady}
-        />
-        <h1 className="text-3xl font-bold">
-          Ready <i className="fa-solid fa-bell-concierge"></i>
-        </h1>
-        <OrderTable
-          nextStepText="Mark as Delivered"
-          endPoint="readyOrders"
-          nextCb={completeOrder}
-        />
-        <h1 className="text-3xl font-bold">
-          Delivered orders <i className="fa-solid fa-circle-check"></i>
-        </h1>
-        <OrderTable />
+        <div className="tabs tabs-boxed bg-transparent">
+          <a
+            className="tab text-3xl font-bold"
+            onClick={() => setCurrentTab("Pending Orders")}
+          >
+            Pending Orders
+          </a>
+          <a
+            className="tab text-3xl font-bold"
+            onClick={() => setCurrentTab("In Preparation")}
+          >
+            In Preparation
+          </a>
+          <a
+            className="tab text-3xl font-bold"
+            onClick={() => setCurrentTab("Ready")}
+          >
+            Ready
+          </a>
+          <a
+            className="tab text-3xl font-bold"
+            onClick={() => setCurrentTab("Delivered")}
+          >
+            Delivered
+          </a>
+        </div>
+        <div className={currentTab === "Pending Orders" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold">
+            Pending Orders <i className="fa-solid fa-clipboard"></i>
+          </h1>
+          <OrderTable
+            nextStepText="Send to Kitchen"
+            isCancellable={true}
+            endPoint="pendingOrders"
+            nextCb={sendToKitchen}
+          />
+        </div>
+        <div className={currentTab === "In Preparation" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold flex gap-4 items-center">
+            <span>In Preparation</span>
+            <img className="object-cover h-[40px] h-[40px]" src={cooking} />
+          </h1>
+          <OrderTable
+            nextStepText="Mark as Ready"
+            endPoint="currentOrders"
+            nextCb={markAsReady}
+          />
+        </div>
+        <div className={currentTab === "Ready" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold">
+            Ready <i className="fa-solid fa-bell-concierge"></i>
+          </h1>
+          <OrderTable
+            nextStepText="Mark as Delivered"
+            endPoint="readyOrders"
+            nextCb={completeOrder}
+          />
+        </div>
+        <div className={currentTab === "Delivered" ? "show" : "hidden"}>
+          <h1 className="text-3xl font-bold">
+            Delivered<i className="fa-solid fa-circle-check"></i>
+          </h1>
+          <OrderTable nextStepText="" nextCb={""} endPoint="delivered" />
+        </div>
       </div>
     </>
   );
