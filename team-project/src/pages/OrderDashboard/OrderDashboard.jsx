@@ -8,7 +8,7 @@ import { completeOrder, markAsReady, sendToKitchen } from "./orderFunctions";
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
-  const [currentTab, setCurrentTab] = useState("Pending Orders");
+  const [currentTab, setCurrentTab] = useState("Assistance");
 
   useEffect(() => {
     const fetchAlltems = async () => {
@@ -107,7 +107,9 @@ function OrderDashboard({ isLoggedIn, permission }) {
           </a>
         </div>
         <div className={currentTab === "Assistance" ? "show" : "hidden"}>
-          <h1 className="text-3xl font-bold">Assistance</h1>
+          <h1 className="text-3xl font-bold">
+            Assistance <i class="fa-solid fa-circle-question"></i>
+          </h1>
         </div>
         <div className={currentTab === "Pending Orders" ? "show" : "hidden"}>
           <h1 className="text-3xl font-bold">
