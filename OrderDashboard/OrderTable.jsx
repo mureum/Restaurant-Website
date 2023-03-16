@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
 
+import { deleteOrder } from "./orderFunctions";
+
 const ORDER = [
   {
     tableNumber: 1,
@@ -19,13 +21,18 @@ const ORDER = [
   },
 ];
 
-export const OrderTable = ({ nextStepText, isCancellable }) => {
+export const OrderTable = ({
+  nextStepText,
+  isCancellable,
+  endPoint,
+  nextCb,
+}) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/pendingOrders");
+        const res = await axios.get(`http://localhost:8800/${endPoint}`);
         const transformedData = res.data.map((item) => ({
           tableNumber: item.table_no,
           orderNumber: item.order_no,
@@ -41,71 +48,6 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
 
     fetchAlltems();
   }, []);
-
-  const sendToKitchen = async (selectedItems) => {
-    try {
-      const itemsToSend = Object.entries(selectedItems)
-        .filter(([_, isSelected]) => isSelected)
-        .map(([index, _]) => items[index]);
-
-      if (itemsToSend.length === 0) {
-        window.alert("Please select at least one order to send to kitchen");
-        return;
-      }
-
-      const orders = itemsToSend.map(
-        ({ tableNumber, orderNumber, customerName, time, details }) => ({
-          table: tableNumber,
-          orderNumber,
-          customerName,
-          time,
-          details,
-        })
-      );
-
-      const response = await axios.post(`http://localhost:8800/sendToKitchen`, {
-        orders,
-      });
-
-      if (response.data.success) {
-        window.alert("Selected orders sent to kitchen");
-        window.location.reload();
-      } else {
-        window.alert("Error on sending the orders");
-      }
-    } catch (err) {
-      window.alert("Error on sending the orders");
-      console.log(err);
-    }
-  };
-
-  const deleteOrder = async (selectedItems) => {
-    try {
-      const itemsToDelete = Object.entries(selectedItems)
-        .filter(([_, isSelected]) => isSelected)
-        .map(([index, _]) => items[index]);
-
-      if (itemsToDelete.length === 0) {
-        window.alert("Please select at least one order to delete");
-        return;
-      }
-
-      const orderNumbers = itemsToDelete
-        .map((item) => item.orderNumber)
-        .join(",");
-      const deleteQuery = `DELETE FROM inPreparation WHERE order_no IN (${orderNumbers})`;
-
-      await axios.delete("http://localhost:8800/deleteOrder", {
-        data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },
-      });
-
-      window.alert("Selected orders deleted from the table");
-      window.location.reload();
-    } catch (err) {
-      window.alert("Error on deleting the orders");
-      console.log(err);
-    }
-  };
 
   const data =
     items.length > 0
@@ -151,6 +93,8 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
               <th>Order number</th>
               <th>Customer Name</th>
               <th>Time</th>
+              <th>Assigned Waiter</th>
+              <th>Payment</th>
             </tr>
           </thead>
           <tbody>
@@ -202,9 +146,7 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
                           <label
                             htmlFor={`my-modal-${order.orderNumber}`}
                             className="btn btn-sm btn-circle absolute right-2 top-2"
-                          >
-                            ✕
-                          </label>
+                          ></label>
                           <h3 className="text-lg font-bold">Details</h3>
                           <p className="py-4">{order.details}</p>
                         </div>
@@ -216,6 +158,18 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
                 <th>
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
                 </th>
+                <td>
+                  {" "}
+                  <select className="select select-bordered w-40 max-w-xs">
+                    <option>Name</option>
+                  </select>
+                </td>
+                <td>
+                  <select className="select select-bordered w-35 max-w-xs">
+                    <option>Paid</option>
+                    <option>Unpaid</option>
+                  </select>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -225,7 +179,7 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
         {nextStepText ? (
           <button
             className="btn btn-primary"
-            onClick={() => sendToKitchen(selectedItems)}
+            onClick={() => nextCb(selectedItems, items)}
           >
             {nextStepText}
           </button>
@@ -235,13 +189,14 @@ export const OrderTable = ({ nextStepText, isCancellable }) => {
         {isCancellable ? (
           <button
             className="btn btn-warning"
-            onClick={() => deleteOrder(selectedItems)}
+            onClick={() => deleteOrder(selectedItems, items)}
           >
             Cancel Order
           </button>
         ) : (
           <></>
         )}
+        <button className="btn btn-warning">Update</button>
       </div>
     </div>
   );
