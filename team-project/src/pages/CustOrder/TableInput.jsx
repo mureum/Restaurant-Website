@@ -11,6 +11,7 @@ function TableInput({setTableNumber}) {
 
   const [confirmingItems,setConfirmingItems] = useState([]);
   const[preparingItems,setPreparingItems] = useState([]);
+  const[readyItems,setReadyItems] = useState([]);
 
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
@@ -20,12 +21,14 @@ function TableInput({setTableNumber}) {
       setConfirmingItems(response.data);
     });
   }, []);
-  
+
   React.useEffect(() => {
     axios.get("http://localhost:8800/currentOrders").then((response) => {
       setPreparingItems(response.data);
     });
   }, []);
+
+  
 
   useEffect(() => {
     setOrderTables(confirmingItems);
