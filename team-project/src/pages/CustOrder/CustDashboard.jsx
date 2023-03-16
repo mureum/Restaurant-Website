@@ -76,8 +76,8 @@ export const CustDashboard = ({tableNumber }) => {
 
 
   useEffect(() => {
-    setItems(confirmingItems);
-  }, [confirmingItems]);
+    setItems(confirmingItems.concat(preparingItems));
+  }, [confirmingItems,preparingItems]);
 
 
   const data =
