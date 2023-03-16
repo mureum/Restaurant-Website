@@ -13,7 +13,9 @@ function Home({ isLoggedIn }) {
     <div className="App">
       <div>
         <li className="p-3 px-6  space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-          <span>Book Now</span>
+          <a href="/menu">
+            <span>Order Now</span>
+          </a>
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
       </div>

@@ -203,6 +203,55 @@ app.get("/delivered", async (req,res)=>{
   }
 })
 
+app.delete("/delivered", async (req, res) => {
+  try {
+    const q = "DELETE FROM delivered;"
+    client.query(q, (errors, result) => {
+      if (errors) throw errors;
+      return res.sendStatus(204); // No Content
+    });
+  } catch (errors) {
+    return res.status(500).json(errors);
+  }
+});
+
+app.delete("/totalorders", async (req, res) => {
+  try {
+    const q = "DELETE FROM totalorders;"
+    client.query(q, (errors, result) => {
+      if (errors) throw errors;
+      return res.sendStatus(204); // No Content
+    });
+  } catch (errors) {
+    return res.status(500).json(errors);
+  }
+});
+
+
+app.get("/waiters", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM waiters;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
+app.get("/tables", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM tables;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
 app.put("/orders/unavailable/:id", async(req,res) => {
     try {
       const id = req.params.id;
@@ -305,7 +354,8 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
                             VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
                             INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description, total_cost) 
-                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost})`;
+                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost});
+                            INSERT INTO tables (tableno, time) VALUES (${table}, TIME '${time}')`;
   
       await client.query(insertQuery);
   
@@ -370,11 +420,11 @@ app.post("/makeOrderReady", async (req, res) => {
     
 
     await client.query(insertQuery);
-    const orderNumbers = orders.map((order) => order.orderNumber).join(",");
-    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${orderNumbers})`;
+    
+    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${values.map(val => val.split(",")[1]).join(",")})`;
 
-    await client.query(deleteQuery);
-
+    await client.query(deleteQuery);      
+    
     res.json({ success: true });
   } catch (err) {
     console.log(err);
@@ -407,12 +457,26 @@ app.post("/makeOrderDelivered", async (req, res) => {
 
     await client.query(deleteQuery);
 
+    console.log(values);
+    
+    let deleteQuery2;
+    for (const value of values) {
+      const tableNo = value.split(",")[0].substring(1); // extract tableNo and remove leading (
+        console.log(tableNo);
+        deleteQuery2 = `UPDATE waiters 
+        SET assignedtables = REGEXP_REPLACE(assignedtables, '{"tableNo":${tableNo},"time":"[^"]*"},?', '') 
+        WHERE assignedtables LIKE '%{"tableNo":${tableNo},%';`;
+      await client.query(deleteQuery2);
+      console.log(`Deleted assigned tables for table ${tableNo}`);
+    }
+
     res.json({ success: true });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error on sending the orders" });
   }
 });
+
 
 app.delete('/deleteUser', async (req, res) => {
   try {
@@ -512,6 +576,111 @@ app.put("/orders/reduceStock/:id/:amount", async(req,res) => {
     return res.json(err)
   }
 })
+
+app.put("/waiters", async (req, res) => {
+  try {
+    const { waiters } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = waiters.map((waiter) => {
+      const query = `
+        UPDATE waiters
+        SET status = '${waiter.status}'
+        WHERE username = '${waiter.username}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+// Update waiter status and assigned tables
+app.put("/waitersAssign", async (req, res) => {
+  try {
+    const { waiters } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = waiters.map((waiter) => {
+      const assignedTables =
+  waiter.assignedTables && waiter.assignedTables.length > 0
+    ? JSON.stringify(waiter.assignedTables)
+    : null;
+
+        
+      console.log(assignedTables);
+
+      const query = `
+        UPDATE waiters
+        SET status = '${waiter.status}', assignedtables = '${assignedTables}'
+        WHERE username = '${waiter.username}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    // Print the assignedTables array once
+    const assignedTablesArray = waiters.map((waiter) => waiter.assignedTables).filter((tables) => tables !== null);
+    console.log("Assigned tables:", assignedTablesArray);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+
+// Update table waiter assignments
+app.put("/tables", async (req, res) => {
+  try {
+    const { tables } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = tables && Array.isArray(tables) ? tables.map((table) => {
+      const query = `
+        UPDATE tables
+        SET waiter = '${table.waiter ? table.waiter.username : null}'
+        WHERE tableno = '${table.tableNo}';
+      `;
+      return client.query(query);
+    }) : [];
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Tables updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating tables" });
+  }
+});
+
+app.delete("/tables/:tableNo", async (req, res) => {
+  try {
+    const tableNo = req.params.tableNo;
+
+    const query = `
+      DELETE FROM tables
+      WHERE tableno = '${tableNo}';
+    `;
+    await client.query(query);
+
+    res.json({ message: `Table ${tableNo} deleted successfully!` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error deleting table" });
+  }
+});
+
 
 
 app.listen(8800, ()=>{
