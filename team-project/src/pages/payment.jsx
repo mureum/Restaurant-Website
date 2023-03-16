@@ -1,20 +1,27 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import { Route } from "react-router-dom";
+import "../App.css";
 
-function App() {
+function Payment() {
   return (
     <div className="container">
       <form>
         <div className="card-container">
           <div className="front">
             <div className="image">
-              <img src="https://cdn.pixabay.com/photo/2017/01/13/01/22/rocket-1976108_960_720.png" alt="card-logo" />
+              <img
+                src="https://cdn.pixabay.com/photo/2017/01/13/01/22/rocket-1976108_960_720.png"
+                alt="card-logo"
+              />
               <div className="chip">
-                <img src="https://cdn.pixabay.com/photo/2017/05/24/09/28/chip-2333153_960_720.png" alt="card-chip" />
+                <img
+                  src="https://cdn.pixabay.com/photo/2017/05/24/09/28/chip-2333153_960_720.png"
+                  alt="card-chip"
+                />
               </div>
             </div>
             <div className="card-number-box">
-              <span>**** **** **** 1234</span>
+              <span>* * ** 1234</span>
             </div>
             <div className="flexbox">
               <div className="box">
@@ -34,7 +41,10 @@ function App() {
               <div className="cvv-box"></div>
             </div>
             <div className="box">
-              <img src="https://cdn.pixabay.com/photo/2017/05/24/09/31/mastercard-2333232_960_720.png" alt="card-logo" />
+              <img
+                src="https://cdn.pixabay.com/photo/2017/05/24/09/31/mastercard-2333232_960_720.png"
+                alt="card-logo"
+              />
             </div>
           </div>
         </div>
@@ -53,13 +63,15 @@ function App() {
           </div>
           <div className="inputBox">
             <span>CVV</span>
-            <input type="text" placeholder="***" />
+            <input type="text" placeholder="*" />
           </div>
         </div>
-        <button className="submit-btn" type="submit">Submit</button>
+        <button className="submit-btn" type="submit">
+          Submit
+        </button>
       </form>
     </div>
   );
 }
 
-export default App;
+export default Payment;
