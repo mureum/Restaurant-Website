@@ -158,7 +158,12 @@ export const OrderTable = ({
                 <th>
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
                 </th>
-                <td></td>
+                <td>
+                  {" "}
+                  <select className="select select-bordered w-40 max-w-xs">
+                    <option>Name</option>
+                  </select>
+                </td>
                 <td>
                   <select className="select select-bordered w-35 max-w-xs">
                     <option>Paid</option>
