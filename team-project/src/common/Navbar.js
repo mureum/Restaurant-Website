@@ -204,3 +204,4 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
     </header>
   );
 };
+

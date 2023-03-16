@@ -94,13 +94,6 @@ function FoodStatisticsTable() {
           </tbody>
         </table>
       </div>
-      {totalRev.length > 0 ? (
-        <p style={totalRevenueStyle}>
-          Total Revenue so far: $ {totalRev[0].total_revenue_sum}
-        </p>
-      ) : (
-        <p style={totalRevenueStyle}>Total Revenue is $0</p>
-      )}
     </div>
   );
 }
