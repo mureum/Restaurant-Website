@@ -191,6 +191,18 @@ app.get("/logins", async (req,res)=>{
   }
 })
 
+app.get("/delivered", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM delivered;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
 app.put("/orders/unavailable/:id", async(req,res) => {
     try {
       const id = req.params.id;
@@ -267,12 +279,13 @@ app.put("/orders/unavailable/:id", async(req,res) => {
     }
   })
 
-  app.put("/orders/waiter/:table/:customerName/:time/:itemList", async (req, res) => {
+  app.put("/orders/waiter/:table/:customerName/:time/:itemList/:totCost", async (req, res) => {
     try {
       const table = parseInt(req.params.table);
       const name = req.params.customerName;
       const time = req.params.time;
       const itemList = req.params.itemList;
+      const totCost = parseInt(req.params.totCost);
   
       // Retrieve the maximum order number from the totalorders table
       const maxOrderNumberQuery = `SELECT MAX(order_no) as max_order_no FROM totalorders`;
@@ -291,8 +304,8 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       // Insert the new order into the waiter_calls and totalorders tables
       const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
                             VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
-                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description) 
-                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}')`;
+                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description, total_cost) 
+                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost})`;
   
       await client.query(insertQuery);
   
@@ -369,6 +382,37 @@ app.post("/makeOrderReady", async (req, res) => {
   }
 });
 
+app.post("/makeOrderDelivered", async (req, res) => {
+  try {
+    const orders = req.body.orders;
+
+    if (orders.length === 0) {
+      res.status(400).json({ error: "Please select at least one order to send to kitchen" });
+      return;
+    }
+
+    const values = orders.map(
+      ({ table, orderNumber, customerName, time, details }) =>
+        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}')`
+    );
+
+    const insertQuery = `INSERT INTO delivered (table_no, order_no, customer_name, time, order_description) VALUES ${values.join(
+      ","
+    )};`;
+    
+
+    await client.query(insertQuery);
+    const orderNumbers = orders.map((order) => order.orderNumber).join(",");
+    const deleteQuery = `DELETE FROM ready_orders WHERE order_no IN (${orderNumbers})`;
+
+    await client.query(deleteQuery);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the orders" });
+  }
+});
 
 app.delete('/deleteUser', async (req, res) => {
   try {
@@ -401,7 +445,7 @@ app.delete("/deleteOrder", async (req, res) => {
     const orderNumberString = orderNumbers.join(",");
 
     // Delete all orders with the given order numbers from the database
-    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString})`;
+    const deleteQuery = `DELETE FROM waiter_calls WHERE order_no IN (${orderNumberString}); DELETE FROM totalorders WHERE order_no IN (${orderNumberString})`;
 
     client.query(deleteQuery, (err, data) => {
       if (err) {
@@ -441,7 +485,33 @@ app.delete("/completeOrder", async (req, res) => {
   }
 });
 
+app.put("/orders/addstock/:id/:amount", async(req,res) => {
+  try {
+    const id = req.params.id;
+    const amount = req.params.amount;
+    const q = `UPDATE item SET stock_available = ${amount} WHERE item_id = '${id}';`
+    client.query(q, (err,data)=>{
+      if (err) return res.json(err);
+      return res.json("Item has been updated successfully")
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
 
+app.put("/orders/reduceStock/:id/:amount", async(req,res) => {
+  try {
+    const id = req.params.id;
+    const amount = req.params.amount;
+    const q = `UPDATE item SET stock_available = stock_available - ${amount} WHERE item_id = '${id}';`
+    client.query(q, (err,data)=>{
+      if (err) return res.json(err);
+      return res.json("Item has been updated successfully")
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
 
 
 app.listen(8800, ()=>{

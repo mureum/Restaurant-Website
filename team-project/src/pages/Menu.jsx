@@ -83,10 +83,32 @@ function Order({ isLoggedIn, permission }) {
       try {
         const res = await axios.get("http://localhost:8800/orders");
         setItems(res.data);
+        // Show alert for low stock items
+        const lowStockItems = res.data.filter(
+          (item) => item.stock_available < 20
+        );
+        if (
+          (lowStockItems.length > 0 && permission === "Waiter") ||
+          permission === "Kitchen" ||
+          permission === "Admin"
+        ) {
+          const alertBox = document.createElement("div");
+          alertBox.setAttribute(
+            "style",
+            "position: fixed; top: 0; width: 100%; background-color: yellow; text-align: center; padding: 10px; z-index: 9999;"
+          );
+          alertBox.textContent = `Low stock for ${lowStockItems
+            .map((item) => item.name)
+            .join(", ")} (stock: ${lowStockItems.map(
+            (item) => item.stock_available
+          )})`;
+          document.body.appendChild(alertBox);
+        }
       } catch (err) {
         console.log(err);
       }
     };
+
     const fecthAllImages = async () => {
       try {
         const res = await axios.get("http://localhost:8800/images");
@@ -224,15 +246,18 @@ function Order({ isLoggedIn, permission }) {
 
   const [cart, setCart] = React.useState([]);
   //Function to add item to cart
-  const addToCart = (name, id, price, amount) => {
-    let cartItems = {
-      name: name,
-      item_id: id,
-      price: price,
-      amount: amount,
-    };
-    if (amount > 0) {
+  const addToCart = (name, id, price, amount, stock) => {
+    if (amount <= stock) {
+      let cartItems = {
+        name: name,
+        item_id: id,
+        price: price,
+        amount: amount,
+        stock_available: stock,
+      };
       setCart([...cart, cartItems]);
+    } else {
+      alert(`Not enough stock for ${name} (available: ${stock})`);
     }
   };
 
@@ -272,6 +297,19 @@ function Order({ isLoggedIn, permission }) {
       console.log(err);
     }
   };
+
+  const addStock = async (id, amount) => {
+    try {
+      const res = await axios.put(
+        "http://localhost:8800/orders/addstock/" + id + "/" + amount
+      );
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const [currentItemId, setCurrentItemId] = useState(null);
 
   return (
     <div className="container mx-auto">
@@ -385,6 +423,12 @@ function Order({ isLoggedIn, permission }) {
                   <div>
                     <div>0</div>
                   </div>
+
+                  <div>
+                    <div className="absolute top-[590px] right-[10px]">
+                      1150
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -405,13 +449,15 @@ function Order({ isLoggedIn, permission }) {
       <br></br>
 
       <div className="grid-cols-1 gap-2 grid px-1 lg:grid-cols-2">
-        {(items && permission === "Waiter") || permission === "Kitchen"
+        {(items && permission === "Waiter") ||
+        permission === "Kitchen" ||
+        permission === "Admin"
           ? items
               .filter((item) => item.calories >= Number(calories_min))
               .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
-                item.is_available === true ? (
+                item.is_available === true && item.stock_available > 0 ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
                     key={item.item_id}
@@ -439,8 +485,62 @@ function Order({ isLoggedIn, permission }) {
                           <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
-                          <p>£{item.price}</p>
+                          <p style={{ textAlign: "right" }}>£{item.price}</p>
                           <span className="self-end">{item.calories}cal</span>
+                          <p style={{ textAlign: "right" }}>
+                            Items in stock: {item.stock_available}
+                          </p>
+                          <br></br>
+                          <button
+                            className="btn btn-secondary"
+                            htmlFor={`my-modal-toggle-username`}
+                            onClick={() => {
+                              setCurrentItemId(item.item_id);
+                              document.getElementById(
+                                "my-modal-toggle-username"
+                              ).checked = true;
+                            }}
+                          >
+                            Edit Stock
+                          </button>
+                          <input
+                            type="checkbox"
+                            id={`my-modal-toggle-username`}
+                            className="modal-toggle"
+                          />
+                          <div className="modal">
+                            <div className="modal-box relative">
+                              <label
+                                htmlFor={`my-modal-toggle-username`}
+                                className="btn btn-sm btn-circle absolute right-2 top-2"
+                              >
+                                ✕
+                              </label>
+                              <h3 className="text-lg font-bold">
+                                Add Stock to items
+                              </h3>
+                              <p>Stock</p>
+                              <input
+                                type="number"
+                                id={`my-modal-stock-number`}
+                                style={{ border: "1px solid black" }}
+                              />
+                              <button
+                                className="btn btn-primary float-right"
+                                onClick={() =>
+                                  addStock(
+                                    currentItemId,
+                                    document.getElementById(
+                                      `my-modal-stock-number`
+                                    ).value
+                                  )
+                                }
+                              >
+                                Update Stock
+                              </button>
+                            </div>
+                          </div>
+                          <br></br>
                           <button
                             className="text-2xl font-bold uppercase space-x-2"
                             style={{ backgroundColor: "pink" }}
@@ -481,8 +581,69 @@ function Order({ isLoggedIn, permission }) {
                           <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
-                          <p>£{item.price}</p>
+                          <p style={{ textAlign: "right" }}>£{item.price}</p>
                           <span className="self-end">{item.calories}cal</span>
+                          <p style={{ textAlign: "right" }}>
+                            Items in stock: {item.stock_available}
+                          </p>
+                          {item.stock_available == 0 ? (
+                            <>
+                              <p>Items out of stock, add stock now</p>
+                            </>
+                          ) : (
+                            <></>
+                          )}
+                          <br></br>
+                          <button
+                            className="btn btn-secondary"
+                            htmlFor={`my-modal-toggle-username`}
+                            onClick={() => {
+                              setCurrentItemId(item.item_id);
+                              document.getElementById(
+                                "my-modal-toggle-username"
+                              ).checked = true;
+                            }}
+                          >
+                            Edit Stock
+                          </button>
+                          <input
+                            type="checkbox"
+                            id={`my-modal-toggle-username`}
+                            className="modal-toggle"
+                          />
+                          <div className="modal">
+                            <div className="modal-box relative">
+                              <label
+                                htmlFor={`my-modal-toggle-username`}
+                                className="btn btn-sm btn-circle absolute right-2 top-2"
+                              >
+                                ✕
+                              </label>
+                              <h3 className="text-lg font-bold">
+                                Add Stock to items
+                              </h3>
+                              <p>Stock</p>
+                              <input
+                                type="number"
+                                id={`my-modal-stock-number`}
+                                style={{ border: "1px solid black" }}
+                              />
+                              <button
+                                className="btn btn-primary float-right"
+                                onClick={() =>
+                                  addStock(
+                                    currentItemId,
+                                    document.getElementById(
+                                      `my-modal-stock-number`
+                                    ).value
+                                  )
+                                }
+                              >
+                                Update Stock
+                              </button>
+                            </div>
+                          </div>
+                          <br></br>
                           <button
                             className="text-2xl font-bold uppercase space-x-2"
                             style={{ backgroundColor: "pink" }}
@@ -502,7 +663,7 @@ function Order({ isLoggedIn, permission }) {
               .filter((item) => item.calories <= Number(calories_max))
               .sort((a, b) => a.item_id.localeCompare(b.item_id))
               .map((item) =>
-                item.is_available === true ? (
+                item.is_available === true && item.stock_available > 0 ? (
                   <div
                     className="flex bg-yellow-100 flex-col-reverse lg:flex-row m-6 p-4 min-h-[300px]"
                     key={item.item_id}
@@ -563,7 +724,8 @@ function Order({ isLoggedIn, permission }) {
                                 item.name,
                                 item.item_id,
                                 item.price,
-                                value[item.item_id]
+                                value[item.item_id],
+                                item.stock_available
                               )
                             }
                           >
@@ -574,6 +736,8 @@ function Order({ isLoggedIn, permission }) {
                       <br />
                     </div>
                   </div>
+                ) : item.stock_available == 0 ? (
+                  <>{() => setUnavailable(item.item_id)}</>
                 ) : (
                   <></>
                 )

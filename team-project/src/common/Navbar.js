@@ -1,18 +1,23 @@
 import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission}) => {
+export const Navbar = ({
+  isLoggedIn,
+  setIsLoggedIn,
+  permission,
+  setPermission,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const Login = () => {
     navigate("/Login");
-  }
+  };
   const LogOut = () => {
-      setIsLoggedIn(false);
-      setPermission("");
-      window.location.href = "/";
+    setIsLoggedIn(false);
+    setPermission("");
+    window.location.href = "/";
   };
 
   const styles = {
@@ -137,7 +142,9 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
           <a href="/">Home</a>
         </li>
         <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <a href="/menu"><span>Order Online</span></a>
+          <a href="/menu">
+            <span>Order Online</span>
+          </a>
           <i className="fa-solid fa-chevron-down"></i>
         </li>
         <li
@@ -154,60 +161,126 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
           <a href="/about-us">Contact Us</a>
         </li>
       </ul>
-      {isLoggedIn ? permission === "Waiter" ? (
-        <Menu isOpen={isOpen} styles={styles} right>
-          <li>
-          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/order-dashboard">Order Dashboard</a>
-          </li>
-          <li>
-            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
-          </li>
-      </Menu>
-        // <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
+      {isLoggedIn ? (
+        permission === "Waiter" ? (
+          <Menu isOpen={isOpen} styles={styles} right>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/menu"
+              >
+                Edit Menu
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/table-assignment"
+              >
+                Table Assignment
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/order-dashboard"
+              >
+                Order Dashboard
+              </a>
+            </li>
+            <li>
+              <button
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                onClick={LogOut}
+              >
+                Logout
+              </button>
+            </li>
+          </Menu>
+        ) : // <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
         //   Staff LogOut
         // </button>
-      ) : permission === "Kitchen" ? (
-        <Menu isOpen={isOpen} styles={styles} right>
-          <li>
-          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/kitchen-dashboard">Kitchen Dashboard</a>
-          </li>
-          <li>
-            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
-          </li>
-      </Menu>
-      ) 
-      : permission === "Admin" ? (
-        <Menu isOpen={isOpen} styles={styles} right>
-          <li>
-          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/admin-dashboard">Admin Dashboard</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/order-dashboard">Order Dashboard</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/kitchen-dashboard">Kitchen Dashboard</a>
-          </li>
-          <li>
-            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
-          </li>
-      </Menu>
+        permission === "Kitchen" ? (
+          <Menu isOpen={isOpen} styles={styles} right>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/menu"
+              >
+                Edit Menu
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/kitchen-dashboard"
+              >
+                Kitchen Dashboard
+              </a>
+            </li>
+            <li>
+              <button
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                onClick={LogOut}
+              >
+                Logout
+              </button>
+            </li>
+          </Menu>
+        ) : permission === "Admin" ? (
+          <Menu isOpen={isOpen} styles={styles} right>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/menu"
+              >
+                Edit Menu
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/admin-dashboard"
+              >
+                Admin Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/order-dashboard"
+              >
+                Order Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/kitchen-dashboard"
+              >
+                Kitchen Dashboard
+              </a>
+            </li>
+            <li>
+              <button
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                onClick={LogOut}
+              >
+                Logout
+              </button>
+            </li>
+          </Menu>
+        ) : (
+          <></>
+        )
       ) : (
-        <></>
-      ) : (
-      <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
-      Staff LogIn
-    </button>
-    )
-    }
+        <button
+          className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5"
+          onClick={Login}
+        >
+          Staff LogIn
+        </button>
+      )}
     </header>
   );
 };

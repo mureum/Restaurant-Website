@@ -9,6 +9,7 @@ const ORDER = [
     customerName: "John Doe",
     time: "12:00",
     details: "",
+    status : "Awaiting confirmation",
   },
   {
     tableNumber: 1,
@@ -16,6 +17,7 @@ const ORDER = [
     customerName: "John Doe",
     time: "12:00",
     details: "",
+    status : "Awaiting confirmation",
   },
 ];
 
@@ -32,6 +34,8 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
           customerName: item.customer_name,
           time: item.time,
           details: item.order_description,
+          status : "Awaiting confirmation",
+
         }));
         setItems(transformedData);
       } catch (err) {
@@ -70,6 +74,7 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
               <th>Order number</th>
               <th>Customer Name</th>
               <th>Time</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -115,6 +120,7 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
                 <th>
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
                 </th>
+                <td>{order.status}</td>
               </tr>
             ))}
           </tbody>
