@@ -191,6 +191,7 @@ export const OrderTable = ({
         ) : (
           <></>
         )}
+        <button className="btn btn-warning">Update</button>
       </div>
     </div>
   );
