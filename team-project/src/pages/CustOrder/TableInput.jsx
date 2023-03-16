@@ -20,6 +20,12 @@ function TableInput({setTableNumber}) {
       setConfirmingItems(response.data);
     });
   }, []);
+  
+  React.useEffect(() => {
+    axios.get("http://localhost:8800/currentOrders").then((response) => {
+      setPreparingItems(response.data);
+    });
+  }, []);
 
   useEffect(() => {
     setOrderTables(confirmingItems);
