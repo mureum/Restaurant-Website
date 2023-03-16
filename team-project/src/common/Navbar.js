@@ -121,12 +121,11 @@ export const Navbar = ({
           <span>Home</span>
         </a>
         <a
-          id="about"
+          id="menu"
           className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-          href="/about-us"
+          href="/menu"
         >
           <span>Order Online</span>
-          <i className="fa-solid fa-caret-down"></i>
         </a>
         <a
           id="TableInput"
