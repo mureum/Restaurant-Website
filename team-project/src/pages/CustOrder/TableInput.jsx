@@ -15,10 +15,14 @@ function TableInput({setTableNumber}) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    axios.get("http://localhost:8800/currentOrders").then((response) => {
-      setOrderTables(response.data);
+    axios.get("http://localhost:8800/pendingOrders").then((response) => {
+      setConfirmingItems(response.data);
     });
   }, []);
+
+  useEffect(() => {
+    setOrderTables(confirmingItems);
+  }, [confirmingItems]);
 
   const login = () => {
     for (var i = 0; i < orderTable.length; i++) {
