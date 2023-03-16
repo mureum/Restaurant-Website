@@ -1,113 +1,116 @@
-import React from 'react';
-import { useState, useEffect } from "react";
-import Axios from "axios";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 function FoodStatisticsTable() {
-
   const [items, setItems] = useState([]);
+  const [dailyRev, setDailyRev] = useState([]);
+  const [totalRev, setTotalRev] = useState([]);
 
   useEffect(() => {
-    const fetchAllItems = async () => {
+    async function fetchData() {
       try {
-        const res = await Axios.get("http://localhost:8800/stock_level");
-        setItems(res.data);
-      } catch (err) {
-        console.log(err);
+        const [
+          itemsResult,
+          dailyRevResult,
+          totalRevResult,
+        ] = await Promise.all([
+          axios.get("http://localhost:8800/stock_level"),
+          axios.get("http://localhost:8800/daily_revenue"),
+          axios.get("http://localhost:8800/SumTotalRevenue"),
+        ]);
+        setItems(itemsResult.data);
+        setDailyRev(dailyRevResult.data);
+        setTotalRev(totalRevResult.data);
+      } catch (error) {
+        console.log(error);
       }
-    };
+    }
 
-    fetchAllItems();
+    fetchData();
   }, []);
-
-  const [TotalRev, setRevenue] = useState({});
-
-  useEffect(() => {
-    const fetchAllRev = async () => {
-      try {
-        const res = await Axios.get("http://localhost:8800/SumTotalRevenue");
-        setRevenue(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-  
-    fetchAllRev();
-  }, []);
-  
-  const [daily_rev, setdaily_rev] = useState([]);
-  
-  useEffect(() => {
-    const fetchAllDailyRev= async () => {
-      try {
-        const res = await Axios.get("http://localhost:8800/daily_revenue");
-        setdaily_rev(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    fetchAllDailyRev();
-  }, []);
-
-
 
   return (
-    
-    <div>
-  <h1 style={{textAlign: 'center', fontWeight: 'bold'}}>Food Statistics</h1>
-  
-  {/*Table Food stats*/}  
-  <table style={{borderCollapse: 'collapse', width: '100%'}}>
-    <thead>
-      <tr style={{border: '1px solid black'}}>
-        <th style={{border: '1px solid black', padding: '8px'}}>Item ID</th>
-        <th style={{border: '1px solid black', padding: '8px'}}>Is Available</th>
-        <th style={{border: '1px solid black', padding: '8px'}}>In Stock</th>
-        <th style={{border: '1px solid black', padding: '8px'}}>Sold</th>
-      </tr>
-    </thead>
-    <tbody>
-      {items.map(item => (
-        <tr key={item.item_id} style={{border: '1px solid black'}}>
-          <td style={{border: '1px solid black', padding: '8px'}}>{item.item_id}</td>
-          <td style={{border: '1px solid black', padding: '8px'}}>{item.is_available}</td>
-          <td style={{border: '1px solid black', padding: '8px'}}>{item.in_stock}</td>
-          <td style={{border: '1px solid black', padding: '8px'}}>{item.sold}</td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
+    <div style={pageStyle}>
 
-  {/*Table Daily Revenue*/}
-  <h1 style={{textAlign: 'center', fontWeight: 'bold'}}>Daily Revenue</h1>
-
-  <table style={{borderCollapse: 'collapse', width: '100%'}}>
-    <thead>
-      <tr style={{border: '1px solid black'}}>
-        <th style={{border: '1px solid black', padding: '8px'}}>Date</th>
-        <th style={{border: '1px solid black', padding: '8px'}}>Total Revenue</th>
-      </tr>
-    </thead>
-    
-    {/* Table body */}
-    <tbody>
-      {daily_rev.map(daily_rev => (
-        <tr key={daily_rev.date} style={{border: '1px solid black'}}>
-          <td style={{border: '1px solid black', padding: '8px'}}>{daily_rev.date}</td>
-          <td style={{border: '1px solid black', padding: '8px'}}>{daily_rev.total_revenue}</td>
-          
-        </tr>
-      ))}
-    </tbody>
-  </table>
-
-
-  {TotalRev.length > 0 ? (<p>Total Revenue so far: {TotalRev[0].total_revenue_sum}</p>
- ):(<p>Total Revenue is 0</p>) }</div>
-
+      {totalRev.length > 0 ? (
+        <p style={totalRevenueStyle}>
+          Total Revenue so far: $ {totalRev[0].total_revenue_sum}
+        </p>
+      ) : (
+        <p style={totalRevenueStyle}>Total Revenue is $0</p>
+      )}
+      <h1 style={headerStyle}>Food Statistics</h1>
+      <div style={tableContainer}>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th>Item ID</th>
+              <th>Is Available</th>
+              <th>In Stock</th>
+              <th>Sold</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr key={item.item_id}>
+                <td>{item.item_id}</td>
+                <td>{item.is_available}</td>
+                <td>{item.in_stock}</td>
+                <td>{item.sold}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <table style={tableStyle}>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Total Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dailyRev.map((rev) => (
+              <tr key={rev.date}>
+                <td>{rev.date}</td>
+                <td>{rev.total_revenue}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
-
-  
 }
+
+const pageStyle = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: "50px",
+};
+
+const headerStyle = {
+  textAlign: "center",
+  fontWeight: "bold",
+  fontSize: "2rem",
+  marginBottom: "50px",
+};
+
+const tableContainer = {
+  display: "flex",
+  justifyContent: "center",
+  gap: "50px",
+};
+
+const tableStyle = {
+  borderCollapse: "collapse",
+  width: "50%",
+};
+
+const totalRevenueStyle = {
+  textAlign: "center",
+  marginTop: "50px",
+  fontSize: "1.5rem",
+};
 
 export default FoodStatisticsTable;
