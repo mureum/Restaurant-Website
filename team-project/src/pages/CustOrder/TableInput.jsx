@@ -10,6 +10,7 @@ function TableInput({setTableNumber}) {
   const [orderTable, setOrderTables] = React.useState([]);
 
   const [confirmingItems,setConfirmingItems] = useState([]);
+  const[preparingItems,setPreparingItems] = useState([]);
 
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
