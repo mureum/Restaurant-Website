@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
-import Payment from "./pages/payment";
+import Payment from "./pages/payments/payment";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
