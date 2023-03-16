@@ -75,5 +75,3 @@ function FoodStatisticsTable() {
 }
 
 export default FoodStatisticsTable;
-
-
