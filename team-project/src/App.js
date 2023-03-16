@@ -71,7 +71,7 @@ function App() {
           <Route
             path="/custOrder"
             element={
-              <CustOrder tableNumber = {tableNumber}/>
+              <CustOrder/>
             }
           />
           <Route
@@ -79,8 +79,8 @@ function App() {
             element={
               <TableInput setTableNumber = {setTableNumber}/>
             }
-          />
-          <Route 
+            />
+            <Route
             path="/table-assignment"
             element={
               <TableAssignment

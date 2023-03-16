@@ -94,6 +94,7 @@ export const OrderTable = ({
               <th>Customer Name</th>
               <th>Time</th>
               <th>Assigned Waiter</th>
+              <th>Payment</th>
             </tr>
           </thead>
           <tbody>
@@ -145,9 +146,7 @@ export const OrderTable = ({
                           <label
                             htmlFor={`my-modal-${order.orderNumber}`}
                             className="btn btn-sm btn-circle absolute right-2 top-2"
-                          >
-                            ✕
-                          </label>
+                          ></label>
                           <h3 className="text-lg font-bold">Details</h3>
                           <p className="py-4">{order.details}</p>
                         </div>
@@ -159,7 +158,18 @@ export const OrderTable = ({
                 <th>
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
                 </th>
-                <td></td>
+                <td>
+                  {" "}
+                  <select className="select select-bordered w-40 max-w-xs">
+                    <option>Name</option>
+                  </select>
+                </td>
+                <td>
+                  <select className="select select-bordered w-35 max-w-xs">
+                    <option>Paid</option>
+                    <option>Unpaid</option>
+                  </select>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -186,6 +196,7 @@ export const OrderTable = ({
         ) : (
           <></>
         )}
+        <button className="btn btn-warning">Update</button>
       </div>
     </div>
   );

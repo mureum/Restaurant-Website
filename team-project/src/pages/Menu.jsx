@@ -268,7 +268,9 @@ function Order({ isLoggedIn, permission }) {
   };
 
   const handleDecrement = (id) => {
-    setValue({ ...value, [id]: (value[id] || 0) - 1 });
+    const newValue = (value[id] || 0) - 1;
+    const finalValue = newValue < 0 ? 0 : newValue;
+    setValue({ ...value, [id]: finalValue });
   };
 
   const handleIncrement = (id) => {

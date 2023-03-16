@@ -2,6 +2,8 @@ import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
 export const Navbar = ({
   isLoggedIn,
@@ -74,6 +76,33 @@ export const Navbar = ({
       marginTop: "100px",
     },
   };
+
+  useEffect(() => {
+    const deleteAllItems = async () => {
+      try {
+        const currentTime = new Date();
+        const endOfDay = new Date(
+          currentTime.getFullYear(),
+          currentTime.getMonth(),
+          currentTime.getDate() + 1,
+          0,
+          0,
+          0
+        );
+        const timeUntilEndOfDay = endOfDay - currentTime;
+
+        setTimeout(async () => {
+          const res = await axios.delete("http://localhost:8800/delivered");
+          const res2 = await axios.delete("http://localhost:8800/totalorders");
+        }, timeUntilEndOfDay);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    deleteAllItems();
+  }, []);
+
   return (
     <header className="flex items-center text-center">
       <img
@@ -92,19 +121,11 @@ export const Navbar = ({
           <span>Home</span>
         </a>
         <a
-          id="about"
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-          href="/about-us"
-        >
-          <span>Order Online</span>
-          <i className="fa-solid fa-caret-down"></i>
-        </a>
-        <a
           id="menu"
-          className="text-2xl font-bold text-yellow-100 uppercase"
+          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
           href="/menu"
         >
-          Menus
+          <span>Order Online</span>
         </a>
         <a
           id="TableInput"
@@ -113,13 +134,7 @@ export const Navbar = ({
         >
           Your Order
         </a>
-        <a
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-          href=""
-        >
-          <span>Locations</span>
-          <i className="fa-solid fa-caret-down"></i>
-        </a>
+
         <a className="text-2xl font-bold text-yellow-100 uppercase" href="">
           Contact Us
         </a>
@@ -127,37 +142,26 @@ export const Navbar = ({
           id="contact"
           className="text-4xl font-bold text-yellow-100 uppercase bg-blue-600 space-x-3"
           href="/contact"
-        >
-          <span>Book Now</span>
-          <i className="fa-solid fa-angles-right"></i>
-        </a>
+        ></a>
       </Menu>
 
-      <ul className="p-3 2xl:flex hidden">
-        <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-          <span>Book Now</span>
+      <ul className="p-3 2xl:flex space-x-20 hidden">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+          <a href="/menu">
+            <span>Order Online </span>
+          </a>
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/">Home</a>
         </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/menu">
-            <span>Order Online</span>
+            <span>Menu</span>
           </a>
-          <i className="fa-solid fa-chevron-down"></i>
         </li>
-        <li
-          className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase"
-          href="/menu"
-        >
-          <a href="/menu">Menus</a>
-        </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <span>Locations</span>
-          <i className="fa-solid fa-chevron-down"></i>
-        </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/about-us">Contact Us</a>
         </li>
       </ul>
@@ -243,6 +247,14 @@ export const Navbar = ({
                 href="/admin-dashboard"
               >
                 Admin Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/table-assignment"
+              >
+                Table Assignment
               </a>
             </li>
             <li>
