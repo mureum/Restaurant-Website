@@ -215,6 +215,18 @@ app.get("/logins", async (req,res)=>{
   }
 })
 
+app.get("/daily_revenue", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM daily_revenue;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
 app.put("/orders/unavailable/:id", async(req,res) => {
     try {
       const id = req.params.id;
@@ -498,4 +510,5 @@ app.put("/orders/reduceStock/:id/:amount", async(req,res) => {
 app.listen(8800, ()=>{
     console.log("Connected to backend!")
 })
+
 
