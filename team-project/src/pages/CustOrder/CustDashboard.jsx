@@ -25,6 +25,8 @@ export const CustDashboard = ({tableNumber }) => {
   const [items, setItems] = useState([]);
 
   const [confirmingItems,setConfirmingItems] = useState([]);
+  const[preparingItems,setPreparingItems] = useState([]);
+
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
@@ -46,6 +48,29 @@ export const CustDashboard = ({tableNumber }) => {
       }
     };
 
+    fetchAlltems();
+  }, []);
+
+  useEffect(() => {
+    const fetchAlltems = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/currentOrders");
+        
+        const transformedData = res.data.map((item) => ({
+          tableNumber: item.table_no,
+          orderNumber: item.order_no,
+          customerName: item.customer_name,
+          time: item.time,
+          details: item.order_description,
+          status : "Awaiting confirmation",
+        }));
+        setPreparingItems(transformedData);
+        console.log("PREPARING :");
+        console.log(transformedData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
     fetchAlltems();
   }, []);
 
