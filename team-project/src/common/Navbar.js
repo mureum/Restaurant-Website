@@ -129,13 +129,6 @@ export const Navbar = ({
           <i className="fa-solid fa-caret-down"></i>
         </a>
         <a
-          id="menu"
-          className="text-2xl font-bold text-yellow-100 uppercase"
-          href="/menu"
-        >
-          Menus
-        </a>
-        <a
           id="TableInput"
           className="text-2xl font-bold text-yellow-100 uppercase"
           href="/TableInput"
@@ -150,34 +143,26 @@ export const Navbar = ({
           id="contact"
           className="text-4xl font-bold text-yellow-100 uppercase bg-blue-600 space-x-3"
           href="/contact"
-        >
-          <span>Book Now</span>
-          <i className="fa-solid fa-angles-right"></i>
-        </a>
+        ></a>
       </Menu>
 
-      <ul className="p-3 2xl:flex hidden">
-        <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-          <span>Book Now</span>
+      <ul className="p-3 2xl:flex space-x-20 hidden">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+          <a href="/menu">
+            <span>Order Online </span>
+          </a>
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/">Home</a>
         </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/menu">
-            <span>Order Online</span>
+            <span>Menu</span>
           </a>
-          <i className="fa-solid fa-chevron-down"></i>
-        </li>
-        <li
-          className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase"
-          href="/menu"
-        >
-          <a href="/menu">Menus</a>
         </li>
 
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/about-us">Contact Us</a>
         </li>
       </ul>
