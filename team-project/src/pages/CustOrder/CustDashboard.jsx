@@ -27,7 +27,7 @@ export const CustDashboard = ({tableNumber }) => {
   const [confirmingItems,setConfirmingItems] = useState([]);
   const[preparingItems,setPreparingItems] = useState([]);
   const[readyItems,setReadyItems] = useState([]);
-  
+
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
@@ -98,8 +98,8 @@ export const CustDashboard = ({tableNumber }) => {
   }, []);
 
   useEffect(() => {
-    setItems(confirmingItems.concat(preparingItems));
-  }, [confirmingItems,preparingItems]);
+    setItems(confirmingItems.concat(preparingItems).concat(readyItems));
+  }, [confirmingItems,preparingItems,readyItems]);
 
 
   const data =
