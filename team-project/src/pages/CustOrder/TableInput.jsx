@@ -11,7 +11,7 @@ function TableInput({setTableNumber}) {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    Axios.get("http://localhost:8800/pendingOrders").then((response) => {
+    Axios.get("http://localhost:8800/currentOrders").then((response) => {
       console.log(response.data)
       setOrderTables(response.data);
     });

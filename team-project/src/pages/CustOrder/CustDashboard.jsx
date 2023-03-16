@@ -21,13 +21,13 @@ const ORDER = [
   },
 ];
 
-export const CustDashboard = ({ nextStepText, isCancellable }) => {
+export const CustDashboard = ({tableNumber }) => {
   const [items, setItems] = useState([]);
-
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/pendingOrders");
+        const res = await axios.get("http://localhost:8800/currentOrders");
+        
         const transformedData = res.data.map((item) => ({
           tableNumber: item.table_no,
           orderNumber: item.order_no,
@@ -35,7 +35,6 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
           time: item.time,
           details: item.order_description,
           status : "Awaiting confirmation",
-
         }));
         setItems(transformedData);
       } catch (err) {
@@ -77,12 +76,16 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
               <th>Status</th>
             </tr>
           </thead>
+
           <tbody>
             {data.map((order, i) => (
               <tr key={i}>
+                { order.tableNumber == tableNumber &&
                 <td>
                   <div className="font-bold">#{order.tableNumber}</div>
                 </td>
+                } 
+                { order.tableNumber == tableNumber &&
                 <td>
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
@@ -116,11 +119,18 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
                     </div>
                   </div>
                 </td>
-                <td>{order.customerName}</td>
+                }
+                { order.tableNumber == tableNumber &&
+                  <td>{order.customerName}</td>
+                }
+                { order.tableNumber == tableNumber &&
                 <th>
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
                 </th>
-                <td>{order.status}</td>
+                }
+                { order.tableNumber == tableNumber &&
+                  <td>{order.status}</td>
+                }
               </tr>
             ))}
           </tbody>

@@ -24,11 +24,10 @@ function CustOrder({tableNumber}) {
             </div>
             <h1 className="text-3xl font-bold">
               Your orders :
-            </h1>     
-            <CustDashboard/>              
+            </h1>    
+            <CustDashboard tableNumber = {tableNumber}/>              
           </div>
           <button style = {buttonStyle}>Call Waiter</button> 
-          <h1>{tableNumber}</h1>
         </>
       );
 }
