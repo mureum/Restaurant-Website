@@ -39,7 +39,7 @@ export const CustDashboard = ({tableNumber }) => {
           customerName: item.customer_name,
           time: item.time,
           details: item.order_description,
-          status : "Awaiting confirmation",
+          status : "Awaiting confirmation!",
         }));
         setConfirmingItems(transformedData);
         console.log("CONFIRMING :");
@@ -63,7 +63,7 @@ export const CustDashboard = ({tableNumber }) => {
           customerName: item.customer_name,
           time: item.time,
           details: item.order_description,
-          status : "Awaiting confirmation",
+          status : "Being prepared now!",
         }));
         setPreparingItems(transformedData);
         console.log("PREPARING :");
@@ -86,7 +86,7 @@ export const CustDashboard = ({tableNumber }) => {
           customerName: item.customer_name,
           time: item.time,
           details: item.order_description,
-          status : "Being delivered by waiter now",
+          status : "Being delivered by waiter now!",
         }));
         setReadyItems(transformedData);
       } catch (err) {
