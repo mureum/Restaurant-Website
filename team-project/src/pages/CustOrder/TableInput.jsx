@@ -37,8 +37,8 @@ function TableInput({setTableNumber}) {
   
 
   useEffect(() => {
-    setOrderTables(confirmingItems);
-  }, [confirmingItems]);
+    setOrderTables(confirmingItems.concat(preparingItems));
+  }, [confirmingItems,preparingItems]);
 
   const login = () => {
     for (var i = 0; i < orderTable.length; i++) {
