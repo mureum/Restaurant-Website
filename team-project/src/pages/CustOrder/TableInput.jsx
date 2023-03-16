@@ -28,6 +28,12 @@ function TableInput({setTableNumber}) {
     });
   }, []);
 
+  React.useEffect(() => {
+    axios.get("http://localhost:8800/readyOrders").then((response) => {
+      setPreparingItems(response.data);
+    });
+  }, []);
+
   
 
   useEffect(() => {
