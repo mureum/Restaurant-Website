@@ -9,9 +9,10 @@ function CustOrder({tableNumber}) {
     color: "black",
     textAlign: 'center',
     width:170,
-    height:40,
+    height:35,
     marginLeft: 850,
-    borderRadius : 50,
+    fontWeight: "bold",
+    borderRadius : 100,
   };
 
 

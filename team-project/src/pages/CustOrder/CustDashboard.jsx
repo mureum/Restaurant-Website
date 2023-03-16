@@ -23,10 +23,12 @@ const ORDER = [
 
 export const CustDashboard = ({tableNumber }) => {
   const [items, setItems] = useState([]);
+
+  const [confirmingItems,setConfirmingItems] = useState([]);
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
-        const res = await axios.get("http://localhost:8800/currentOrders");
+        const res = await axios.get("http://localhost:8800/pendingOrders");
         
         const transformedData = res.data.map((item) => ({
           tableNumber: item.table_no,
@@ -36,7 +38,9 @@ export const CustDashboard = ({tableNumber }) => {
           details: item.order_description,
           status : "Awaiting confirmation",
         }));
-        setItems(transformedData);
+        setConfirmingItems(transformedData);
+        console.log("CONFIRMING :");
+        console.log(transformedData);
       } catch (err) {
         console.log(err);
       }
@@ -45,6 +49,10 @@ export const CustDashboard = ({tableNumber }) => {
     fetchAlltems();
   }, []);
 
+
+  useEffect(() => {
+    setItems(confirmingItems);
+  }, [confirmingItems]);
 
 
   const data =
@@ -136,6 +144,7 @@ export const CustDashboard = ({tableNumber }) => {
           </tbody>
         </table>
       )}
+      
     </div>
   );
 };

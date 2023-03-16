@@ -6,21 +6,20 @@ import "../Login.css";
 
 function TableInput({setTableNumber}) {
   const [userNumber, setUserNumber] = React.useState("");
-  const [orderTables, setOrderTables] = React.useState([]);
+  const [orderTable, setOrderTables] = React.useState([]);
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
 
   React.useEffect(() => {
     Axios.get("http://localhost:8800/currentOrders").then((response) => {
-      console.log(response.data)
       setOrderTables(response.data);
     });
   }, []);
 
   const login = () => {
-    for (var i = 0; i < orderTables.length; i++) {
+    for (var i = 0; i < orderTable.length; i++) {
       if (
-        userNumber == orderTables[i].table_no
+        userNumber == orderTable[i].table_no
       ) {
         setShow(false);
         setTableNumber(userNumber);
