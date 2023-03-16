@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
-import Axios from "axios";
+import { useState, useEffect } from "react";
+import React from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {Link} from 'react-router-dom';
 import "../Login.css";
@@ -7,11 +8,14 @@ import "../Login.css";
 function TableInput({setTableNumber}) {
   const [userNumber, setUserNumber] = React.useState("");
   const [orderTable, setOrderTables] = React.useState([]);
+
+  const [confirmingItems,setConfirmingItems] = useState([]);
+
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    Axios.get("http://localhost:8800/currentOrders").then((response) => {
+    axios.get("http://localhost:8800/currentOrders").then((response) => {
       setOrderTables(response.data);
     });
   }, []);
