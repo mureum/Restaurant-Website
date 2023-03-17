@@ -625,6 +625,27 @@ app.put("/payment", async (req, res) => {
   }
 });
 
+app.put("/paymentUpdate/:tableNo/:status", async (req, res) => {
+  try {
+    const tableNo = parseInt(req.params.tableNo);
+    const status = req.params.status;
+
+    const query = `
+      UPDATE waiter_calls
+      SET paid = ${status}
+      WHERE table_no = ${tableNo};
+    `;
+    console.log("Query",query);
+
+    await client.query(query);
+    console.log("Res",res);
+    res.json({ message: `Payment updated successfully!` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating the payment status of the table" });
+  }
+});
+
 app.put("/waiterAssign", async (req, res) => {
   try {
     const { items } = req.body;
