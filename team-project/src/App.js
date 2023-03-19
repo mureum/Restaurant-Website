@@ -13,8 +13,12 @@ import Payment from "./pages/payments/payment";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+<<<<<<< HEAD
+import FoodSalesStatistics from "./pages/statistics";
+=======
 import { TableAssignment } from "./pages/TableAssignment/TableAssignment";
 import Stats from './pages/AdminDashboard/stats';
+>>>>>>> main
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
@@ -108,6 +112,14 @@ function App() {
             path="/admin-dashboard"
             element={
               <AdminDashboard isLoggedIn={isLoggedIn} permission={permission} />
+<<<<<<< HEAD
+            } />
+            <Route
+            path="/statistics"
+            element={
+              <FoodSalesStatistics/>
+            } />
+=======
             }
           />
           <Route
@@ -122,6 +134,7 @@ function App() {
               <Stats/>
             }
           />
+>>>>>>> main
         </Routes>
       </div>
     </BrowserRouter>

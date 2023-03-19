@@ -88,6 +88,30 @@ app.get("/logins", async (req,res)=> {
   }
 })
 
+app.get("/stock_level", async (req,res)=> {
+  try {
+    const q = "SELECT * FROM stock_level;"
+    client.query(q, (err,data)=>{
+      if(err) throw err
+      return res.json(data.rows)
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
+
+app.get("/SumTotalRevenue", async (req,res)=> {
+  try {
+    const q = "SELECT SUM(total_revenue) AS total_revenue_sum FROM daily_revenue;"
+    client.query(q, (err,data)=>{
+      if(err) throw err
+      return res.json(data.rows)
+    })
+  } catch (err) {
+    return res.json("Error here"+err)
+  }
+})
+
 app.get("/readyOrders", async (req,res)=> {
   try {
       const q = "SELECT * FROM ready_orders;"
@@ -191,6 +215,11 @@ app.get("/logins", async (req,res)=>{
   }
 })
 
+<<<<<<< HEAD
+app.get("/daily_revenue", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM daily_revenue;"
+=======
 app.get("/delivered", async (req,res)=>{
   try {
     const q = "SELECT * FROM delivered;"
@@ -243,6 +272,7 @@ app.get("/waiters", async (req,res)=>{
 app.get("/tables", async (req,res)=>{
   try {
     const q = "SELECT * FROM tables;"
+>>>>>>> main
     client.query(q, (errors,datas)=>{
       if(errors) throw errors
       return res.json(datas.rows)
