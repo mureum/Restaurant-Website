@@ -70,9 +70,9 @@ function CustOrder({ tableNumber }) {
                   What is your issue?
                 </label>
                 <textarea
-                  className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
                   id="issueInput"
-                  rows="4"
+                  rows="6"
                   value={issueInput}
                   onChange={(event) => setIssueInput(event.target.value)}
                 ></textarea>
