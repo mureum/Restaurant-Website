@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function FoodStatisticsTable() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> ad06bbf1 (Statistics page is now able to connect with the database and issue has been solved)
   const [items, setItems] = useState([]);
   const [dailyRev, setDailyRev] = useState([]);
   const [totalRev, setTotalRev] = useState([]);
@@ -28,6 +32,7 @@ function FoodStatisticsTable() {
     fetchData();
   }, []);
 
+<<<<<<< HEAD
   const getStockLevelColor = (stockLevel) => {
     if (stockLevel >= 70) {
       return "green";
@@ -94,6 +99,34 @@ function FoodStatisticsTable() {
           </tbody>
         </table>
       </div>
+=======
+  
+
+  return (
+    <div>
+      <h1>Food Statistics Table</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>Food Item</th>
+            <th>Price</th>
+            <th>Revenue</th>
+            <th>Profit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {items.map(item => (
+            <tr key={item.item_id}>
+              <td>{item.name}</td>
+              <td>${item.price}</td>
+              <td>${item.calories}</td>
+              <td>${item.stock_available}</td>
+            </tr>
+          ))}
+        </tbody>
+      
+      </table>
+>>>>>>> ad06bbf1 (Statistics page is now able to connect with the database and issue has been solved)
     </div>
   );
 }
