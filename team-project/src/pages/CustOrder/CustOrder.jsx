@@ -1,6 +1,6 @@
 import React from "react";
 import CustDashboard from "./CustDashboard"
-import ReadyOrders from "./ReadyOrders"
+
 
 function CustOrder({tableNumber}) {
 
@@ -29,6 +29,7 @@ function CustOrder({tableNumber}) {
             <CustDashboard tableNumber = {tableNumber}/>              
           </div>
           <button style = {buttonStyle}>Call Waiter</button> 
+          <h1>{tableNumber}</h1>
         </>
       );
 }

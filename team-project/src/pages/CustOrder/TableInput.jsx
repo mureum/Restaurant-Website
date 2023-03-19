@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {Link} from 'react-router-dom';
 import "../Login.css";
 
 function TableInput({setTableNumber}) {
   const [userNumber, setUserNumber] = React.useState("");
-  const [orderTable, setOrderTables] = React.useState([]);
+  const [orderTable, setOrderTable] = React.useState([]);
 
   const [confirmingItems,setConfirmingItems] = useState([]);
   const[preparingItems,setPreparingItems] = useState([]);
@@ -37,11 +36,13 @@ function TableInput({setTableNumber}) {
   
 
   useEffect(() => {
-    setOrderTables(confirmingItems.concat(preparingItems).concat(readyItems));
+    setOrderTable(confirmingItems.concat(preparingItems).concat(readyItems));
   }, [confirmingItems,preparingItems,readyItems]);
+
 
   const login = () => {
     for (var i = 0; i < orderTable.length; i++) {
+
       if (
         userNumber == orderTable[i].table_no
       ) {

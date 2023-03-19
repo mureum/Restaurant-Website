@@ -11,17 +11,9 @@ const ORDER = [
     details: "",
     status : "Awaiting confirmation",
   },
-  {
-    tableNumber: 1,
-    orderNumber: 1234,
-    customerName: "John Doe",
-    time: "12:00",
-    details: "",
-    status : "Awaiting confirmation",
-  },
 ];
 
-export const CustDashboard = ({tableNumber }) => {
+export const CustDashboard = ({tableNumber}) => {
   const [items, setItems] = useState([]);
 
   const [confirmingItems,setConfirmingItems] = useState([]);
@@ -42,8 +34,6 @@ export const CustDashboard = ({tableNumber }) => {
           status : "Awaiting confirmation!",
         }));
         setConfirmingItems(transformedData);
-        console.log("CONFIRMING :");
-        console.log(transformedData);
       } catch (err) {
         console.log(err);
       }
@@ -66,8 +56,6 @@ export const CustDashboard = ({tableNumber }) => {
           status : "Being prepared now!",
         }));
         setPreparingItems(transformedData);
-        console.log("PREPARING :");
-        console.log(transformedData);
       } catch (err) {
         console.log(err);
       }
@@ -107,17 +95,6 @@ export const CustDashboard = ({tableNumber }) => {
       ? items.sort((a, b) => a.orderNumber - b.orderNumber)
       : ORDER;
 
-  // Render the data
-  const [selectedItems, setSelectedItems] = useState(
-    data.map((_, i) => ({ [i]: false })).reduce((a, b) => ({ ...a, ...b }))
-  );
-  const [selectAll, setSelectAll] = useState(false);
-
-  useEffect(() => {
-    const allSelected = Object.values(selectedItems).every((v) => v);
-    setSelectAll(allSelected);
-  }, [selectedItems]);
-
   return (
     <div className="flex flex-col gap-4">
       {items.length > 0 && (
@@ -135,12 +112,12 @@ export const CustDashboard = ({tableNumber }) => {
           <tbody>
             {data.map((order, i) => (
               <tr key={i}>
-                { order.tableNumber == tableNumber &&
+                { tableNumber == (order.tableNumber) && 
                 <td>
                   <div className="font-bold">#{order.tableNumber}</div>
-                </td>
-                } 
-                { order.tableNumber == tableNumber &&
+                </td> 
+                }
+                { tableNumber == (order.tableNumber) &&
                 <td>
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
@@ -175,23 +152,25 @@ export const CustDashboard = ({tableNumber }) => {
                   </div>
                 </td>
                 }
-                { order.tableNumber == tableNumber &&
+                
+                { tableNumber == (order.tableNumber) &&
                   <td>{order.customerName}</td>
                 }
-                { order.tableNumber == tableNumber &&
+                
                 <th>
+                  { tableNumber == (order.tableNumber) &&
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
+                  }
                 </th>
-                }
-                { order.tableNumber == tableNumber &&
-                  <td>{order.status}</td>
-                }
+                  { tableNumber == (order.tableNumber) &&
+                    <td>{order.status}</td> 
+                  }            
               </tr>
             ))}
           </tbody>
         </table>
+
       )}
-      
     </div>
   );
 };
