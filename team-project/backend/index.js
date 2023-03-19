@@ -215,11 +215,18 @@ app.get("/logins", async (req,res)=>{
   }
 })
 
-<<<<<<< HEAD
 app.get("/daily_revenue", async (req,res)=>{
   try {
-    const q = "SELECT * FROM daily_revenue;"
-=======
+    const q = "SELECT * FROM daily_revenue;" 
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
 app.get("/delivered", async (req,res)=>{
   try {
     const q = "SELECT * FROM delivered;"
@@ -272,7 +279,6 @@ app.get("/waiters", async (req,res)=>{
 app.get("/tables", async (req,res)=>{
   try {
     const q = "SELECT * FROM tables;"
->>>>>>> main
     client.query(q, (errors,datas)=>{
       if(errors) throw errors
       return res.json(datas.rows)
