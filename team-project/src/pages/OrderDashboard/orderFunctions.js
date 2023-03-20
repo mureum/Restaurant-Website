@@ -86,12 +86,13 @@ export const completeOrder = async (selectedItems, items) => {
     }
 
     const orders = itemsToSend.map(
-      ({ tableNumber, orderNumber, customerName, time, details }) => ({
+      ({ tableNumber, orderNumber, customerName, time, details, paid }) => ({
         table: tableNumber,
         orderNumber,
         customerName,
         time,
         details,
+        paid
       })
     );
 
@@ -160,12 +161,13 @@ export const markAsDelivered = async (selectedItems, items) => {
     }
 
     const orders = itemsToSend.map(
-      ({ tableNumber, orderNumber, customerName, time, details }) => ({
+      ({ tableNumber, orderNumber, customerName, time, details, paid}) => ({
         table: tableNumber,
         orderNumber,
         customerName,
         time,
         details,
+        paid
       })
     );
 

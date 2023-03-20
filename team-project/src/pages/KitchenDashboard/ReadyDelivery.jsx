@@ -63,7 +63,6 @@ export const ReadyDelivery = ({ nextStepText, isCancellable }) => {
         data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },
       });
 
-      window.alert("Selected orders deleted from the table");
       window.location.reload();
     } catch (err) {
       window.alert("Error on deleting the orders");

@@ -144,7 +144,7 @@ const Cart = () => {
         return;
       }
       alert("Your order has been sent!");
-      window.location.href = "/payment";
+      window.location.href = `/payment?tableNo=${table}`;
     } catch (err) {
       window.alert("Error sending the order");
       console.log(err);
