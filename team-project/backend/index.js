@@ -88,6 +88,30 @@ app.get("/logins", async (req,res)=> {
   }
 })
 
+app.get("/stock_level", async (req,res)=> {
+  try {
+    const q = "SELECT * FROM item;"
+    client.query(q, (err,data)=>{
+      if(err) throw err
+      return res.json(data.rows)
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
+
+app.get("/SumTotalRevenue", async (req,res)=> {
+  try {
+    const q = "SELECT SUM(total_revenue) AS total_revenue_sum FROM daily_revenue;"
+    client.query(q, (err,data)=>{
+      if(err) throw err
+      return res.json(data.rows)
+    })
+  } catch (err) {
+    return res.json("Error here"+err)
+  }
+})
+
 app.get("/readyOrders", async (req,res)=> {
   try {
       const q = "SELECT * FROM ready_orders;"
@@ -182,6 +206,18 @@ app.get("/readyOrders", async (req,res)=> {
 app.get("/logins", async (req,res)=>{
   try {
     const q = "SELECT * FROM logins;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
+app.get("/daily_revenue", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM daily_revenue;" 
     client.query(q, (errors,datas)=>{
       if(errors) throw errors
       return res.json(datas.rows)
@@ -442,11 +478,11 @@ app.post("/makeOrderDelivered", async (req, res) => {
     }
 
     const values = orders.map(
-      ({ table, orderNumber, customerName, time, details }) =>
-        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}')`
+      ({ table, orderNumber, customerName, time, details, paid }) =>
+        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}', ${paid})`
     );
 
-    const insertQuery = `INSERT INTO delivered (table_no, order_no, customer_name, time, order_description) VALUES ${values.join(
+    const insertQuery = `INSERT INTO delivered (table_no, order_no, customer_name, time, order_description, paid) VALUES ${values.join(
       ","
     )};`;
     
@@ -587,6 +623,78 @@ app.put("/waiters", async (req, res) => {
         UPDATE waiters
         SET status = '${waiter.status}'
         WHERE username = '${waiter.username}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+app.put("/payment", async (req, res) => {
+  try {
+    const { items } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = items.map((order) => {
+      const query = `
+        UPDATE waiter_calls
+        SET paid = '${order.paid}'
+        WHERE order_no = '${order.orderNumber}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+app.put("/paymentUpdate/:tableNo/:status", async (req, res) => {
+  try {
+    const tableNo = parseInt(req.params.tableNo);
+    const status = req.params.status;
+
+    const query = `
+      UPDATE waiter_calls
+      SET paid = ${status}
+      WHERE table_no = ${tableNo};
+    `;
+    console.log("Query",query);
+
+    await client.query(query);
+    console.log("Res",res);
+    res.json({ message: `Payment updated successfully!` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating the payment status of the table" });
+  }
+});
+
+app.put("/waiterAssign", async (req, res) => {
+  try {
+    const { items } = req.body;
+    console.log("ORDER",items)
+    items.map((order) => {
+      console.log("ORDER_WAITER", order.waiter)
+    })
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = items.map((order) => {
+      const query = `
+        UPDATE waiter_calls
+        SET waiter = '${order.waiter}'
+        WHERE order_no = '${order.orderNumber}';
       `;
       return client.query(query);
     });

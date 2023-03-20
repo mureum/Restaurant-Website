@@ -3,7 +3,6 @@ import React from "react";
 import axios from "axios";
 
 import { deleteOrder } from "./orderFunctions";
-
 const ORDER = [
   {
     tableNumber: 1,
@@ -28,6 +27,10 @@ export const OrderTable = ({
   nextCb,
 }) => {
   const [items, setItems] = useState([]);
+  const [tables, setTables] = useState([]);
+  const [updatedWaiterss, setUpdatedWaiters] = useState([]);
+  const [tableNumb, setTableNumber] = useState();
+  const [waiters, setWaiters] = useState([]);
 
   useEffect(() => {
     const fetchAlltems = async () => {
@@ -39,8 +42,42 @@ export const OrderTable = ({
           customerName: item.customer_name,
           time: item.time,
           details: item.order_description,
+          paid: item.paid,
+          waiter: item.waiter,
         }));
         setItems(transformedData);
+      } catch (err) {
+        console.log(err);
+      }
+      try {
+        const res = await axios.get(`http://localhost:8800/tables`);
+        const transformedTables = res.data.map((item) => ({
+          tableNo: item.tableno,
+          time: item.time,
+          waiter: item.waiter,
+        }));
+        setTables(transformedTables);
+      } catch (err) {
+        console.log(err);
+      }
+      try {
+        const res = await axios.get(`http://localhost:8800/waiters`);
+        const transformedWaiters = res.data.map((item) => {
+          console.log("Assigned Tables: " + item.assignedtables);
+          const assignedTables = item.assignedtables
+            ? JSON.parse(item.assignedtables)
+            : [];
+          const maxTables = 7;
+          const status = item.status; // set status based on fetched data
+
+          return {
+            username: item.username,
+            status: status,
+            assignedTables: Array.isArray(assignedTables) ? assignedTables : [],
+            maxTables: maxTables,
+          };
+        });
+        setWaiters(transformedWaiters);
       } catch (err) {
         console.log(err);
       }
@@ -48,6 +85,206 @@ export const OrderTable = ({
 
     fetchAlltems();
   }, []);
+
+  console.log(waiters);
+
+  const update = async () => {
+    try {
+      await axios.put(`http://localhost:8800/payment`, { items });
+      console.log("Paying Status updated!");
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  console.log("Items", items);
+
+  const Assign = async () => {
+    try {
+      await axios.put(`http://localhost:8800/tables`, { tables });
+      const updatedTables = await axios.get(`http://localhost:8800/tables`);
+      const transformedTables = updatedTables.data.map((item) => ({
+        tableNo: item.tableno,
+        time: item.time,
+        waiter: item.waiter,
+      }));
+      console.log(tables);
+      console.log(updatedWaiterss);
+      setTables([...tables, ...transformedTables]); // Append the new table to the existing array of tables
+      await axios.put(`http://localhost:8800/waitersAssign`, {
+        waiters: updatedWaiterss,
+      });
+      try {
+        await axios.put(`http://localhost:8800/waiterAssign`, { items });
+      } catch (err) {
+        console.log(err);
+      }
+      let tablesSelected = [];
+      for (let i = 0; i < tables.length; i++) {
+        if (tables[i].waiter) {
+          tablesSelected.push(tables[i].tableNo);
+        }
+      }
+
+      // Delete the table from the database
+      for (let i = 0; i < tablesSelected.length; i++) {
+        await axios.delete(`http://localhost:8800/tables/${tablesSelected[i]}`);
+        console.log(`Table ${tableNumb} deleted`);
+      }
+
+      console.log("Tables and waiters updated!");
+      //window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handlePaymentStatusChange = (event, index) => {
+    const newItems = [...items];
+    const newStatus = event.target.value === "paid";
+    const currentStatus = newItems[index].paid;
+
+    newItems[index] = {
+      ...newItems[index],
+      paid: newStatus,
+    };
+
+    if (newItems[index].maxTables === 0) {
+      newItems[index].paid = false;
+      window.alert(
+        "Maximum tables assigned to waiter " + newItems[index].waiter
+      );
+    }
+
+    setItems(newItems);
+
+    console.log(newItems);
+    setUpdatedWaiters(newItems);
+  };
+
+  const handleAssignTable = (tabless, selectedWaiter) => {
+    const tableNo = tabless.tableNumber;
+    console.log("TABLE NO: " + tableNo + " SELECTED WAITER: " + selectedWaiter);
+    const selectedTable = tables.find(
+      (table) => table.tableNo === parseInt(tableNo)
+    );
+    console.log("SelectedTable: ", selectedTable);
+
+    // Reset the waiter value to an empty string if the "--Select--" option is selected
+    let selectedWaiterObj;
+    if (selectedWaiter === "") {
+      selectedWaiterObj = { username: "", assignedTables: [] };
+    } else {
+      selectedWaiterObj = waiters.find(
+        (waiter) => waiter.username === selectedWaiter
+      );
+    }
+    console.log("Items", items);
+
+    if (
+      selectedWaiterObj &&
+      selectedWaiterObj.assignedTables.length >= selectedWaiterObj.maxTables
+    ) {
+      window.alert(
+        "Maximum tables assigned to waiter " + selectedWaiterObj.username
+      );
+      return;
+    }
+
+    const previouslyAssignedWaiter = selectedTable
+      ? waiters.find((waiter) => waiter.username === selectedTable.waiter)
+      : null;
+    console.log("previouslyAssignedWaiter: ", previouslyAssignedWaiter);
+
+    const updatedItems = items.map((item) => {
+      if (item.tableNumber === parseInt(tableNo)) {
+        return {
+          ...item,
+          waiter:
+            selectedWaiterObj.username !== ""
+              ? selectedWaiterObj.username
+              : null,
+        };
+      }
+      return item;
+    });
+
+    setItems(updatedItems);
+
+    // Remove the table from the previously assigned waiter's assignedTables array
+    if (previouslyAssignedWaiter) {
+      const updatedAssignedTables =
+        previouslyAssignedWaiter.assignedTables.filter(
+          (table) => table.tableNo !== tableNo
+        );
+      previouslyAssignedWaiter.assignedTables = updatedAssignedTables;
+    }
+
+    const updatedWaiters = waiters.map((waiter) => {
+      if (selectedWaiterObj && waiter.username === selectedWaiterObj.username) {
+        const updatedAssignedTables = waiter.assignedTables
+          ? [...waiter.assignedTables]
+          : [];
+        updatedAssignedTables.push({
+          tableNo: tableNo,
+          time: tabless.time,
+        });
+        console.log("Updated", updatedAssignedTables);
+        console.log("Waiter", waiter);
+        return {
+          ...waiter,
+          assignedTables: updatedAssignedTables,
+        };
+      }
+      return waiter;
+    });
+    console.log("WAITERS", waiters);
+
+    // Set the updatedWaiters state
+    setWaiters(updatedWaiters);
+    setUpdatedWaiters(updatedWaiters);
+
+    const updatedTables = tables.map((table) => {
+      if (table.tableNo === tableNo) {
+        return {
+          ...table,
+          waiter:
+            selectedWaiterObj.username !== ""
+              ? selectedWaiterObj.username
+              : null,
+        };
+      }
+      return table;
+    });
+
+    // Set the updated tables state
+    setTables(updatedTables);
+
+    // Print the assignedTables array
+    const assignedTablesArray = updatedWaiters
+      .map((waiter) => waiter.assignedTables)
+      .flat()
+      .filter((table, index, self) => {
+        return (
+          table &&
+          self.findIndex(
+            (t) => t.tableNo === table.tableNo && t.time === table.time
+          ) === index
+        );
+      });
+
+    console.log("Assigned tables:", assignedTablesArray);
+    console.log("Tables array: ", tables);
+  };
+
+  const assign = () => {
+    console.log(waiters);
+    console.log(updatedWaiterss);
+    if (updatedWaiterss.length > 0) {
+      Assign();
+    }
+  };
 
   const data =
     items.length > 0
@@ -93,7 +330,7 @@ export const OrderTable = ({
               <th>Order number</th>
               <th>Customer Name</th>
               <th>Time</th>
-              <th>Assigned Waiter</th>
+              {endPoint === "pendingOrders" ? <th>Assigned Waiter</th> : <></>}
               <th>Payment</th>
             </tr>
           </thead>
@@ -158,16 +395,44 @@ export const OrderTable = ({
                 <th>
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
                 </th>
+                {endPoint === "pendingOrders" ? (
+                  <td>
+                    {order.waiter != undefined ? (
+                      <p>{order.waiter}</p>
+                    ) : (
+                      <select
+                        className="select select-bordered w-40 max-w-xs"
+                        onChange={(event) =>
+                          handleAssignTable(order, event.target.value)
+                        }
+                        id={`select-${order.tableNumber}`}
+                      >
+                        <option value="">
+                          {order.waiter != undefined
+                            ? order.waiter
+                            : "--Select--"}
+                        </option>
+                        {waiters
+                          .filter((waiter) => waiter.status)
+                          .map((waiter, j) => (
+                            <option value={waiter.username} key={j}>
+                              {waiter.username}
+                            </option>
+                          ))}
+                      </select>
+                    )}
+                  </td>
+                ) : (
+                  <></>
+                )}
                 <td>
-                  {" "}
-                  <select className="select select-bordered w-40 max-w-xs">
-                    <option>Name</option>
-                  </select>
-                </td>
-                <td>
-                  <select className="select select-bordered w-35 max-w-xs">
-                    <option>Paid</option>
-                    <option>Unpaid</option>
+                  <select
+                    className="select select-bordered w-35 max-w-xs"
+                    value={order.paid ? "paid" : "unpaid"}
+                    onChange={(event) => handlePaymentStatusChange(event, i)}
+                  >
+                    <option value="paid">Paid</option>
+                    <option value="unpaid">Unpaid</option>
                   </select>
                 </td>
               </tr>
@@ -196,7 +461,12 @@ export const OrderTable = ({
         ) : (
           <></>
         )}
-        <button className="btn btn-warning">Update</button>
+        <button className="btn btn-warning" onClick={() => assign()}>
+          Assign
+        </button>
+        <button className="btn btn-warning" onClick={() => update()}>
+          Update
+        </button>
       </div>
     </div>
   );

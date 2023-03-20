@@ -298,49 +298,6 @@ export const TableAssignment = ({ setIsLoggedIn, handleLogin }) => {
       <button className="btn btn-warning self-end" onClick={() => update()}>
         Update
       </button>
-
-      <h1 className="font-bold text-2xl">Tables</h1>
-
-      <table className="table w-full">
-        {/* head */}
-        <thead>
-          <tr>
-            <th>Table No.</th>
-            <th>Time</th>
-            <th>Waiter</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tables.map((table, i) => (
-            <tr key={i}>
-              <td>{table.tableNo}</td>
-              <td>{table.time}</td>
-              <td>
-                <select
-                  className="select w-40 max-w-xs"
-                  value={table.waiter ? table.waiter.username : ""}
-                  onChange={(event) =>
-                    handleAssignTable(table.tableNo, event.target.value)
-                  }
-                  id={`select-${table.tableNo}`}
-                >
-                  <option value="">--Select--</option>
-                  {waiters
-                    .filter((waiter) => waiter.status)
-                    .map((waiter, j) => (
-                      <option value={waiter.username} key={j}>
-                        {waiter.username}
-                      </option>
-                    ))}
-                </select>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button className="btn btn-warning self-end" onClick={() => Assign()}>
-        Assign
-      </button>
     </div>
   );
 };

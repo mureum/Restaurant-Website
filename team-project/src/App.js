@@ -9,12 +9,12 @@ import TableInput from "./pages/CustOrder/TableInput";
 import OrderDashboard from "./pages/OrderDashboard/OrderDashboard";
 import KitchenDashboard from "./pages/KitchenDashboard/KitchenDashboard";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
-import Payment from "./pages/payment";
+import Payment from "./pages/payments/payment";
 import React from "react";
 import { Navbar } from "./common/Navbar";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FoodSalesStatistics from "./pages/statistics";
 import { TableAssignment } from "./pages/TableAssignment/TableAssignment";
-import Stats from './pages/AdminDashboard/stats';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
@@ -108,18 +108,16 @@ function App() {
             path="/admin-dashboard"
             element={
               <AdminDashboard isLoggedIn={isLoggedIn} permission={permission} />
-            }
-          />
+            } />
+            <Route
+            path="/statistics"
+            element={
+              <FoodSalesStatistics/>
+            } />
           <Route
             path="/payment"
             element={
               <Payment/>
-            }
-          />
-          <Route
-            path="/stats.jsx"
-            element={
-              <Stats/>
             }
           />
         </Routes>
