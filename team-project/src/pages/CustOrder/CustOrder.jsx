@@ -57,11 +57,12 @@ function CustOrder({ tableNumber }) {
                   Table Number:
                 </label>
                 <input
-                  className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
                   type="text"
                   id="tableNumberInput"
                   value={tableNumberInput}
                   onChange={(event) => setTableNumberInput(event.target.value)}
+                  style={{ width: "100%", minWidth: "500px" }}
                 />
               </div>
               <div className="mb-4">
