@@ -9,15 +9,13 @@ function FoodStatisticsTable() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [
-          itemsResult,
-          dailyRevResult,
-          totalRevResult,
-        ] = await Promise.all([
-          axios.get("http://localhost:8800/stock_level"),
-          axios.get("http://localhost:8800/daily_revenue"),
-          axios.get("http://localhost:8800/SumTotalRevenue"),
-        ]);
+        const [itemsResult, dailyRevResult, totalRevResult] = await Promise.all(
+          [
+            axios.get("http://localhost:8800/stock_level"),
+            axios.get("http://localhost:8800/daily_revenue"),
+            axios.get("http://localhost:8800/SumTotalRevenue"),
+          ]
+        );
         setItems(itemsResult.data);
         setDailyRev(dailyRevResult.data);
         setTotalRev(totalRevResult.data);
@@ -27,6 +25,10 @@ function FoodStatisticsTable() {
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    console.log(items);
+  }, [items]);
 
   const getStockLevelColor = (stockLevel) => {
     if (stockLevel >= 70) {
@@ -54,27 +56,29 @@ function FoodStatisticsTable() {
         <table style={tableStyle}>
           <thead>
             <tr>
-              <th>Item ID</th>
+              <th>Item Name</th>
               <th>Is Available</th>
               <th>In Stock</th>
               <th>Sold</th>
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
-              <tr key={item.item_id}>
-                <td>{item.item_id}</td>
-                <td>{item.is_available ? "Yes" : "No"}</td>
-                <td
-                  style={{
-                    color: getStockLevelColor(item.in_stock),
-                  }}
-                >
-                  {item.in_stock}
-                </td>
-                <td>{item.sold}</td>
-              </tr>
-            ))}
+            {items
+              .sort((a, b) => a.item_id.localeCompare(b.item_id))
+              .map((item) => (
+                <tr key={item.item_id}>
+                  <td> {item.name}</td>
+                  <td>{item.is_available ? "Yes" : "No"}</td>
+                  <td
+                    style={{
+                      color: getStockLevelColor(item.stock_available),
+                    }}
+                  >
+                    {item.stock_available}
+                  </td>
+                  <td>{100 - item.stock_available}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
         <table style={tableStyle}>

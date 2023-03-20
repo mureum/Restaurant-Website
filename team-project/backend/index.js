@@ -90,7 +90,7 @@ app.get("/logins", async (req,res)=> {
 
 app.get("/stock_level", async (req,res)=> {
   try {
-    const q = "SELECT * FROM stock_level;"
+    const q = "SELECT * FROM item;"
     client.query(q, (err,data)=>{
       if(err) throw err
       return res.json(data.rows)
