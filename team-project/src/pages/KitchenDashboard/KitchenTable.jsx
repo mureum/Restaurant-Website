@@ -69,7 +69,6 @@ export const KitchenTable = ({ nextStepText, isCancellable }) => {
       });
 
       if (response.data.success) {
-        window.alert("Selected orders sent to kitchen");
         window.location.reload();
       } else {
         window.alert("Error on sending the orders");
