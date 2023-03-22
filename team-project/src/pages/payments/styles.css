@@ -19,6 +19,7 @@
 }*/
 
 .container form{
+  margin: auto;
   padding:20px;
   width:700px;
   background: #fff;
