@@ -302,6 +302,8 @@ export const OrderTable = ({
     setSelectAll(allSelected);
   }, [selectedItems]);
 
+  console.log("Waiters", waiters);
+
   return (
     <div className="flex flex-col gap-4">
       {items.length > 0 && (
