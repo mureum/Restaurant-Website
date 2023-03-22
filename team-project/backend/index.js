@@ -500,7 +500,7 @@ app.post("/makeOrderDelivered", async (req, res) => {
       const tableNo = value.split(",")[0].substring(1); // extract tableNo and remove leading (
         console.log(tableNo);
         deleteQuery2 = `UPDATE waiters 
-        SET assignedtables = REGEXP_REPLACE(assignedtables, '{"tableNo":${tableNo},"time":"[^"]*"},?', '') 
+        SET assignedtables = REGEXP_REPLACE(assignedtables, ',?{"tableNo":${tableNo},"time":"[^"]*"},?', '') 
         WHERE assignedtables LIKE '%{"tableNo":${tableNo},%';`;
       await client.query(deleteQuery2);
       console.log(`Deleted assigned tables for table ${tableNo}`);

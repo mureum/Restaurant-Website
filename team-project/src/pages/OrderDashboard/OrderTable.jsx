@@ -397,7 +397,10 @@ export const OrderTable = ({
                 </th>
                 {endPoint === "pendingOrders" ? (
                   <td>
-                    {order.waiter != undefined ? (
+                    {order.waiter != null &&
+                    order.waiter != undefined &&
+                    order.waiter !== "null" &&
+                    order.waiter !== "undefined" ? (
                       <p>{order.waiter}</p>
                     ) : (
                       <select
@@ -405,10 +408,15 @@ export const OrderTable = ({
                         onChange={(event) =>
                           handleAssignTable(order, event.target.value)
                         }
+                        value={order.waiter ?? ""}
                         id={`select-${order.tableNumber}`}
                       >
-                        <option value="">
-                          {order.waiter != undefined
+                        <option
+                          value={order.waiter !== undefined ? order.waiter : ""}
+                        >
+                          {order.waiter !== undefined &&
+                          order.waiter !== null &&
+                          order.waiter !== "null"
                             ? order.waiter
                             : "--Select--"}
                         </option>
