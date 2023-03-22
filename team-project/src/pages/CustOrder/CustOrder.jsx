@@ -21,13 +21,29 @@ function CustOrder({ tableNumber }) {
     setShowPopup(true);
   };
   const sendIssue = async (issueInput) => {
-    if(issueInput.length > 0){
-      var totalIssue = [tableNumber,issueInput];
-      console.log(totalIssue);
-      setIssueInput("");
-      setShowPopup(false);
-    } else {
-      window.alert("Please enter your issue");
+    try {
+      if(issueInput.length > 0){
+        var totalIssue = [tableNumber,issueInput];
+        console.log(totalIssue);
+
+        const response = await axios.post(`http://localhost:8800/sendIssue`, {
+          totalIssue,
+        });
+
+        if (response.data.success) {
+          window.alert("A waiter should be over shortly");
+          setIssueInput("");
+          setShowPopup(false);
+        } else {
+          console.log("ERROR");
+        }
+      } else {
+        window.alert("Please enter your issue");
+      }
+    
+    } catch (err) {
+      console.log("ERROR");
+      console.log(err);
     }
 
   };

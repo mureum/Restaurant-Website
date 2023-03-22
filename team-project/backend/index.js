@@ -348,9 +348,7 @@ app.put("/orders/unavailable/:id", async(req,res) => {
     }
   });
 
-  app.post("/sendIssue", async (req, res) => {
-    console.log(req);
-  });
+ 
   
 
   app.put("/orders/available/:id", async(req,res) => {
@@ -440,6 +438,21 @@ app.post("/sendToKitchen", async (req, res) => {
   }
 });
 
+app.post("/sendIssue", async (req, res) => {
+  try{  
+    const totalIssue = req.body.totalIssue;
+    console.log(totalIssue);
+    const issueQuery = 'INSERT INTO issues(tablenumber,problemdescription) VALUES(' + totalIssue[0] +',\'' +   totalIssue[1] + '\');';
+
+    console.log(issueQuery)
+    await client.query(issueQuery);
+    res.json({ success: true });
+    
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the issues" });
+  }
+});
 
 app.post("/makeOrderReady", async (req, res) => {
   try {

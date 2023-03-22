@@ -41,6 +41,7 @@ function TableInput({setTableNumber}) {
 
 
   const login = () => {
+    console.log(orderTable);
     for (var i = 0; i < orderTable.length; i++) {
 
       if (
@@ -48,6 +49,7 @@ function TableInput({setTableNumber}) {
       ) {
         setShow(false);
         setTableNumber(userNumber);
+        console.log(userNumber == orderTable[i].table_no);
         navigate("/CustOrder");  
         return;
       }
