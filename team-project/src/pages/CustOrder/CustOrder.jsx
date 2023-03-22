@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import CustDashboard from "./CustDashboard";
-
+import axios from "axios";
 function CustOrder({ tableNumber }) {
   const [showPopup, setShowPopup] = useState(false);
-  const [tableNumberInput, setTableNumberInput] = useState("");
   const [issueInput, setIssueInput] = useState("");
+
 
   const buttonStyle = {
     backgroundColor: "#36d399",
@@ -20,13 +20,16 @@ function CustOrder({ tableNumber }) {
   const handleAssistanceClick = () => {
     setShowPopup(true);
   };
+  const sendIssue = async (issueInput) => {
+    if(issueInput.length > 0){
+      var totalIssue = [tableNumber,issueInput];
+      console.log(totalIssue);
+      setIssueInput("");
+      setShowPopup(false);
+    } else {
+      window.alert("Please enter your issue");
+    }
 
-  const handlePopupSubmit = (event) => {
-    event.preventDefault();
-    // do something with the tableNumberInput and issueInput, such as send them to the server or display them in the UI
-    setShowPopup(false);
-    setTableNumberInput("");
-    setIssueInput("");
   };
 
   return (
@@ -51,20 +54,6 @@ function CustOrder({ tableNumber }) {
             onClick={(event) => event.stopPropagation()}
           >
             <h2 className="text-xl font-bold mb-4">Assistance Requested</h2>
-            <form onSubmit={handlePopupSubmit}>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2" htmlFor="tableNumberInput">
-                  Table Number:
-                </label>
-                <input
-                  className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-100"
-                  type="text"
-                  id="tableNumberInput"
-                  value={tableNumberInput}
-                  onChange={(event) => setTableNumberInput(event.target.value)}
-                  style={{ width: "100%", minWidth: "500px" }}
-                />
-              </div>
               <div className="mb-4">
                 <label className="block text-gray-700 font-bold mb-2" htmlFor="issueInput">
                   What is your issue?
@@ -80,10 +69,10 @@ function CustOrder({ tableNumber }) {
               <button
                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
                 type="submit"
+                onClick = {() => sendIssue(issueInput)}
               >
                 Submit
               </button>
-            </form>
           </div>
         </div>
       )}

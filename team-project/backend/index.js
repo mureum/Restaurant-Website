@@ -251,6 +251,8 @@ app.delete("/delivered", async (req, res) => {
   }
 });
 
+
+
 app.delete("/totalorders", async (req, res) => {
   try {
     const q = "DELETE FROM totalorders;"
@@ -346,7 +348,9 @@ app.put("/orders/unavailable/:id", async(req,res) => {
     }
   });
 
-  
+  app.post("/sendIssue", async (req, res) => {
+    console.log(req);
+  });
   
 
   app.put("/orders/available/:id", async(req,res) => {
@@ -435,6 +439,7 @@ app.post("/sendToKitchen", async (req, res) => {
     res.status(500).json({ error: "Error on sending the orders" });
   }
 });
+
 
 app.post("/makeOrderReady", async (req, res) => {
   try {
