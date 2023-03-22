@@ -118,14 +118,14 @@ export const Navbar = ({
           className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
           href="/"
         >
-          <span>Home</span>
+          <span>HOME</span>
         </a>
         <a
           id="menu"
           className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
           href="/menu"
         >
-          <span>Order Online</span>
+          <span>ORDER ONLINE</span>
         </a>
         <a
           id="TableInput"
