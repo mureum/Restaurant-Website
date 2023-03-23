@@ -7,7 +7,7 @@ export const sendToPending = async (selectedItems, items) => {
       .map(([index, _]) => items[index]);
 
     if (itemsToSend.length === 0) {
-      window.alert("Please select at least one order to send to kitchen");
+      window.alert("Please select at least one order to send to pending");
       return;
     }
 
@@ -129,7 +129,7 @@ export const completeOrder = async (selectedItems, items) => {
         customerName,
         time,
         details,
-        paid
+        paid,
       })
     );
 
@@ -198,13 +198,13 @@ export const markAsDelivered = async (selectedItems, items) => {
     }
 
     const orders = itemsToSend.map(
-      ({ tableNumber, orderNumber, customerName, time, details, paid}) => ({
+      ({ tableNumber, orderNumber, customerName, time, details, paid }) => ({
         table: tableNumber,
         orderNumber,
         customerName,
         time,
         details,
-        paid
+        paid,
       })
     );
 
