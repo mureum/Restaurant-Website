@@ -141,19 +141,19 @@ const Cart = () => {
         }
       } catch (err) {
         console.log(err);
+        alert("Error Sending the order");
         return;
       }
       alert("Your order has been sent!");
       window.location.href = `/payment?tableNo=${table}`;
+      // Reset cart and form
+      setCartItems([]);
+      setTable("");
+      setCustomerName("");
     } catch (err) {
-      window.alert("Error sending the order");
+      alert("Error sending the order, the table may already exist");
       console.log(err);
     }
-
-    // Reset cart and form
-    setCartItems([]);
-    setTable("");
-    setCustomerName("");
   };
 
   return (

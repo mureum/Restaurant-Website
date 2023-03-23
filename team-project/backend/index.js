@@ -413,7 +413,7 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       return res.json("Item has been updated successfully");
     } catch (err) {
       console.log("Error");
-      return res.json(err);
+    return res.status(500).json(err); // Set the status code to 500
     }
   });
   
