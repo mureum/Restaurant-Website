@@ -1,5 +1,42 @@
 import axios from "axios";
 
+export const sendToPending = async (selectedItems, items) => {
+  try {
+    const itemsToSend = Object.entries(selectedItems)
+      .filter(([_, isSelected]) => isSelected)
+      .map(([index, _]) => items[index]);
+
+    if (itemsToSend.length === 0) {
+      window.alert("Please select at least one order to send to kitchen");
+      return;
+    }
+
+    const orders = itemsToSend.map(
+      ({ tableNumber, orderNumber, customerName, time, details }) => ({
+        table: tableNumber,
+        orderNumber,
+        customerName,
+        time,
+        details,
+      })
+    );
+
+    const response = await axios.post(`http://localhost:8800/sendToPending`, {
+      orders,
+    });
+
+    if (response.data.success) {
+      window.alert("Selected orders sent to pending");
+      window.location.reload();
+    } else {
+      window.alert("Error on sending the orders");
+    }
+  } catch (err) {
+    window.alert("Error on sending the orders");
+    console.log(err);
+  }
+};
+
 export const sendToKitchen = async (selectedItems, items) => {
   try {
     const itemsToSend = Object.entries(selectedItems)
@@ -171,9 +208,12 @@ export const markAsDelivered = async (selectedItems, items) => {
       })
     );
 
-    const response = await axios.post(`http://localhost:8800/makeOrderDelivered`, {
-      orders,
-    });
+    const response = await axios.post(
+      `http://localhost:8800/makeOrderDelivered`,
+      {
+        orders,
+      }
+    );
 
     if (response.data.success) {
       window.alert("Selected orders delivered");
