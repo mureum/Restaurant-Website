@@ -5,12 +5,12 @@ import axios from "axios";
 import { OrderTable } from "./OrderTable";
 import cooking from "../../assets/cooking.png";
 import {
-  completeOrder,
+  markAsDelivered,
   markAsReady,
   sendToKitchen,
-  markAsDelivered,
   sendToPending,
 } from "./orderFunctions";
+import Assistance from "./Assistance";
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
@@ -87,17 +87,13 @@ function OrderDashboard({ isLoggedIn, permission }) {
           </a>
         </div>
         <div className={currentTab === "Assistance" ? "show" : "hidden"}>
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl font-bold">
             Assistance <i class="fa-solid fa-circle-question"></i>
           </h1>
-          <OrderTable
-            nextStepText="Send to Pending"
-            endPoint="assistance"
-            nextCb={sendToPending}
-          />
+          <Assistance />
         </div>
         <div className={currentTab === "Pending Orders" ? "show" : "hidden"}>
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl font-bold">
             Pending Orders <i className="fa-solid fa-clipboard"></i>
           </h1>
           <OrderTable
@@ -108,7 +104,7 @@ function OrderDashboard({ isLoggedIn, permission }) {
           />
         </div>
         <div className={currentTab === "In Preparation" ? "show" : "hidden"}>
-          <h1 className="text-4xl font-bold flex gap-4 items-center">
+          <h1 className="text-3xl font-bold flex gap-4 items-center">
             <span>In Preparation</span>
             <img className="object-cover h-[40px] h-[40px]" src={cooking} />
           </h1>
@@ -119,7 +115,7 @@ function OrderDashboard({ isLoggedIn, permission }) {
           />
         </div>
         <div className={currentTab === "Ready" ? "show" : "hidden"}>
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl font-bold">
             Ready <i className="fa-solid fa-bell-concierge"></i>
           </h1>
           <OrderTable
@@ -129,7 +125,7 @@ function OrderDashboard({ isLoggedIn, permission }) {
           />
         </div>
         <div className={currentTab === "Delivered" ? "show" : "hidden"}>
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl font-bold">
             Delivered <i className="fa-solid fa-circle-check"></i>
           </h1>
           <OrderTable nextStepText="" nextCb={""} endPoint="delivered" />
