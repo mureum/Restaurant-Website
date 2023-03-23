@@ -484,7 +484,6 @@ function Order({ isLoggedIn, permission }) {
                       <div className="flex justify-between">
                         <div>
                           <h2 className="font-bold text-2xl">{item.name}</h2>
-                          <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
                           <p style={{ textAlign: "right" }}>£{item.price}</p>
@@ -580,7 +579,6 @@ function Order({ isLoggedIn, permission }) {
                       <div className="flex justify-between">
                         <div>
                           <h2 className="font-bold text-2xl">{item.name}</h2>
-                          <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
                           <p style={{ textAlign: "right" }}>£{item.price}</p>
@@ -690,7 +688,6 @@ function Order({ isLoggedIn, permission }) {
                       <div className="flex justify-between">
                         <div>
                           <h2 className="font-bold text-2xl">{item.name}</h2>
-                          <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
                           <p>£{item.price}</p>
