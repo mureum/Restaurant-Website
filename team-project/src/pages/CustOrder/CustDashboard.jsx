@@ -129,13 +129,18 @@ export const CustDashboard = ({tableNumber}) => {
                       </div>
                     </div>
                     <div>
-                      <div className="font-bold">Order {order.orderNumber}</div>
+                    <div className="font-bold">Order {order.orderNumber}</div>
                       <label
                         htmlFor={`my-modal-${order.orderNumber}`}
                         className="badge badge-success cursor-pointer"
                       >
                         Details
                       </label>
+                      <input
+                        type="checkbox"
+                        id={`my-modal-${order.orderNumber}`}
+                        className="modal-toggle"
+                      />
                       <div className="modal">
                         <div className="modal-box relative">
                           <label
