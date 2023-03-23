@@ -64,6 +64,18 @@ app.get("/pendingOrders", async (req,res)=> {
       }
 })
 
+app.get("/issues", async (req,res)=> {
+  try {
+      const q = "SELECT * FROM issues;"
+      client.query(q, (err,data)=>{
+        if(err) throw err
+        return res.json(data.rows)
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+})
+
 app.get("/currentOrders", async (req,res)=> {
   try {
       const q = "SELECT * FROM inpreparation;"

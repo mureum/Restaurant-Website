@@ -5,6 +5,7 @@ import axios from "axios";
 import { OrderTable } from "./OrderTable";
 import cooking from "../../assets/cooking.png";
 import { markAsDelivered, markAsReady, sendToKitchen } from "./orderFunctions";
+import Assistance from "./Assistance";
 
 function OrderDashboard({ isLoggedIn, permission }) {
   const [items, setItems] = useState([]);
@@ -85,6 +86,7 @@ function OrderDashboard({ isLoggedIn, permission }) {
           <h1 className="text-3xl font-bold">
             Assistance <i class="fa-solid fa-circle-question"></i>
           </h1>
+          <Assistance/>
         </div>
         <div className={currentTab === "Pending Orders" ? "show" : "hidden"}>
           <h1 className="text-3xl font-bold">
