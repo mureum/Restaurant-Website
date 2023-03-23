@@ -151,7 +151,7 @@ const Cart = () => {
       setTable("");
       setCustomerName("");
     } catch (err) {
-      alert("Error sending the order, the table may already exist");
+      alert("Error sending the order");
       console.log(err);
     }
   };

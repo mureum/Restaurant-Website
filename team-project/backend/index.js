@@ -401,11 +401,14 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       const orderNumber = maxOrderNumber + 1;
   
       // Insert the new order into the waiter_calls and totalorders tables
-      const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
-                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
-                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description, total_cost) 
-                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost});
-                            INSERT INTO tables (tableno, time) VALUES (${table}, TIME '${time}')`;
+      const insertQuery = `
+        INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
+        VALUES (${table}, ${orderNumber},      '${name}', TIME '${time}', '${itemList}');
+        INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description, total_cost) 
+        VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost});
+        INSERT INTO tables (tableno, time) VALUES (${table}, TIME '${time}')
+        ON CONFLICT (tableno) DO NOTHING;
+      `;
   
       await client.query(insertQuery);
   
@@ -413,9 +416,11 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       return res.json("Item has been updated successfully");
     } catch (err) {
       console.log("Error");
-    return res.status(500).json(err); // Set the status code to 500
+      return res.status(500).json(err); // Set the status code to 500
     }
   });
+  
+  
   
 
 app.post("/sendToKitchen", async (req, res) => {
