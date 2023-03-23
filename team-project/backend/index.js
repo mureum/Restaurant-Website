@@ -566,6 +566,26 @@ app.delete('/deleteUser', async (req, res) => {
   }
 })
 
+app.delete("/resolveIssue", async (req, res) => {
+  try{
+    console.log(req.body.issueDetails);
+    const deleteQuery = 'DELETE FROM issues WHERE problemdescription = \'' + req.body.issueDetails + '\';';
+    console.log(deleteQuery);
+
+    client.query(deleteQuery, (err, data) => {
+      if (err) {
+        console.log("Error");
+        return res.json(err);
+      }
+      console.log("Issue deleted from the database");
+      res.json({ message: "Issue deleted from the database" });
+    });
+
+  } catch (err) {
+    console.log("Error");
+    return res.json(err);
+  }
+})
 
 app.delete("/deleteOrder", async (req, res) => {
   try {

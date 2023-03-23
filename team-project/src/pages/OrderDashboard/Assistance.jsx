@@ -4,6 +4,7 @@ import axios from "axios";
 
 export const Assistance = ({ nextStepText, isCancellable }) => {
     const[issue,setIssue] = useState([]);
+
     
     useEffect(() => {
         const fetchAlltems = async () => {
@@ -27,12 +28,31 @@ export const Assistance = ({ nextStepText, isCancellable }) => {
       issue.length > 0
         ? issue.sort((a, b) => a.tableNumber - b.tableNumber)
         : issue;
+
+    const resolveIssue = async (issue) => {
+        try{
+            const issueDetails = issue.details;
+            await axios.delete("http://localhost:8800/resolveIssue", {
+                data: {issueDetails},
+            })
+            window.location.reload();           
+
+        } catch (err) {
+            window.alert("Error on deleting the orders");
+            console.log(err);
+        }
+
+    }
+
+        
+
     return (
         <div className="flex flex-col gap-4">
             <table className="table w-full">
               <thead>
                 <tr>
 
+                  <th></th>
                   <th>Table no.</th>
                   <th>Issue</th>
 
@@ -41,6 +61,11 @@ export const Assistance = ({ nextStepText, isCancellable }) => {
               <tbody>
                 {data.map((issue, i) => (
                   <tr key={i}>
+                    <td>
+                        <div className="btn btn-primary">
+                            <button onClick={() => resolveIssue(issue)}>Issue resolved.</button>
+                        </div>
+                    </td>
                     <td>
                       <div className="font-bold">#{issue.tableNumber}</div>
                     </td>
