@@ -64,6 +64,18 @@ app.get("/pendingOrders", async (req,res)=> {
       }
 })
 
+app.get("/issues", async (req,res)=> {
+  try {
+      const q = "SELECT * FROM issues;"
+      client.query(q, (err,data)=>{
+        if(err) throw err
+        return res.json(data.rows)
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+})
+
 app.get("/currentOrders", async (req,res)=> {
   try {
       const q = "SELECT * FROM inpreparation;"
@@ -251,6 +263,8 @@ app.delete("/delivered", async (req, res) => {
   }
 });
 
+
+
 app.delete("/totalorders", async (req, res) => {
   try {
     const q = "DELETE FROM totalorders;"
@@ -346,7 +360,7 @@ app.put("/orders/unavailable/:id", async(req,res) => {
     }
   });
 
-  
+ 
   
 
   app.put("/orders/available/:id", async(req,res) => {
@@ -433,6 +447,22 @@ app.post("/sendToKitchen", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Error on sending the orders" });
+  }
+});
+
+app.post("/sendIssue", async (req, res) => {
+  try{  
+    const totalIssue = req.body.totalIssue;
+    console.log(totalIssue);
+    const issueQuery = 'INSERT INTO issues(tablenumber,problemdescription) VALUES(' + totalIssue[0] +',\'' +   totalIssue[1] + '\');';
+
+    console.log(issueQuery)
+    await client.query(issueQuery);
+    res.json({ success: true });
+    
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the issues" });
   }
 });
 

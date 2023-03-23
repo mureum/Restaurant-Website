@@ -71,7 +71,7 @@ function App() {
           <Route
             path="/custOrder"
             element={
-              <CustOrder/>
+              <CustOrder tableNumber={tableNumber}/>
             }
           />
           <Route

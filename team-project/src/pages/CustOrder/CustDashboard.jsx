@@ -11,33 +11,29 @@ const ORDER = [
     details: "",
     status : "Awaiting confirmation",
   },
-  {
-    tableNumber: 1,
-    orderNumber: 1234,
-    customerName: "John Doe",
-    time: "12:00",
-    details: "",
-    status : "Awaiting confirmation",
-  },
 ];
 
-export const CustDashboard = ({ nextStepText, isCancellable }) => {
+export const CustDashboard = ({tableNumber}) => {
   const [items, setItems] = useState([]);
+
+  const [confirmingItems,setConfirmingItems] = useState([]);
+  const[preparingItems,setPreparingItems] = useState([]);
+  const[readyItems,setReadyItems] = useState([]);
 
   useEffect(() => {
     const fetchAlltems = async () => {
       try {
         const res = await axios.get("http://localhost:8800/pendingOrders");
+        
         const transformedData = res.data.map((item) => ({
           tableNumber: item.table_no,
           orderNumber: item.order_no,
           customerName: item.customer_name,
           time: item.time,
           details: item.order_description,
-          status : "Awaiting confirmation",
-
+          status : "Awaiting confirmation!",
         }));
-        setItems(transformedData);
+        setConfirmingItems(transformedData);
       } catch (err) {
         console.log(err);
       }
@@ -46,23 +42,58 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
     fetchAlltems();
   }, []);
 
+  useEffect(() => {
+    const fetchAlltems = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/currentOrders");
+        
+        const transformedData = res.data.map((item) => ({
+          tableNumber: item.table_no,
+          orderNumber: item.order_no,
+          customerName: item.customer_name,
+          time: item.time,
+          details: item.order_description,
+          status : "Being prepared now!",
+        }));
+        setPreparingItems(transformedData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchAlltems();
+  }, []);
+
+  useEffect(() => {
+    const fetchAlltems = async () => {
+      try {
+        const res = await axios.get("http://localhost:8800/readyOrders");
+        
+        const transformedData = res.data.map((item) => ({
+          tableNumber: item.table_no,
+          orderNumber: item.order_no,
+          customerName: item.customer_name,
+          time: item.time,
+          details: item.order_description,
+          status : "Being delivered by waiter now!",
+        }));
+        setReadyItems(transformedData);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchAlltems();
+  }, []);
+
+  useEffect(() => {
+    setItems(confirmingItems.concat(preparingItems).concat(readyItems));
+  }, [confirmingItems,preparingItems,readyItems]);
 
 
   const data =
     items.length > 0
       ? items.sort((a, b) => a.orderNumber - b.orderNumber)
       : ORDER;
-
-  // Render the data
-  const [selectedItems, setSelectedItems] = useState(
-    data.map((_, i) => ({ [i]: false })).reduce((a, b) => ({ ...a, ...b }))
-  );
-  const [selectAll, setSelectAll] = useState(false);
-
-  useEffect(() => {
-    const allSelected = Object.values(selectedItems).every((v) => v);
-    setSelectAll(allSelected);
-  }, [selectedItems]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -77,12 +108,16 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
               <th>Status</th>
             </tr>
           </thead>
+
           <tbody>
             {data.map((order, i) => (
               <tr key={i}>
+                { tableNumber == (order.tableNumber) && 
                 <td>
                   <div className="font-bold">#{order.tableNumber}</div>
-                </td>
+                </td> 
+                }
+                { tableNumber == (order.tableNumber) &&
                 <td>
                   <div className="flex items-center space-x-3">
                     <div className="avatar">
@@ -116,15 +151,25 @@ export const CustDashboard = ({ nextStepText, isCancellable }) => {
                     </div>
                   </div>
                 </td>
-                <td>{order.customerName}</td>
+                }
+                
+                { tableNumber == (order.tableNumber) &&
+                  <td>{order.customerName}</td>
+                }
+                
                 <th>
+                  { tableNumber == (order.tableNumber) &&
                   <button className="btn btn-ghost btn-xs">{order.time}</button>
+                  }
                 </th>
-                <td>{order.status}</td>
+                  { tableNumber == (order.tableNumber) &&
+                    <td>{order.status}</td> 
+                  }            
               </tr>
             ))}
           </tbody>
         </table>
+
       )}
     </div>
   );

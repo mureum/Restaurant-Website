@@ -1,29 +1,55 @@
-import React, { useEffect } from "react";
-import Axios from "axios";
+import { useState, useEffect } from "react";
+import React from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {Link} from 'react-router-dom';
 import "../Login.css";
 
 function TableInput({setTableNumber}) {
   const [userNumber, setUserNumber] = React.useState("");
-  const [orderTables, setOrderTables] = React.useState([]);
+  const [orderTable, setOrderTable] = React.useState([]);
+
+  const [confirmingItems,setConfirmingItems] = useState([]);
+  const[preparingItems,setPreparingItems] = useState([]);
+  const[readyItems,setReadyItems] = useState([]);
+
   const [show, setShow] = React.useState(false);
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    Axios.get("http://localhost:8800/pendingOrders").then((response) => {
-      console.log(response.data)
-      setOrderTables(response.data);
+    axios.get("http://localhost:8800/pendingOrders").then((response) => {
+      setConfirmingItems(response.data);
     });
   }, []);
 
+  React.useEffect(() => {
+    axios.get("http://localhost:8800/currentOrders").then((response) => {
+      setPreparingItems(response.data);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    axios.get("http://localhost:8800/readyOrders").then((response) => {
+      setReadyItems(response.data);
+    });
+  }, []);
+
+  
+
+  useEffect(() => {
+    setOrderTable(confirmingItems.concat(preparingItems).concat(readyItems));
+  }, [confirmingItems,preparingItems,readyItems]);
+
+
   const login = () => {
-    for (var i = 0; i < orderTables.length; i++) {
+    console.log(orderTable);
+    for (var i = 0; i < orderTable.length; i++) {
+
       if (
-        userNumber == orderTables[i].table_no
+        userNumber == orderTable[i].table_no
       ) {
         setShow(false);
         setTableNumber(userNumber);
+        console.log(userNumber == orderTable[i].table_no);
         navigate("/CustOrder");  
         return;
       }
