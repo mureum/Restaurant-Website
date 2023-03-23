@@ -115,27 +115,30 @@ export const Navbar = ({
       <Menu isOpen={isOpen} styles={styles} right>
         <a
           id="home"
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+          className="text-4xl font-bold text-yellow-100 uppercase"
           href="/"
         >
-          <span>HOME</span>
+          Home
         </a>
         <a
           id="menu"
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+          className="text-4xl font-bold text-yellow-100 uppercase"
           href="/menu"
         >
-          <span>ORDER ONLINE</span>
+          Order Online
         </a>
         <a
           id="TableInput"
-          className="text-2xl font-bold text-yellow-100 uppercase"
+          className="text-4xl font-bold text-yellow-100 uppercase"
           href="/TableInput"
         >
-          Your Order
+          Track Order
         </a>
 
-        <a className="text-2xl font-bold text-yellow-100 uppercase" href="">
+        <a
+          className="text-4xl font-bold text-yellow-100 uppercase"
+          href="about-us"
+        >
           Contact Us
         </a>
         <a
@@ -145,23 +148,22 @@ export const Navbar = ({
         ></a>
       </Menu>
 
-      <ul className="p-3 2xl:flex space-x-20 hidden">
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+      <ul className="p-3 2xl:flex space-x-40 hidden">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/menu">
             <span>Order Online </span>
           </a>
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/">Home</a>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-          <a href="/menu">
-            <span>Menu</span>
-          </a>
+
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+          <a href="/TableInput">Track Order</a>
         </li>
 
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/about-us">Contact Us</a>
         </li>
       </ul>
@@ -295,7 +297,7 @@ export const Navbar = ({
         )
       ) : (
         <button
-          className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5"
+          className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white text-2xl font-bold absolute top-5 right-5"
           onClick={Login}
         >
           Staff LogIn
@@ -304,4 +306,3 @@ export const Navbar = ({
     </header>
   );
 };
-
