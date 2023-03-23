@@ -8,7 +8,7 @@ function AboutUs({ isLoggedIn }) {
   };
 
   return (
-    <div className="App App2 text-3xl">
+    <div className="App App2 text-2xl">
       <section id="about">
         <h2>About</h2>
         <p>
