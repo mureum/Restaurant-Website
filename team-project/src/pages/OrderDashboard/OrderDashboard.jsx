@@ -8,6 +8,7 @@ import {
   completeOrder,
   markAsReady,
   sendToKitchen,
+  markAsDelivered,
   sendToPending,
 } from "./orderFunctions";
 
