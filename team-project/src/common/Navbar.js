@@ -115,28 +115,28 @@ export const Navbar = ({
       <Menu isOpen={isOpen} styles={styles} right>
         <a
           id="home"
-          className="text-4xl font-bold text-yellow-100 uppercase"
+          className="text-3xl font-bold text-yellow-100 uppercase"
           href="/"
         >
           Home
         </a>
         <a
           id="menu"
-          className="text-4xl font-bold text-yellow-100 uppercase"
+          className="text-3xl font-bold text-yellow-100 uppercase"
           href="/menu"
         >
           Order Online
         </a>
         <a
           id="TableInput"
-          className="text-4xl font-bold text-yellow-100 uppercase"
+          className="text-3xl font-bold text-yellow-100 uppercase"
           href="/TableInput"
         >
           Track Order
         </a>
 
         <a
-          className="text-4xl font-bold text-yellow-100 uppercase"
+          className="text-3xl font-bold text-yellow-100 uppercase"
           href="about-us"
         >
           Contact Us
@@ -155,15 +155,15 @@ export const Navbar = ({
           </a>
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/">Home</a>
         </li>
 
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/TableInput">Track Order</a>
         </li>
 
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/about-us">Contact Us</a>
         </li>
       </ul>
