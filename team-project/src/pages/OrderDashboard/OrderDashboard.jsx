@@ -29,7 +29,6 @@ function OrderDashboard({ isLoggedIn, permission }) {
     };
 
     fetchAlltems();
-    console.log(items);
   }, []);
 
   return (

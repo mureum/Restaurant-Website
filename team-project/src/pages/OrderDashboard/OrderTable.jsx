@@ -63,7 +63,6 @@ export const OrderTable = ({
       try {
         const res = await axios.get(`http://localhost:8800/waiters`);
         const transformedWaiters = res.data.map((item) => {
-          console.log("Assigned Tables: " + item.assignedtables);
           const assignedTables = item.assignedtables
             ? JSON.parse(item.assignedtables)
             : [];
@@ -98,7 +97,6 @@ export const OrderTable = ({
     }
   };
 
-  console.log("Items", items);
 
   const Assign = async () => {
     try {
@@ -180,7 +178,6 @@ export const OrderTable = ({
         (waiter) => waiter.username === selectedWaiter
       );
     }
-    console.log("Items", items);
 
     if (
       selectedWaiterObj &&
