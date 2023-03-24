@@ -148,8 +148,8 @@ export const Navbar = ({
         ></a>
       </Menu>
 
-      <ul className="p-3 2xl:flex space-x-30 hidden">
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+      <ul className="p-3 2xl:flex space-x-40 hidden">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/menu">
             <span>Order Online </span>
           </a>
