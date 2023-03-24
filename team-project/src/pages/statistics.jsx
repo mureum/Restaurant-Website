@@ -166,6 +166,7 @@ const totalRevenueStyle = {
 
 const buttonStyle = {
   marginTop: "50px",
+  marginBottom: "50px",
   backgroundColor: "#4CAF50",
   color: "white",
   padding: "14px 20px",
