@@ -468,9 +468,12 @@ export const OrderTable = ({
         ) : (
           <></>
         )}
+        {endPoint === "pendingOrders" ? (
         <button className="btn btn-warning" onClick={() => assign()}>
           Assign
-        </button>
+        </button>):(
+          <></>
+        )}
         <button className="btn btn-warning" onClick={() => update()}>
           Update
         </button>
