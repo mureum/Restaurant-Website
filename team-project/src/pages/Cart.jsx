@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import "../App.css";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 const Cart = () => {
@@ -51,9 +50,13 @@ const Cart = () => {
 
   const incrementItemAmount = (index) => {
     const updatedItems = [...cartItems];
-    if (updatedItems[index].amount >= 0) {
+    if (updatedItems[index].amount < updatedItems[index].stock_available) {
       updatedItems[index].amount += 1;
       setCartItems(updatedItems);
+    } else {
+      alert(
+        `Not enough stock for ${updatedItems[index].name} (available: ${updatedItems[index].stock_available})`
+      );
     }
   };
 
@@ -115,13 +118,6 @@ const Cart = () => {
   };
 
   const handleSubmit = async (totCost) => {
-    // Create order object
-    const order = {
-      table: table,
-      customerName: customerName,
-      items: cartItems,
-    };
-
     // Send order to server
     try {
       const res = await axios.put(
@@ -145,19 +141,19 @@ const Cart = () => {
         }
       } catch (err) {
         console.log(err);
+        alert("Error Sending the order");
         return;
       }
       alert("Your order has been sent!");
-      window.location.href = "/";
+      window.location.href = `/payment?tableNo=${table}`;
+      // Reset cart and form
+      setCartItems([]);
+      setTable("");
+      setCustomerName("");
     } catch (err) {
-      window.alert("Error sending the order");
+      alert("Error sending the order");
       console.log(err);
     }
-
-    // Reset cart and form
-    setCartItems([]);
-    setTable("");
-    setCustomerName("");
   };
 
   return (

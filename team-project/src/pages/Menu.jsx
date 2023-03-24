@@ -83,10 +83,32 @@ function Order({ isLoggedIn, permission }) {
       try {
         const res = await axios.get("http://localhost:8800/orders");
         setItems(res.data);
+        // Show alert for low stock items
+        const lowStockItems = res.data.filter(
+          (item) => item.stock_available < 20
+        );
+        if (
+          (lowStockItems.length > 0 && permission === "Waiter") ||
+          permission === "Kitchen" ||
+          permission === "Admin"
+        ) {
+          const alertBox = document.createElement("div");
+          alertBox.setAttribute(
+            "style",
+            "position: fixed; top: 0; width: 100%; background-color: yellow; text-align: center; padding: 10px; z-index: 9999;"
+          );
+          alertBox.textContent = `Low stock for ${lowStockItems
+            .map((item) => item.name)
+            .join(", ")} (stock: ${lowStockItems.map(
+            (item) => item.stock_available
+          )})`;
+          document.body.appendChild(alertBox);
+        }
       } catch (err) {
         console.log(err);
       }
     };
+
     const fecthAllImages = async () => {
       try {
         const res = await axios.get("http://localhost:8800/images");
@@ -224,15 +246,18 @@ function Order({ isLoggedIn, permission }) {
 
   const [cart, setCart] = React.useState([]);
   //Function to add item to cart
-  const addToCart = (name, id, price, amount) => {
-    let cartItems = {
-      name: name,
-      item_id: id,
-      price: price,
-      amount: amount,
-    };
-    if (amount > 0) {
+  const addToCart = (name, id, price, amount, stock) => {
+    if (amount <= stock) {
+      let cartItems = {
+        name: name,
+        item_id: id,
+        price: price,
+        amount: amount,
+        stock_available: stock,
+      };
       setCart([...cart, cartItems]);
+    } else {
+      alert(`Not enough stock for ${name} (available: ${stock})`);
     }
   };
 
@@ -243,7 +268,9 @@ function Order({ isLoggedIn, permission }) {
   };
 
   const handleDecrement = (id) => {
-    setValue({ ...value, [id]: (value[id] || 0) - 1 });
+    const newValue = (value[id] || 0) - 1;
+    const finalValue = newValue < 0 ? 0 : newValue;
+    setValue({ ...value, [id]: finalValue });
   };
 
   const handleIncrement = (id) => {
@@ -398,6 +425,12 @@ function Order({ isLoggedIn, permission }) {
                   <div>
                     <div>0</div>
                   </div>
+
+                  <div>
+                    <div className="absolute top-[590px] right-[10px]">
+                      1150
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -451,7 +484,6 @@ function Order({ isLoggedIn, permission }) {
                       <div className="flex justify-between">
                         <div>
                           <h2 className="font-bold text-2xl">{item.name}</h2>
-                          <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
                           <p style={{ textAlign: "right" }}>£{item.price}</p>
@@ -547,7 +579,6 @@ function Order({ isLoggedIn, permission }) {
                       <div className="flex justify-between">
                         <div>
                           <h2 className="font-bold text-2xl">{item.name}</h2>
-                          <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
                           <p style={{ textAlign: "right" }}>£{item.price}</p>
@@ -657,7 +688,6 @@ function Order({ isLoggedIn, permission }) {
                       <div className="flex justify-between">
                         <div>
                           <h2 className="font-bold text-2xl">{item.name}</h2>
-                          <p className="self-start text-xl">Description</p>
                         </div>
                         <div className="flex flex-col text-xl">
                           <p>£{item.price}</p>
@@ -693,7 +723,8 @@ function Order({ isLoggedIn, permission }) {
                                 item.name,
                                 item.item_id,
                                 item.price,
-                                value[item.item_id]
+                                value[item.item_id],
+                                item.stock_available
                               )
                             }
                           >

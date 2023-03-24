@@ -72,7 +72,6 @@ export const InPreparation = ({ nextStepText, isCancellable }) => {
       );
 
       if (response.data.success) {
-        window.alert("Selected orders readied");
         window.location.reload();
       } else {
         window.alert("Error on readying the orders");

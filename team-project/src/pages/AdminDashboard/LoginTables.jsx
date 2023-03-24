@@ -199,7 +199,7 @@ export const LoginTables = ({ nextStepText, isCancellable }) => {
                     </div>
                   </td>
                   <td>
-                    <div className="font-bold">{order.username}</div>
+                    <div className="font-bold">{order.permission}</div>
                     <div>
                       <label
                         htmlFor={`my-modal-toggle-${order.username}`}

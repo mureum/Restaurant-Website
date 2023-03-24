@@ -1,5 +1,12 @@
-# Team Project
+# Team Project OAXACA - TEAM 24
 
-This repository has been created to store your Team Project.
+TO START THE PROGRAM RUN:
+ON THE MAIN REPOSITORY -> npm install
+-> npm start
 
-You may edit it as you like, but please do not remove the default topics or the project members list. These need to stay as currently defined in order for your lecturer to be able to find and mark your work.
+ON THE BACKEND FOLDER -> npm install
+-> npm start
+
+THIS WILL INSTALL ALL THE PACKAGES NEEDED AND RUN THE PROGRAM
+
+After go to localhost:3000 and the website should appear

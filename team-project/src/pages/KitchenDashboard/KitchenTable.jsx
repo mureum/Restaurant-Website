@@ -69,7 +69,6 @@ export const KitchenTable = ({ nextStepText, isCancellable }) => {
       });
 
       if (response.data.success) {
-        window.alert("Selected orders sent to kitchen");
         window.location.reload();
       } else {
         window.alert("Error on sending the orders");
@@ -100,7 +99,6 @@ export const KitchenTable = ({ nextStepText, isCancellable }) => {
         data: { orderNumbers: itemsToDelete.map((item) => item.orderNumber) },
       });
 
-      window.alert("Selected orders deleted from the table");
       window.location.reload();
     } catch (err) {
       window.alert("Error on deleting the orders");

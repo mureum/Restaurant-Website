@@ -64,6 +64,18 @@ app.get("/pendingOrders", async (req,res)=> {
       }
 })
 
+app.get("/issues", async (req,res)=> {
+  try {
+      const q = "SELECT * FROM issues;"
+      client.query(q, (err,data)=>{
+        if(err) throw err
+        return res.json(data.rows)
+      })
+    } catch (err) {
+      return res.json(err)
+    }
+})
+
 app.get("/currentOrders", async (req,res)=> {
   try {
       const q = "SELECT * FROM inpreparation;"
@@ -85,6 +97,30 @@ app.get("/logins", async (req,res)=> {
     })
   } catch (err) {
     return res.json(err)
+  }
+})
+
+app.get("/stock_level", async (req,res)=> {
+  try {
+    const q = "SELECT * FROM item;"
+    client.query(q, (err,data)=>{
+      if(err) throw err
+      return res.json(data.rows)
+    })
+  } catch (err) {
+    return res.json(err)
+  }
+})
+
+app.get("/SumTotalRevenue", async (req,res)=> {
+  try {
+    const q = "SELECT SUM(total_revenue) AS total_revenue_sum FROM daily_revenue;"
+    client.query(q, (err,data)=>{
+      if(err) throw err
+      return res.json(data.rows)
+    })
+  } catch (err) {
+    return res.json("Error here"+err)
   }
 })
 
@@ -191,6 +227,81 @@ app.get("/logins", async (req,res)=>{
   }
 })
 
+app.get("/daily_revenue", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM daily_revenue;" 
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
+app.get("/delivered", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM delivered;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
+app.delete("/delivered", async (req, res) => {
+  try {
+    const q = "DELETE FROM delivered;"
+    client.query(q, (errors, result) => {
+      if (errors) throw errors;
+      return res.sendStatus(204); // No Content
+    });
+  } catch (errors) {
+    return res.status(500).json(errors);
+  }
+});
+
+
+
+app.delete("/totalorders", async (req, res) => {
+  try {
+    const q = "DELETE FROM totalorders;"
+    client.query(q, (errors, result) => {
+      if (errors) throw errors;
+      return res.sendStatus(204); // No Content
+    });
+  } catch (errors) {
+    return res.status(500).json(errors);
+  }
+});
+
+
+app.get("/waiters", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM waiters;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
+app.get("/tables", async (req,res)=>{
+  try {
+    const q = "SELECT * FROM tables;"
+    client.query(q, (errors,datas)=>{
+      if(errors) throw errors
+      return res.json(datas.rows)
+    })
+  } catch (errors) {
+    return res.json(errors)
+  }
+})
+
 app.put("/orders/unavailable/:id", async(req,res) => {
     try {
       const id = req.params.id;
@@ -249,7 +360,7 @@ app.put("/orders/unavailable/:id", async(req,res) => {
     }
   });
 
-  
+ 
   
 
   app.put("/orders/available/:id", async(req,res) => {
@@ -290,10 +401,14 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       const orderNumber = maxOrderNumber + 1;
   
       // Insert the new order into the waiter_calls and totalorders tables
-      const insertQuery = `INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
-                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}');
-                            INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description, total_cost) 
-                            VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost})`;
+      const insertQuery = `
+        INSERT INTO waiter_calls (table_no, order_no, customer_name, time, order_description) 
+        VALUES (${table}, ${orderNumber},      '${name}', TIME '${time}', '${itemList}');
+        INSERT INTO totalorders (table_no, order_no, customer_name, time, order_description, total_cost) 
+        VALUES (${table}, ${orderNumber}, '${name}', TIME '${time}', '${itemList}', ${totCost});
+        INSERT INTO tables (tableno, time) VALUES (${table}, TIME '${time}')
+        ON CONFLICT (tableno) DO NOTHING;
+      `;
   
       await client.query(insertQuery);
   
@@ -301,9 +416,11 @@ app.put("/orders/unavailable/:id", async(req,res) => {
       return res.json("Item has been updated successfully");
     } catch (err) {
       console.log("Error");
-      return res.json(err);
+      return res.status(500).json(err); // Set the status code to 500
     }
   });
+  
+  
   
 
 app.post("/sendToKitchen", async (req, res) => {
@@ -338,6 +455,22 @@ app.post("/sendToKitchen", async (req, res) => {
   }
 });
 
+app.post("/sendIssue", async (req, res) => {
+  try{  
+    const totalIssue = req.body.totalIssue;
+    console.log(totalIssue);
+    const issueQuery = 'INSERT INTO issues(tablenumber,problemdescription) VALUES(' + totalIssue[0] +',\'' +   totalIssue[1] + '\');';
+
+    console.log(issueQuery)
+    await client.query(issueQuery);
+    res.json({ success: true });
+    
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the issues" });
+  }
+});
+
 app.post("/makeOrderReady", async (req, res) => {
   try {
     const orders = req.body.orders;
@@ -358,10 +491,55 @@ app.post("/makeOrderReady", async (req, res) => {
     
 
     await client.query(insertQuery);
+    
+    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${values.map(val => val.split(",")[1]).join(",")})`;
+
+    await client.query(deleteQuery);      
+    
+    res.json({ success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Error on sending the orders" });
+  }
+});
+
+app.post("/makeOrderDelivered", async (req, res) => {
+  try {
+    const orders = req.body.orders;
+
+    if (orders.length === 0) {
+      res.status(400).json({ error: "Please select at least one order to send to kitchen" });
+      return;
+    }
+
+    const values = orders.map(
+      ({ table, orderNumber, customerName, time, details, paid }) =>
+        `(${table}, ${orderNumber}, '${customerName}', TIME '${time}', '${details}', ${paid})`
+    );
+
+    const insertQuery = `INSERT INTO delivered (table_no, order_no, customer_name, time, order_description, paid) VALUES ${values.join(
+      ","
+    )};`;
+    
+
+    await client.query(insertQuery);
     const orderNumbers = orders.map((order) => order.orderNumber).join(",");
-    const deleteQuery = `DELETE FROM inpreparation WHERE order_no IN (${orderNumbers})`;
+    const deleteQuery = `DELETE FROM ready_orders WHERE order_no IN (${orderNumbers})`;
 
     await client.query(deleteQuery);
+
+    console.log(values);
+    
+    let deleteQuery2;
+    for (const value of values) {
+      const tableNo = value.split(",")[0].substring(1); // extract tableNo and remove leading (
+        console.log(tableNo);
+        deleteQuery2 = `UPDATE waiters 
+        SET assignedtables = REGEXP_REPLACE(assignedtables, '(,?{"tableNo":${tableNo},"time":"[^"]*"})(,)?', '\\2')
+        WHERE assignedtables LIKE '%{"tableNo":${tableNo},%';`;
+      await client.query(deleteQuery2);
+      console.log(`Deleted assigned tables for table ${tableNo}`);
+    }
 
     res.json({ success: true });
   } catch (err) {
@@ -393,6 +571,26 @@ app.delete('/deleteUser', async (req, res) => {
   }
 })
 
+app.delete("/resolveIssue", async (req, res) => {
+  try{
+    console.log(req.body.issueDetails);
+    const deleteQuery = 'DELETE FROM issues WHERE problemdescription = \'' + req.body.issueDetails + '\';';
+    console.log(deleteQuery);
+
+    client.query(deleteQuery, (err, data) => {
+      if (err) {
+        console.log("Error");
+        return res.json(err);
+      }
+      console.log("Issue deleted from the database");
+      res.json({ message: "Issue deleted from the database" });
+    });
+
+  } catch (err) {
+    console.log("Error");
+    return res.json(err);
+  }
+})
 
 app.delete("/deleteOrder", async (req, res) => {
   try {
@@ -469,6 +667,183 @@ app.put("/orders/reduceStock/:id/:amount", async(req,res) => {
     return res.json(err)
   }
 })
+
+app.put("/waiters", async (req, res) => {
+  try {
+    const { waiters } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = waiters.map((waiter) => {
+      const query = `
+        UPDATE waiters
+        SET status = '${waiter.status}'
+        WHERE username = '${waiter.username}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+app.put("/payment", async (req, res) => {
+  try {
+    const { items } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = items.map((order) => {
+      const query = `
+        UPDATE waiter_calls
+        SET paid = '${order.paid}'
+        WHERE order_no = '${order.orderNumber}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+app.put("/paymentUpdate/:tableNo/:status", async (req, res) => {
+  try {
+    const tableNo = parseInt(req.params.tableNo);
+    const status = req.params.status;
+
+    const query = `
+      UPDATE waiter_calls
+      SET paid = ${status}
+      WHERE table_no = ${tableNo};
+    `;
+    console.log("Query",query);
+
+    await client.query(query);
+    console.log("Res",res);
+    res.json({ message: `Payment updated successfully!` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating the payment status of the table" });
+  }
+});
+
+app.put("/waiterAssign", async (req, res) => {
+  try {
+    const { items } = req.body;
+    console.log("ORDER",items)
+    items.map((order) => {
+      console.log("ORDER_WAITER", order.waiter)
+    })
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = items.map((order) => {
+      const query = `
+        UPDATE waiter_calls
+        SET waiter = '${order.waiter}'
+        WHERE order_no = '${order.orderNumber}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+// Update waiter status and assigned tables
+app.put("/waitersAssign", async (req, res) => {
+  try {
+    const { waiters } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = waiters.map((waiter) => {
+      const assignedTables =
+  waiter.assignedTables && waiter.assignedTables.length > 0
+    ? JSON.stringify(waiter.assignedTables)
+    : null;
+
+        
+      console.log(assignedTables);
+
+      const query = `
+        UPDATE waiters
+        SET status = '${waiter.status}', assignedtables = '${assignedTables}'
+        WHERE username = '${waiter.username}';
+      `;
+      return client.query(query);
+    });
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    // Print the assignedTables array once
+    const assignedTablesArray = waiters.map((waiter) => waiter.assignedTables).filter((tables) => tables !== null);
+    console.log("Assigned tables:", assignedTablesArray);
+
+    res.json({ message: "Waiters updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating waiters" });
+  }
+});
+
+
+// Update table waiter assignments
+app.put("/tables", async (req, res) => {
+  try {
+    const { tables } = req.body;
+
+    // Create an array of Promises to execute all database queries asynchronously
+    const promises = tables && Array.isArray(tables) ? tables.map((table) => {
+      const query = `
+        UPDATE tables
+        SET waiter = '${table.waiter ? table.waiter.username : null}'
+        WHERE tableno = '${table.tableNo}';
+      `;
+      return client.query(query);
+    }) : [];
+
+    // Execute all queries and wait for them to complete
+    await Promise.all(promises);
+
+    res.json({ message: "Tables updated successfully!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error updating tables" });
+  }
+});
+
+app.delete("/tables/:tableNo", async (req, res) => {
+  try {
+    const tableNo = req.params.tableNo;
+
+    const query = `
+      DELETE FROM tables
+      WHERE tableno = '${tableNo}';
+    `;
+    await client.query(query);
+
+    res.json({ message: `Table ${tableNo} deleted successfully!` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error deleting table" });
+  }
+});
+
 
 
 app.listen(8800, ()=>{

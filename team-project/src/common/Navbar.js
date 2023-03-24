@@ -1,18 +1,25 @@
 import logo from "../assets/Oxaca_Restaurants_Logo.png";
 import { slide as Menu } from "react-burger-menu";
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
 
-export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission}) => {
+export const Navbar = ({
+  isLoggedIn,
+  setIsLoggedIn,
+  permission,
+  setPermission,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const Login = () => {
     navigate("/Login");
-  }
+  };
   const LogOut = () => {
-      setIsLoggedIn(false);
-      setPermission("");
-      window.location.href = "/";
+    setIsLoggedIn(false);
+    setPermission("");
+    window.location.href = "/";
   };
 
   const styles = {
@@ -69,6 +76,33 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
       marginTop: "100px",
     },
   };
+
+  useEffect(() => {
+    const deleteAllItems = async () => {
+      try {
+        const currentTime = new Date();
+        const endOfDay = new Date(
+          currentTime.getFullYear(),
+          currentTime.getMonth(),
+          currentTime.getDate() + 1,
+          0,
+          0,
+          0
+        );
+        const timeUntilEndOfDay = endOfDay - currentTime;
+
+        setTimeout(async () => {
+          const res = await axios.delete("http://localhost:8800/delivered");
+          const res2 = await axios.delete("http://localhost:8800/totalorders");
+        }, timeUntilEndOfDay);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    deleteAllItems();
+  }, []);
+
   return (
     <header className="flex items-center text-center">
       <img
@@ -81,126 +115,194 @@ export const Navbar = ({ isLoggedIn,  setIsLoggedIn, permission, setPermission})
       <Menu isOpen={isOpen} styles={styles} right>
         <a
           id="home"
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+          className="text-3xl font-bold text-yellow-100 uppercase"
           href="/"
         >
-          <span>Home</span>
-        </a>
-        <a
-          id="about"
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-          href="/about-us"
-        >
-          <span>Order Online</span>
-          <i className="fa-solid fa-caret-down"></i>
+          Home
         </a>
         <a
           id="menu"
-          className="text-2xl font-bold text-yellow-100 uppercase"
+          className="text-3xl font-bold text-yellow-100 uppercase"
           href="/menu"
         >
-          Menus
+          Order Online
         </a>
         <a
-          className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
-          href=""
+          id="TableInput"
+          className="text-3xl font-bold text-yellow-100 uppercase"
+          href="/TableInput"
         >
-          <span>Locations</span>
-          <i className="fa-solid fa-caret-down"></i>
+          Track Order
         </a>
-        <a className="text-2xl font-bold text-yellow-100 uppercase" href="">
+
+        <a
+          className="text-3xl font-bold text-yellow-100 uppercase"
+          href="about-us"
+        >
           Contact Us
         </a>
         <a
           id="contact"
           className="text-4xl font-bold text-yellow-100 uppercase bg-blue-600 space-x-3"
           href="/contact"
-        >
-          <span>Book Now</span>
-          <i className="fa-solid fa-angles-right"></i>
-        </a>
+        ></a>
       </Menu>
 
-      <ul className="p-3 2xl:flex hidden">
-        <li className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-3xl font-extrabold font-sans hover:text-yellow-300 uppercase">
-          <span>Book Now</span>
+      <ul className="p-3 2xl:flex space-x-40 hidden">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 bg-blue-500 text-yellow-500 text-5xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+          <a href="/menu">
+            <span>Order Online </span>
+          </a>
           <i className="fa-solid fa-circle-chevron-right"></i>
         </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/">Home</a>
         </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <a href="/menu"><span>Order Online</span></a>
-          <i className="fa-solid fa-chevron-down"></i>
+
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
+          <a href="/TableInput">Track Order</a>
         </li>
-        <li
-          className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase"
-          href="/menu"
-        >
-          <a href="/menu">Menus</a>
-        </li>
-        <li className="p-3 px-6 mx-2 space-x-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
-          <span>Locations</span>
-          <i className="fa-solid fa-chevron-down"></i>
-        </li>
-        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-2xl font-bold font-sans hover:text-yellow-300 uppercase">
+
+        <li className="p-3 px-6 mx-2 hover:bg-pink-500 text-red-500 text-4xl font-extrabold font-sans hover:text-yellow-300 uppercase">
           <a href="/about-us">Contact Us</a>
         </li>
       </ul>
-      {isLoggedIn ? permission === "Waiter" ? (
-        <Menu isOpen={isOpen} styles={styles} right>
-          <li>
-          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/order-dashboard">Order Dashboard</a>
-          </li>
-          <li>
-            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
-          </li>
-      </Menu>
-        // <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
+      {isLoggedIn ? (
+        permission === "Waiter" ? (
+          <Menu isOpen={isOpen} styles={styles} right>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/menu"
+              >
+                Edit Menu
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/table-assignment"
+              >
+                Table Assignment
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/order-dashboard"
+              >
+                Order Dashboard
+              </a>
+            </li>
+            <li>
+              <button
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                onClick={LogOut}
+              >
+                Logout
+              </button>
+            </li>
+          </Menu>
+        ) : // <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {LogOut}>
         //   Staff LogOut
         // </button>
-      ) : permission === "Kitchen" ? (
-        <Menu isOpen={isOpen} styles={styles} right>
-          <li>
-          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/kitchen-dashboard">Kitchen Dashboard</a>
-          </li>
-          <li>
-            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
-          </li>
-      </Menu>
-      ) 
-      : permission === "Admin" ? (
-        <Menu isOpen={isOpen} styles={styles} right>
-          <li>
-          <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/menu">Edit Menu</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/admin-dashboard">Admin Dashboard</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/order-dashboard">Order Dashboard</a>
-          </li>
-          <li>
-            <a className="text-2xl font-bold text-yellow-100 uppercase space-x-2" href="/kitchen-dashboard">Kitchen Dashboard</a>
-          </li>
-          <li>
-            <button className="text-2xl font-bold text-yellow-100 uppercase space-x-2" onClick={LogOut}>Logout</button>
-          </li>
-      </Menu>
+        permission === "Kitchen" ? (
+          <Menu isOpen={isOpen} styles={styles} right>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/menu"
+              >
+                Edit Menu
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/kitchen-dashboard"
+              >
+                Kitchen Dashboard
+              </a>
+            </li>
+            <li>
+              <button
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                onClick={LogOut}
+              >
+                Logout
+              </button>
+            </li>
+          </Menu>
+        ) : permission === "Admin" ? (
+          <Menu isOpen={isOpen} styles={styles} right>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/menu"
+              >
+                Edit Menu
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/admin-dashboard"
+              >
+                Admin Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/statistics"
+              >
+                statistics
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/table-assignment"
+              >
+                Table Assignment
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/order-dashboard"
+              >
+                Order Dashboard
+              </a>
+            </li>
+            <li>
+              <a
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                href="/kitchen-dashboard"
+              >
+                Kitchen Dashboard
+              </a>
+            </li>
+            <li>
+              <button
+                className="text-2xl font-bold text-yellow-100 uppercase space-x-2"
+                onClick={LogOut}
+              >
+                Logout
+              </button>
+            </li>
+          </Menu>
+        ) : (
+          <></>
+        )
       ) : (
-        <></>
-      ) : (
-      <button className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white font-bold absolute top-5 right-5" onClick = {Login}>
-      Staff LogIn
-    </button>
-    )
-    }
+        <button
+          className="p-2 rounded-full border-2 border-black shadow-md bg-blue-500 text-white text-2xl font-bold absolute top-5 right-5"
+          onClick={Login}
+        >
+          Staff LogIn
+        </button>
+      )}
     </header>
   );
 };

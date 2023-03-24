@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Food Sales Statistics</title>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	<style>
+		canvas {
+			display: block;
+			margin: auto;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<h1>Food Sales Statistics</h1>
+	<canvas id="myChart"></canvas>
+    
+	<script>
+		var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+			// The type of chart we want to create
+			type: 'pie',
+
+			// The data for our dataset
+					// The data for our dataset
+		data: {
+			labels: ['Beef Burrito', 'Beef Quesadilla', 'Chicken Soup', 'Grilled Halloumi', 'Chipotle Wings', 'Nachos vegan', 'Black beans Soup', 'Tuna Tostada', 'Cod Fillets', 'Beef Enchilada', 'Mixed Vegetables Enchilada', 'Chicken Burrito', 'Mixed Vegetables Burrito', 'Chicken Quesadilla', 'Mixed Vegetables Quesadilla', 'Chicken Fajita', 'Steak Fajita', 'Prawn Fajita', 'Chicken Burger', 'Beef Burger', 'Vegan BurgerCorn', 'Onion Rings', 'Coke', 'Diet Coke', 'Sprite', 'Fanta Orange', 'Sparkling water', 'Nachos con queso', 'Still Water'],
+			datasets: [{
+				backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#4bc0c0', '#8B0000', '#B8860B', '#006400', '#8FBC8F', '#9400D3', '#FF69B4', '#0000CD', '#8B008B', '#A52A2A', '#2E8B57', '#FF7F50', '#FA8072', '#1E90FF', '#FFD700', '#BDB76B', '#696969', '#2F4F4F', '#7B68EE', '#FF4500', '#00BFFF', '#7FFF00', '#FFA07A', '#ADD8E6', '#483D8B'],
+				borderColor: 'white',
+				data: [800, 1200, 300, 500, 700, 400, 200, 600, 900, 1000, 500, 700, 600, 900, 400, 500, 800, 300, 1200, 1500, 600, 800, 1200, 900, 700, 500, 1000, 300, 200],
+			}]
+		},
+
+		// Configuration options go here
+		options: {}
+	});
+</script>
+
+</body>
+</html>
