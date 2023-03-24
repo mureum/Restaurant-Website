@@ -2,6 +2,20 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Start the Project
+
+Go to the terminal and open two windows
+First window /team-project run -> `npm install` and after `npm start`
+Second window /team-project/backend run -> `npm install` and after `npm start`
+
+After that go to http://localhost:3000 to see the website.
+
+## Some Logins Details
+
+Admin -> Username: Admin Password: Password
+Waiter -> Username: Username1 Password: Password1
+Kitchen -> Username: Username2 Password: Password2
+
 ## Available Scripts
 
 In the project directory, you can run:
