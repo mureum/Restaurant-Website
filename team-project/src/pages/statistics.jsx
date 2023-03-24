@@ -173,7 +173,7 @@ const buttonStyle = {
   borderRadius: "4px",
   cursor: "pointer",
   backgroundColor: "purple",
-  width: "100%", 
+  width: "30%", 
   height: "50px"
 };
 
