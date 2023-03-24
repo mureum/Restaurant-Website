@@ -141,7 +141,7 @@ function Home({ isLoggedIn }) {
           <br></br>
           <button className="p-3 px-6 mx-2 space-x-4 hover:bg-pink-500 bg-red-500 text-yellow-500 text-2xl font-extrabold font-sans hover:text-yellow-300 uppercase">
             <span>
-              <a href="/aboutus">About Us</a>
+              <a href="/about-us">About Us</a>
             </span>
             <i className="fa-solid fa-circle-chevron-right"></i>
           </button>
